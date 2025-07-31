@@ -1,0 +1,233 @@
+# CodeRabbit Configuration for FitProFinder
+# This file configures automated code review settings
+
+# Global settings
+global:
+  # Enable comprehensive security scanning
+  security_scan: true
+  
+  # Enable code quality analysis
+  code_quality: true
+  
+  # Enable performance analysis
+  performance_analysis: true
+  
+  # Enable best practices checking
+  best_practices: true
+
+# Language-specific settings
+languages:
+  javascript:
+    # Enable ESLint rules
+    eslint: true
+    
+    # Enable security scanning for Node.js
+    security_scan: true
+    
+    # Check for common vulnerabilities
+    vulnerability_check: true
+    
+    # Performance optimization suggestions
+    performance: true
+    
+  typescript:
+    # Enable TypeScript-specific checks
+    typescript: true
+    
+    # Enable strict type checking
+    strict_types: true
+    
+  astro:
+    # Enable Astro-specific best practices
+    astro_best_practices: true
+    
+    # Check component structure
+    component_analysis: true
+
+# Security scanning configuration
+security:
+  # Check for common vulnerabilities
+  common_vulnerabilities: true
+  
+  # Check for SQL injection risks
+  sql_injection: true
+  
+  # Check for XSS vulnerabilities
+  xss: true
+  
+  # Check for authentication issues
+  authentication: true
+  
+  # Check for authorization issues
+  authorization: true
+  
+  # Check for sensitive data exposure
+  sensitive_data: true
+  
+  # Check for dependency vulnerabilities
+  dependency_vulnerabilities: true
+
+# Code quality settings
+quality:
+  # Check code complexity
+  complexity: true
+  
+  # Check for code smells
+  code_smells: true
+  
+  # Check for maintainability issues
+  maintainability: true
+  
+  # Check for readability issues
+  readability: true
+  
+  # Check for naming conventions
+  naming_conventions: true
+
+# Performance analysis
+performance:
+  # Check for performance bottlenecks
+  bottlenecks: true
+  
+  # Check for memory leaks
+  memory_leaks: true
+  
+  # Check for inefficient algorithms
+  algorithms: true
+  
+  # Check for database query optimization
+  database_queries: true
+
+# Best practices
+best_practices:
+  # Check for proper error handling
+  error_handling: true
+  
+  # Check for proper logging
+  logging: true
+  
+  # Check for proper testing
+  testing: true
+  
+  # Check for proper documentation
+  documentation: true
+  
+  # Check for proper configuration management
+  configuration: true
+
+# Framework-specific checks
+frameworks:
+  express:
+    # Check Express.js best practices
+    express_best_practices: true
+    
+    # Check middleware usage
+    middleware: true
+    
+    # Check route organization
+    routes: true
+    
+  astro:
+    # Check Astro best practices
+    astro_best_practices: true
+    
+    # Check component structure
+    components: true
+    
+    # Check routing
+    routing: true
+
+# Database-specific checks
+database:
+  # Check for SQL injection risks
+  sql_injection: true
+  
+  # Check for proper connection handling
+  connection_handling: true
+  
+  # Check for proper migration practices
+  migrations: true
+  
+  # Check for proper seeding practices
+  seeding: true
+
+# API-specific checks
+api:
+  # Check for proper API design
+  design: true
+  
+  # Check for proper validation
+  validation: true
+  
+  # Check for proper error responses
+  error_responses: true
+  
+  # Check for proper rate limiting
+  rate_limiting: true
+  
+  # Check for proper CORS configuration
+  cors: true
+
+# Frontend-specific checks
+frontend:
+  # Check for accessibility issues
+  accessibility: true
+  
+  # Check for responsive design
+  responsive: true
+  
+  # Check for SEO best practices
+  seo: true
+  
+  # Check for performance optimization
+  performance: true
+
+# Ignore patterns (files to skip in analysis)
+ignore:
+  - "node_modules/**"
+  - "dist/**"
+  - "build/**"
+  - "*.log"
+  - "*.sqlite"
+  - "*.db"
+  - ".env*"
+  - "uploads/**"
+  - "coverage/**"
+  - ".nyc_output/**"
+
+# Custom rules for FitProFinder
+custom_rules:
+  # Check for proper JWT implementation
+  jwt_implementation: true
+  
+  # Check for proper Stripe integration
+  stripe_integration: true
+  
+  # Check for proper Socket.IO usage
+  socket_io: true
+  
+  # Check for proper file upload handling
+  file_uploads: true
+  
+  # Check for proper email integration
+  email_integration: true
+
+# Report settings
+reports:
+  # Generate detailed security report
+  security: true
+  
+  # Generate code quality report
+  quality: true
+  
+  # Generate performance report
+  performance: true
+  
+  # Generate best practices report
+  best_practices: true
+  
+  # Generate framework-specific reports
+  frameworks: true
+  
+  # Generate custom FitProFinder report
+  custom: true 
