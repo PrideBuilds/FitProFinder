@@ -1,5 +1,9 @@
-export const up = async (knex) => {
-  await knex.schema.createTable('users', (table) => {
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.up = function(knex) {
+  return knex.schema.createTable('users', (table) => {
     // Primary key - use string for SQLite compatibility
     table.string('id', 36).primary();
     
@@ -37,6 +41,10 @@ export const up = async (knex) => {
   });
 };
 
-export const down = async (knex) => {
-  await knex.schema.dropTableIfExists('users');
-}; 
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.down = function(knex) {
+  return knex.schema.dropTableIfExists('users');
+};
