@@ -1,0 +1,339 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "How It Works - FitProFinder";
+const description =
+  "Learn how FitProFinder makes it easy to find, connect with, and book fitness professionals in your area.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <div class='bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <h1 class='text-4xl md:text-5xl font-bold mb-6'>
+        How FitProFinder Works
+      </h1>
+      <p class='text-xl text-blue-100 max-w-3xl mx-auto'>
+        Getting started with your fitness journey has never been easier. Connect
+        with certified professionals in just a few simple steps.
+      </p>
+    </div>
+  </div>
+
+  <!-- Steps Section -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Three Simple Steps to Success
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Find your perfect fitness match and start achieving your goals today
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-12'>
+        <!-- Step 1 -->
+        <div class='text-center'>
+          <div
+            class='bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6'
+          >
+            <span class='text-2xl font-bold text-blue-600'>1</span>
+          </div>
+          <div class='bg-white rounded-lg shadow-lg p-8 h-full'>
+            <div class='text-blue-600 mb-4'>
+              <svg
+                class='w-12 h-12 mx-auto'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'></path>
+              </svg>
+            </div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              Search & Discover
+            </h3>
+            <p class='text-gray-600 leading-relaxed'>
+              Browse through hundreds of certified fitness professionals in your
+              area. Filter by specialty, location, rating, and session type to
+              find your perfect match.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class='text-center'>
+          <div
+            class='bg-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6'
+          >
+            <span class='text-2xl font-bold text-purple-600'>2</span>
+          </div>
+          <div class='bg-white rounded-lg shadow-lg p-8 h-full'>
+            <div class='text-purple-600 mb-4'>
+              <svg
+                class='w-12 h-12 mx-auto'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+                ></path>
+              </svg>
+            </div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              Connect & Chat
+            </h3>
+            <p class='text-gray-600 leading-relaxed'>
+              Message trainers directly to discuss your goals, ask questions,
+              and get to know them before booking. Our secure messaging system
+              keeps your conversations safe.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class='text-center'>
+          <div
+            class='bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6'
+          >
+            <span class='text-2xl font-bold text-green-600'>3</span>
+          </div>
+          <div class='bg-white rounded-lg shadow-lg p-8 h-full'>
+            <div class='text-green-600 mb-4'>
+              <svg
+                class='w-12 h-12 mx-auto'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+                ></path>
+              </svg>
+            </div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              Book & Train
+            </h3>
+            <p class='text-gray-600 leading-relaxed'>
+              Schedule sessions that fit your availability. Choose between
+              in-person or online sessions, and start working towards your
+              fitness goals with professional guidance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Why Choose FitProFinder?
+        </h2>
+        <p class='text-lg text-gray-600'>
+          We make fitness accessible, convenient, and effective for everyone
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Verified Professionals
+          </h3>
+          <p class='text-gray-600'>
+            All trainers are background-checked and certified by recognized
+            fitness organizations.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Secure Payments
+          </h3>
+          <p class='text-gray-600'>
+            Your payment information is protected with bank-level security and
+            encryption.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M13 10V3L4 14h7v7l9-11h-7z'></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Flexible Sessions
+          </h3>
+          <p class='text-gray-600'>
+            Choose between in-person or online sessions that fit your schedule
+            and preferences.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Personalized Match
+          </h3>
+          <p class='text-gray-600'>
+            Our algorithm helps you find trainers that match your goals,
+            experience level, and preferences.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>24/7 Support</h3>
+          <p class='text-gray-600'>
+            Our customer support team is available around the clock to help with
+            any questions or issues.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Progress Tracking
+          </h3>
+          <p class='text-gray-600'>
+            Track your fitness journey with built-in progress monitoring and
+            goal setting tools.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class='py-16 bg-blue-600'>
+    <div class='max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <h2 class='text-3xl font-bold text-white mb-4'>
+        Ready to Start Your Fitness Journey?
+      </h2>
+      <p class='text-xl text-blue-100 mb-8'>
+        Join thousands of people who have already found their perfect fitness
+        professional on FitProFinder.
+      </p>
+      <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+        <a
+          href='/search'
+          class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors'
+        >
+          Find Your Trainer
+          <svg
+            class='ml-2 -mr-1 w-5 h-5'
+            fill='currentColor'
+            viewBox='0 0 20 20'
+          >
+            <path
+              fill-rule='evenodd'
+              d='M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z'
+              clip-rule='evenodd'></path>
+          </svg>
+        </a>
+        <a
+          href='/for-trainers'
+          class='inline-flex items-center px-8 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors'
+        >
+          Are You a Trainer?
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

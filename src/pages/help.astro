@@ -1,0 +1,461 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Help Center - FitProFinder";
+const description =
+  "Find answers to common questions about FitProFinder. Get help with account setup, booking sessions, payments, and more.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <div class='bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <h1 class='text-4xl md:text-5xl font-bold mb-6'>Help Center</h1>
+      <p class='text-xl text-blue-100 max-w-3xl mx-auto'>
+        Find answers to your questions and get the support you need
+      </p>
+
+      <!-- Search Bar -->
+      <div class='max-w-2xl mx-auto mt-8'>
+        <div class='relative'>
+          <input
+            type='text'
+            placeholder='Search for help articles...'
+            class='w-full px-6 py-4 rounded-lg border-2 border-white/30 bg-white/95 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-white focus:border-white shadow-lg'
+          />
+          <button
+            class='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+          >
+            <svg
+              class='w-5 h-5'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Help Categories -->
+  <section class='py-16 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-12'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Popular Help Topics
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Quick access to commonly searched topics
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        <!-- Account Help -->
+        <div
+          class='bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow'
+        >
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            Account & Profile
+          </h3>
+          <p class='text-gray-600 mb-4'>
+            Help with creating accounts, updating profiles, and managing
+            settings
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>
+              <a href='#account-setup' class='hover:text-blue-600'
+                >• Setting up your account</a>
+            </li>
+            <li>
+              <a href='#profile-completion' class='hover:text-blue-600'
+                >• Completing your profile</a>
+            </li>
+            <li>
+              <a href='#password-reset' class='hover:text-blue-600'
+                >• Resetting your password</a>
+            </li>
+            <li>
+              <a href='#account-verification' class='hover:text-blue-600'
+                >• Account verification</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Booking Help -->
+        <div
+          class='bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow'
+        >
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            Booking Sessions
+          </h3>
+          <p class='text-gray-600 mb-4'>
+            Everything about finding trainers and booking sessions
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>
+              <a href='#finding-trainers' class='hover:text-blue-600'
+                >• Finding the right trainer</a>
+            </li>
+            <li>
+              <a href='#booking-process' class='hover:text-blue-600'
+                >• How to book a session</a>
+            </li>
+            <li>
+              <a href='#session-types' class='hover:text-blue-600'
+                >• Online vs in-person sessions</a>
+            </li>
+            <li>
+              <a href='#cancellation-policy' class='hover:text-blue-600'
+                >• Cancellation and rescheduling</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Payment Help -->
+        <div
+          class='bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow'
+        >
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            Payments & Billing
+          </h3>
+          <p class='text-gray-600 mb-4'>
+            Questions about payments, refunds, and billing
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>
+              <a href='#payment-methods' class='hover:text-blue-600'
+                >• Accepted payment methods</a>
+            </li>
+            <li>
+              <a href='#refund-policy' class='hover:text-blue-600'
+                >• Refund policy</a>
+            </li>
+            <li>
+              <a href='#billing-issues' class='hover:text-blue-600'
+                >• Billing and charges</a>
+            </li>
+            <li>
+              <a href='#trainer-payouts' class='hover:text-blue-600'
+                >• Trainer payouts</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- For Trainers -->
+        <div
+          class='bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow'
+        >
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>For Trainers</h3>
+          <p class='text-gray-600 mb-4'>
+            Help for fitness professionals using our platform
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>
+              <a href='#trainer-setup' class='hover:text-blue-600'
+                >• Setting up your trainer profile</a>
+            </li>
+            <li>
+              <a href='#managing-bookings' class='hover:text-blue-600'
+                >• Managing client bookings</a>
+            </li>
+            <li>
+              <a href='#setting-availability' class='hover:text-blue-600'
+                >• Setting availability and rates</a>
+            </li>
+            <li>
+              <a href='#verification-process' class='hover:text-blue-600'
+                >• Verification process</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Technical Support -->
+        <div
+          class='bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow'
+        >
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'
+              ></path>
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            Technical Support
+          </h3>
+          <p class='text-gray-600 mb-4'>
+            Troubleshooting and technical assistance
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>
+              <a href='#app-issues' class='hover:text-blue-600'
+                >• App not working properly</a>
+            </li>
+            <li>
+              <a href='#browser-compatibility' class='hover:text-blue-600'
+                >• Browser compatibility</a>
+            </li>
+            <li>
+              <a href='#video-chat-issues' class='hover:text-blue-600'
+                >• Video chat troubleshooting</a>
+            </li>
+            <li>
+              <a href='#mobile-app' class='hover:text-blue-600'
+                >• Mobile app support</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Safety & Security -->
+        <div
+          class='bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow'
+        >
+          <div class='text-green-600 mb-4'>
+            <svg
+              class='w-8 h-8'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            Safety & Security
+          </h3>
+          <p class='text-gray-600 mb-4'>
+            Information about safety measures and security features
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>
+              <a href='#safety-guidelines' class='hover:text-blue-600'
+                >• Safety guidelines</a>
+            </li>
+            <li>
+              <a href='#background-checks' class='hover:text-blue-600'
+                >• Trainer background checks</a>
+            </li>
+            <li>
+              <a href='#reporting-issues' class='hover:text-blue-600'
+                >• Reporting problems</a>
+            </li>
+            <li>
+              <a href='#privacy-protection' class='hover:text-blue-600'
+                >• Privacy protection</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class='py-16 bg-gray-50'>
+    <div class='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-12'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Frequently Asked Questions
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Quick answers to the most common questions
+        </p>
+      </div>
+
+      <div class='space-y-8'>
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            How do I book a session with a trainer?
+          </h3>
+          <p class='text-gray-600'>
+            Simply search for trainers in your area, browse their profiles, and
+            click "Book Session" on their profile page. You can choose your
+            preferred date and time, and the trainer will confirm your booking.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            Are there any fees for clients?
+          </h3>
+          <p class='text-gray-600'>
+            No! FitProFinder is completely free for clients. You only pay the
+            trainer's session rate with no additional platform fees.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            How are trainers verified?
+          </h3>
+          <p class='text-gray-600'>
+            All trainers undergo a thorough verification process including
+            background checks, certification verification, and reference checks
+            before being approved on our platform.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            Can I cancel or reschedule a session?
+          </h3>
+          <p class='text-gray-600'>
+            Yes, you can cancel or reschedule sessions according to the
+            trainer's cancellation policy. Most trainers require 24-48 hours
+            notice for cancellations to avoid fees.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            What types of sessions are available?
+          </h3>
+          <p class='text-gray-600'>
+            Trainers offer both in-person and online sessions. You can filter by
+            session type when searching to find trainers that match your
+            preference.
+          </p>
+        </div>
+
+        <div class='bg-white rounded-lg p-6 shadow-sm'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+            How do payments work?
+          </h3>
+          <p class='text-gray-600'>
+            Payments are processed securely through our platform. Your payment
+            method is charged after the session is completed, and trainers
+            receive their payout within 24 hours.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Support -->
+  <section class='py-16 bg-blue-600'>
+    <div class='max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <h2 class='text-3xl font-bold text-white mb-4'>Still Need Help?</h2>
+      <p class='text-xl text-blue-100 mb-8'>
+        Can't find what you're looking for? Our support team is here to help.
+      </p>
+      <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+        <a
+          href='/contact'
+          class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors'
+        >
+          Contact Support
+        </a>
+        <a
+          href='mailto:support@fitprofinder.com'
+          class='inline-flex items-center px-8 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors'
+        >
+          Email Us
+        </a>
+      </div>
+      <p class='text-sm text-blue-200 mt-4'>
+        Average response time: Under 2 hours
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Simple search functionality
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.querySelector(
+      'input[placeholder="Search for help articles..."]'
+    );
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        // In a real implementation, this would filter help articles
+        console.log("Searching for:", searchTerm);
+      });
+    }
+  });
+</script>
+

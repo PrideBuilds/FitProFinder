@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSearchSection from '../components/HeroSearchSection.astro';
+import FeaturedTrainers from '../components/FeaturedTrainers.tsx';
+import PopularCities from '../components/PopularCities.astro';
+import PopularCategories from '../components/PopularCategories.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+
+const title = 'FitProFinder - Find Your Perfect Fitness Professional';
+const description = 'Connect with certified personal trainers, nutritionists, and wellness experts in your area. Book sessions, track progress, and achieve your fitness goals.';
+---
+
+<BaseLayout title={title} description={description}>
+	<!-- Hero Section with Search -->
+	<HeroSearchSection />
+
+	<!-- Featured Trainers Section -->
+	<section class="py-16 bg-white">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-12">
+				<h2 class="text-3xl font-bold text-gray-900 mb-4">
+					Featured Verified Trainers
+				</h2>
+				<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+					Connect with top-rated fitness professionals in your area
+				</p>
+			</div>
+			<FeaturedTrainers client:load />
+		</div>
+	</section>
+
+	<!-- Popular Cities Section -->
+	<PopularCities />
+
+	<!-- Popular Categories -->
+	<section class="py-16 bg-gray-50">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-12">
+				<h2 class="text-3xl font-bold text-gray-900 mb-4">
+					Popular Fitness Categories
+				</h2>
+				<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+					Find trainers specialized in your preferred fitness style
+				</p>
+			</div>
+			<PopularCategories />
+		</div>
+	</section>
+
+	<!-- How It Works -->
+	<section class="py-16 bg-white">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-12">
+				<h2 class="text-3xl font-bold text-gray-900 mb-4">
+					How FitProFinder Works
+				</h2>
+				<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+					Get started with your fitness journey in three simple steps
+				</p>
+			</div>
+			<HowItWorks />
+		</div>
+	</section>
+
+	<!-- CTA Section for Trainers -->
+	<section class="py-16 bg-blue-600">
+		<div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+			<h2 class="text-3xl font-bold text-white mb-4">
+				Are You a Fitness Professional?
+			</h2>
+			<p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+				Join thousands of trainers growing their business on FitProFinder. 
+				Get more clients, manage bookings, and build your reputation.
+			</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<a 
+					href="/trainers/signup" 
+					class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors"
+				>
+					Join as a Trainer
+					<svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+					</svg>
+				</a>
+				<a 
+					href="/how-it-works" 
+					class="inline-flex items-center px-8 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors"
+				>
+					Learn More
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Stats Section -->
+	<section class="py-16 bg-gray-50">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-12">
+				<h2 class="text-3xl font-bold text-gray-900 mb-4">Join the FitProFinder Community</h2>
+			</div>
+			
+			<div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+				<div class="text-center">
+					<div class="text-4xl font-bold text-blue-600 mb-2">1,200+</div>
+					<div class="text-gray-600">Certified Trainers</div>
+				</div>
+				<div class="text-center">
+					<div class="text-4xl font-bold text-blue-600 mb-2">50K+</div>
+					<div class="text-gray-600">Sessions Completed</div>
+				</div>
+				<div class="text-center">
+					<div class="text-4xl font-bold text-blue-600 mb-2">500+</div>
+					<div class="text-gray-600">Cities Covered</div>
+				</div>
+				<div class="text-center">
+					<div class="text-4xl font-bold text-blue-600 mb-2">4.9★</div>
+					<div class="text-gray-600">Average Rating</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

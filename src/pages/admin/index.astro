@@ -1,0 +1,945 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title='Admin Dashboard - FitProFinder'
+  requireAuth={true}
+  requireRole='admin'
+>
+  <div class='min-h-screen bg-gray-50'>
+    <!-- Admin Header -->
+    <div class='bg-white shadow'>
+      <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div class='flex justify-between h-16'>
+          <div class='flex items-center'>
+            <div class='flex-shrink-0'>
+              <h1 class='text-2xl font-bold text-gray-900'>Admin Dashboard</h1>
+            </div>
+          </div>
+          <div class='flex items-center space-x-4'>
+            <div class='text-sm text-gray-500' id='adminInfo'>
+              Loading admin info...
+            </div>
+            <div
+              class='h-8 w-8 bg-red-500 rounded-full flex items-center justify-center text-white font-semibold text-sm'
+            >
+              A
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Navigation -->
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
+      <nav class='flex space-x-8 mb-8'>
+        <button class='nav-tab active' data-tab='dashboard'>
+          <svg
+            class='w-5 h-5 mr-2'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              stroke-width='2'
+              d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+            ></path>
+          </svg>
+          Dashboard
+        </button>
+        <button class='nav-tab' data-tab='users'>
+          <svg
+            class='w-5 h-5 mr-2'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              stroke-width='2'
+              d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z'
+            ></path>
+          </svg>
+          Users
+        </button>
+        <button class='nav-tab' data-tab='admins'>
+          <svg
+            class='w-5 h-5 mr-2'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              stroke-width='2'
+              d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'
+            ></path>
+          </svg>
+          Admins
+        </button>
+        <button class='nav-tab' data-tab='activity'>
+          <svg
+            class='w-5 h-5 mr-2'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              stroke-width='2'
+              d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+            ></path>
+          </svg>
+          Activity Logs
+        </button>
+        <button class='nav-tab' data-tab='system'>
+          <svg
+            class='w-5 h-5 mr-2'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              stroke-width='2'
+              d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'
+            ></path>
+            <path
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              stroke-width='2'
+              d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'></path>
+          </svg>
+          System
+        </button>
+      </nav>
+
+      <!-- Tab Content -->
+      <div id='tabContent'>
+        <!-- Dashboard Tab -->
+        <div id='dashboard-tab' class='tab-content active'>
+          <div
+            class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'
+          >
+            <!-- Stats Cards -->
+            <div class='bg-white overflow-hidden shadow rounded-lg'>
+              <div class='p-5'>
+                <div class='flex items-center'>
+                  <div class='flex-shrink-0'>
+                    <svg
+                      class='h-6 w-6 text-gray-400'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        stroke-width='2'
+                        d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z'
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class='ml-5 w-0 flex-1'>
+                    <dl>
+                      <dt class='text-sm font-medium text-gray-500 truncate'>
+                        Total Users
+                      </dt>
+                      <dd
+                        class='text-lg font-medium text-gray-900'
+                        id='totalUsers'
+                      >
+                        -
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class='bg-white overflow-hidden shadow rounded-lg'>
+              <div class='p-5'>
+                <div class='flex items-center'>
+                  <div class='flex-shrink-0'>
+                    <svg
+                      class='h-6 w-6 text-gray-400'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        stroke-width='2'
+                        d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class='ml-5 w-0 flex-1'>
+                    <dl>
+                      <dt class='text-sm font-medium text-gray-500 truncate'>
+                        Active Trainers
+                      </dt>
+                      <dd
+                        class='text-lg font-medium text-gray-900'
+                        id='activeTrainers'
+                      >
+                        -
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class='bg-white overflow-hidden shadow rounded-lg'>
+              <div class='p-5'>
+                <div class='flex items-center'>
+                  <div class='flex-shrink-0'>
+                    <svg
+                      class='h-6 w-6 text-gray-400'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        stroke-width='2'
+                        d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.013 8.013 0 01-2.6-.424l-3.4.424a1.001 1.001 0 01-1.018-1.018l.424-3.4A7.972 7.972 0 014 12C4 7.582 7.582 4 12 4s8 3.582 8 8z'
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class='ml-5 w-0 flex-1'>
+                    <dl>
+                      <dt class='text-sm font-medium text-gray-500 truncate'>
+                        Messages (24h)
+                      </dt>
+                      <dd
+                        class='text-lg font-medium text-gray-900'
+                        id='messagesLast24h'
+                      >
+                        -
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class='bg-white overflow-hidden shadow rounded-lg'>
+              <div class='p-5'>
+                <div class='flex items-center'>
+                  <div class='flex-shrink-0'>
+                    <svg
+                      class='h-6 w-6 text-gray-400'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        stroke-width='2'
+                        d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class='ml-5 w-0 flex-1'>
+                    <dl>
+                      <dt class='text-sm font-medium text-gray-500 truncate'>
+                        Active Conversations
+                      </dt>
+                      <dd
+                        class='text-lg font-medium text-gray-900'
+                        id='activeConversations'
+                      >
+                        -
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+            <div class='bg-white shadow rounded-lg'>
+              <div class='px-4 py-5 sm:p-6'>
+                <h3 class='text-lg leading-6 font-medium text-gray-900 mb-4'>
+                  Recent Users
+                </h3>
+                <div id='recentUsers' class='space-y-3'>
+                  <div class='animate-pulse'>Loading...</div>
+                </div>
+              </div>
+            </div>
+
+            <div class='bg-white shadow rounded-lg'>
+              <div class='px-4 py-5 sm:p-6'>
+                <h3 class='text-lg leading-6 font-medium text-gray-900 mb-4'>
+                  Recent Activity
+                </h3>
+                <div id='recentActivity' class='space-y-3'>
+                  <div class='animate-pulse'>Loading...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id='users-tab' class='tab-content hidden'>
+          <div class='bg-white shadow rounded-lg'>
+            <div class='px-4 py-5 sm:p-6'>
+              <div class='flex justify-between items-center mb-4'>
+                <h3 class='text-lg leading-6 font-medium text-gray-900'>
+                  User Management
+                </h3>
+                <button
+                  id='createUserBtn'
+                  class='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                >
+                  <svg
+                    class='-ml-1 mr-2 h-5 w-5'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      stroke-linecap='round'
+                      stroke-linejoin='round'
+                      stroke-width='2'
+                      d='M12 6v6m0 0v6m0-6h6m-6 0H6'></path>
+                  </svg>
+                  Add User
+                </button>
+              </div>
+
+              <!-- Filters -->
+              <div class='mb-4 grid grid-cols-1 md:grid-cols-4 gap-4'>
+                <input
+                  type='text'
+                  id='userSearch'
+                  placeholder='Search users...'
+                  class='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'
+                />
+                <select
+                  id='roleFilter'
+                  class='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'
+                >
+                  <option value=''>All Roles</option>
+                  <option value='client'>Client</option>
+                  <option value='trainer'>Trainer</option>
+                  <option value='admin'>Admin</option>
+                </select>
+                <select
+                  id='statusFilter'
+                  class='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'
+                >
+                  <option value=''>All Status</option>
+                  <option value='true'>Active</option>
+                  <option value='false'>Inactive</option>
+                </select>
+                <button
+                  id='applyFilters'
+                  class='inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                >
+                  Apply Filters
+                </button>
+              </div>
+
+              <div id='usersTable' class='overflow-hidden'>
+                <div class='animate-pulse'>Loading users...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admins Tab -->
+        <div id='admins-tab' class='tab-content hidden'>
+          <div class='bg-white shadow rounded-lg'>
+            <div class='px-4 py-5 sm:p-6'>
+              <h3 class='text-lg leading-6 font-medium text-gray-900 mb-4'>
+                Admin Management
+              </h3>
+              <div id='adminsTable' class='overflow-hidden'>
+                <div class='animate-pulse'>Loading admins...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Tab -->
+        <div id='activity-tab' class='tab-content hidden'>
+          <div class='bg-white shadow rounded-lg'>
+            <div class='px-4 py-5 sm:p-6'>
+              <h3 class='text-lg leading-6 font-medium text-gray-900 mb-4'>
+                Activity Logs
+              </h3>
+              <div id='activityLogs' class='overflow-hidden'>
+                <div class='animate-pulse'>Loading activity logs...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Tab -->
+        <div id='system-tab' class='tab-content hidden'>
+          <div class='bg-white shadow rounded-lg'>
+            <div class='px-4 py-5 sm:p-6'>
+              <h3 class='text-lg leading-6 font-medium text-gray-900 mb-4'>
+                System Health
+              </h3>
+              <div id='systemHealth' class='space-y-4'>
+                <div class='animate-pulse'>Loading system information...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals will be inserted here -->
+  <div id='modalContainer'></div>
+
+  <style>
+    .nav-tab {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #6b7280;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+    }
+    .nav-tab:hover {
+      color: #374151;
+      background-color: #f3f4f6;
+    }
+    .nav-tab.active {
+      color: #2563eb;
+      background-color: #eff6ff;
+    }
+    .tab-content {
+      display: block;
+    }
+    .tab-content.hidden {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+
+  <script>
+    import { adminAPI } from "../../utils/adminAPI";
+
+    class AdminDashboard {
+      currentTab: string = "dashboard";
+
+      constructor() {
+        this.init();
+      }
+
+      async init() {
+        this.setupEventListeners();
+        await this.loadAdminInfo();
+        await this.loadDashboardData();
+      }
+
+      setupEventListeners() {
+        // Tab navigation
+        document.querySelectorAll(".nav-tab").forEach((tab) => {
+          tab.addEventListener("click", (e) => {
+            const target = e.currentTarget as HTMLElement;
+            const tabName = target?.dataset?.tab;
+            if (tabName) {
+              this.switchTab(tabName);
+            }
+          });
+        });
+
+        // Other event listeners
+        const createUserBtn = document.getElementById("createUserBtn");
+        if (createUserBtn) {
+          createUserBtn.addEventListener("click", () => {
+            this.showCreateUserModal();
+          });
+        }
+
+        const applyFilters = document.getElementById("applyFilters");
+        if (applyFilters) {
+          applyFilters.addEventListener("click", () => {
+            this.loadUsers();
+          });
+        }
+      }
+
+      switchTab(tabName: string) {
+        // Update active tab
+        document.querySelectorAll(".nav-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+        const targetTab = document.querySelector(`[data-tab="${tabName}"]`);
+        if (targetTab) {
+          targetTab.classList.add("active");
+        }
+
+        // Show/hide content
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.add("hidden");
+          content.classList.remove("active");
+        });
+
+        const targetContent = document.getElementById(`${tabName}-tab`);
+        if (targetContent) {
+          targetContent.classList.remove("hidden");
+          targetContent.classList.add("active");
+        }
+
+        this.currentTab = tabName;
+
+        // Load data for the current tab
+        this.loadTabData(tabName);
+      }
+
+      async loadTabData(tabName: string) {
+        switch (tabName) {
+          case "dashboard":
+            await this.loadDashboardData();
+            break;
+          case "users":
+            await this.loadUsers();
+            break;
+          case "admins":
+            await this.loadAdmins();
+            break;
+          case "activity":
+            await this.loadActivityLogs();
+            break;
+          case "system":
+            await this.loadSystemHealth();
+            break;
+        }
+      }
+
+      async loadAdminInfo() {
+        try {
+          const profile = (await adminAPI.getProfile()) as any;
+          const adminInfoEl = document.getElementById("adminInfo");
+          if (adminInfoEl && profile) {
+            adminInfoEl.textContent = `${profile.first_name} ${profile.last_name} (${profile.admin_level})`;
+          }
+        } catch (error) {
+          console.error("Failed to load admin info:", error);
+        }
+      }
+
+      async loadDashboardData() {
+        try {
+          const data = (await adminAPI.getDashboard()) as any;
+
+          // Update stats
+          const totalUsersEl = document.getElementById("totalUsers");
+          const activeTrainersEl = document.getElementById("activeTrainers");
+          const messagesLast24hEl = document.getElementById("messagesLast24h");
+          const activeConversationsEl = document.getElementById(
+            "activeConversations"
+          );
+
+          if (totalUsersEl && data?.overview)
+            totalUsersEl.textContent = data.overview.totalUsers;
+          if (activeTrainersEl && data?.overview)
+            activeTrainersEl.textContent = data.overview.activeTrainers;
+          if (messagesLast24hEl && data?.overview)
+            messagesLast24hEl.textContent = data.overview.messagesLast24h;
+          if (activeConversationsEl && data?.overview)
+            activeConversationsEl.textContent =
+              data.overview.activeConversations;
+
+          // Update recent users
+          if (data?.recentUsers) {
+            const recentUsersHtml = data.recentUsers
+              .map(
+                (user: any) => `
+              <div class="flex items-center justify-between py-2">
+                <div class="flex items-center">
+                  <div class="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium">
+                    ${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">${user.first_name || ""} ${user.last_name || ""}</p>
+                    <p class="text-xs text-gray-500">${user.email || ""}</p>
+                  </div>
+                </div>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  user.role === "trainer"
+                    ? "bg-green-100 text-green-800"
+                    : user.role === "admin"
+                      ? "bg-red-100 text-red-800"
+                      : "bg-blue-100 text-blue-800"
+                }">
+                  ${user.role || ""}
+                </span>
+              </div>
+            `
+              )
+              .join("");
+
+            const recentUsersEl = document.getElementById("recentUsers");
+            if (recentUsersEl) {
+              recentUsersEl.innerHTML = recentUsersHtml;
+            }
+          }
+
+          // Update recent activity
+          if (data?.recentActivity) {
+            const recentActivityHtml = data.recentActivity
+              .map(
+                (activity: any) => `
+              <div class="flex items-start py-2">
+                <div class="flex-1">
+                  <p class="text-sm text-gray-900">
+                    <span class="font-medium">${activity.first_name || ""} ${activity.last_name || ""}</span>
+                    performed <span class="font-medium">${(activity.action || "").replace(/_/g, " ")}</span>
+                  </p>
+                  <p class="text-xs text-gray-500">${new Date(activity.created_at).toLocaleString()}</p>
+                </div>
+              </div>
+            `
+              )
+              .join("");
+
+            const recentActivityEl = document.getElementById("recentActivity");
+            if (recentActivityEl) {
+              recentActivityEl.innerHTML =
+                recentActivityHtml ||
+                '<p class="text-sm text-gray-500">No recent activity</p>';
+            }
+          }
+        } catch (error) {
+          console.error("Failed to load dashboard data:", error);
+        }
+      }
+
+      async loadUsers() {
+        try {
+          const searchEl = document.getElementById(
+            "userSearch"
+          ) as HTMLInputElement;
+          const roleEl = document.getElementById(
+            "roleFilter"
+          ) as HTMLSelectElement;
+          const statusEl = document.getElementById(
+            "statusFilter"
+          ) as HTMLSelectElement;
+
+          const search = searchEl?.value || "";
+          const role = roleEl?.value || "";
+          const isActive = statusEl?.value || "";
+
+          const params = new URLSearchParams();
+          if (search) params.append("search", search);
+          if (role) params.append("role", role);
+          if (isActive) params.append("isActive", isActive);
+
+          const data = (await adminAPI.getUsers(params.toString())) as any;
+
+          const usersHtml = `
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  ${(data?.users || [])
+                    .map(
+                      (user: any) => `
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div class="h-10 w-10 bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium">
+                            ${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}
+                          </div>
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">${user.first_name || ""} ${user.last_name || ""}</div>
+                            <div class="text-sm text-gray-500">${user.email || ""}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          user.role === "trainer"
+                            ? "bg-green-100 text-green-800"
+                            : user.role === "admin"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-blue-100 text-blue-800"
+                        }">
+                          ${user.role || ""}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          user.is_active
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }">
+                          ${user.is_active ? "Active" : "Inactive"}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${new Date(user.created_at).toLocaleDateString()}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="window.adminDashboard.editUser('${user.id}')" class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
+                        <button onclick="window.adminDashboard.deleteUser('${user.id}', '${user.email}')" class="text-red-600 hover:text-red-900">Delete</button>
+                      </td>
+                    </tr>
+                  `
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+
+          const usersTableEl = document.getElementById("usersTable");
+          if (usersTableEl) {
+            usersTableEl.innerHTML = usersHtml;
+          }
+        } catch (error) {
+          console.error("Failed to load users:", error);
+          const usersTableEl = document.getElementById("usersTable");
+          if (usersTableEl) {
+            usersTableEl.innerHTML =
+              '<p class="text-red-500">Failed to load users</p>';
+          }
+        }
+      }
+
+      async loadAdmins() {
+        try {
+          const admins = (await adminAPI.getAdmins()) as any[];
+
+          const adminsHtml = `
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Since</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Login</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  ${(admins || [])
+                    .map(
+                      (admin: any) => `
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div class="h-10 w-10 bg-red-300 rounded-full flex items-center justify-center text-sm font-medium">
+                            ${admin.first_name?.[0] || ""}${admin.last_name?.[0] || ""}
+                          </div>
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">${admin.first_name || ""} ${admin.last_name || ""}</div>
+                            <div class="text-sm text-gray-500">${admin.email || ""}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          admin.admin_level === "super_admin"
+                            ? "bg-red-100 text-red-800"
+                            : admin.admin_level === "admin"
+                              ? "bg-orange-100 text-orange-800"
+                              : "bg-yellow-100 text-yellow-800"
+                        }">
+                          ${admin.admin_level || ""}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${admin.admin_since ? new Date(admin.admin_since).toLocaleDateString() : "-"}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${admin.last_login_at ? new Date(admin.last_login_at).toLocaleDateString() : "Never"}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="window.adminDashboard.changeAdminLevel('${admin.id}')" class="text-blue-600 hover:text-blue-900 mr-3">Change Level</button>
+                        <button onclick="window.adminDashboard.revokeAdmin('${admin.id}', '${admin.email}')" class="text-red-600 hover:text-red-900">Revoke</button>
+                      </td>
+                    </tr>
+                  `
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+
+          const adminsTableEl = document.getElementById("adminsTable");
+          if (adminsTableEl) {
+            adminsTableEl.innerHTML = adminsHtml;
+          }
+        } catch (error) {
+          console.error("Failed to load admins:", error);
+        }
+      }
+
+      async loadActivityLogs() {
+        try {
+          const logs = (await adminAPI.getActivityLogs()) as any;
+
+          const logsHtml = `
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  ${(logs?.logs || [])
+                    .map(
+                      (log: any) => `
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${new Date(log.created_at).toLocaleString()}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${log.first_name || ""} ${log.last_name || ""}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${(log.action || "").replace(/_/g, " ")}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${log.target_type || "-"}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${log.ip_address || "-"}
+                      </td>
+                    </tr>
+                  `
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+
+          const activityLogsEl = document.getElementById("activityLogs");
+          if (activityLogsEl) {
+            activityLogsEl.innerHTML = logsHtml;
+          }
+        } catch (error) {
+          console.error("Failed to load activity logs:", error);
+        }
+      }
+
+      async loadSystemHealth() {
+        try {
+          const health = (await adminAPI.getSystemHealth()) as any;
+
+          const healthHtml = `
+            <div class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h4 class="text-sm font-medium text-gray-900 mb-2">Database Status</h4>
+                  <div class="flex items-center">
+                    <div class="h-3 w-3 rounded-full ${health?.database?.status === "healthy" ? "bg-green-400" : "bg-red-400"} mr-2"></div>
+                    <span class="text-sm text-gray-600">${health?.database?.status || "unknown"}</span>
+                  </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h4 class="text-sm font-medium text-gray-900 mb-2">Server Uptime</h4>
+                  <span class="text-sm text-gray-600">${Math.floor((health?.uptime || 0) / 3600)}h ${Math.floor(((health?.uptime || 0) % 3600) / 60)}m</span>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h4 class="text-sm font-medium text-gray-900 mb-2">Memory Usage</h4>
+                  <span class="text-sm text-gray-600">${Math.round((health?.memory?.used || 0) / 1024 / 1024)}MB / ${Math.round((health?.memory?.total || 0) / 1024 / 1024)}MB</span>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h4 class="text-sm font-medium text-gray-900 mb-2">Last Check</h4>
+                  <span class="text-sm text-gray-600">${new Date(health?.timestamp || Date.now()).toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const systemHealthEl = document.getElementById("systemHealth");
+          if (systemHealthEl) {
+            systemHealthEl.innerHTML = healthHtml;
+          }
+        } catch (error) {
+          console.error("Failed to load system health:", error);
+        }
+      }
+
+      // User management methods
+      showCreateUserModal() {
+        // Implementation for create user modal
+        console.log("Show create user modal");
+      }
+
+      editUser(userId: string) {
+        // Implementation for edit user
+        console.log("Edit user:", userId);
+      }
+
+      deleteUser(userId: string, email: string) {
+        if (confirm(`Are you sure you want to delete user ${email}?`)) {
+          // Implementation for delete user
+          console.log("Delete user:", userId);
+        }
+      }
+
+      changeAdminLevel(adminId: string) {
+        // Implementation for change admin level
+        console.log("Change admin level:", adminId);
+      }
+
+      revokeAdmin(adminId: string, email: string) {
+        if (
+          confirm(
+            `Are you sure you want to revoke admin privileges for ${email}?`
+          )
+        ) {
+          // Implementation for revoke admin
+          console.log("Revoke admin:", adminId);
+        }
+      }
+    }
+
+    // Initialize the dashboard
+    const adminDashboard = new AdminDashboard();
+
+    // Make it globally available for inline event handlers
+    (window as any).adminDashboard = adminDashboard;
+  </script>
+</BaseLayout>

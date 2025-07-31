@@ -1,0 +1,166 @@
+---
+const categories = [
+  {
+    id: 'personal-training',
+    name: 'Personal Training',
+    description: 'One-on-one coaching tailored to your fitness goals',
+    trainerCount: 2400,
+    icon: 'dumbbell',
+    color: 'blue',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'yoga',
+    name: 'Yoga',
+    description: 'Mindful movement and flexibility training',
+    trainerCount: 890,
+    icon: 'yoga',
+    color: 'purple',
+    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'nutrition',
+    name: 'Nutrition Coaching',
+    description: 'Expert guidance for healthy eating habits',
+    trainerCount: 650,
+    icon: 'apple',
+    color: 'green',
+    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'strength-training',
+    name: 'Strength Training',
+    description: 'Build muscle and increase your power',
+    trainerCount: 1200,
+    icon: 'muscle',
+    color: 'red',
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'pilates',
+    name: 'Pilates',
+    description: 'Core strength and body alignment',
+    trainerCount: 420,
+    icon: 'balance',
+    color: 'pink',
+    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'cardio',
+    name: 'Cardio Training',
+    description: 'Boost your endurance and heart health',
+    trainerCount: 780,
+    icon: 'heart',
+    color: 'orange',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop'
+  }
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {categories.map((category) => (
+    <a 
+      href={`/search?category=${category.id}`}
+      key={category.id}
+      class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:scale-105"
+    >
+      <!-- Background Image -->
+      <div class="relative h-48 overflow-hidden">
+        <img 
+          src={category.image}
+          alt={category.name}
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+        />
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-all duration-300"></div>
+        
+        <!-- Category Icon -->
+        <div class="absolute top-4 left-4">
+          <div class={`w-12 h-12 rounded-full ${
+            category.color === 'blue' ? 'bg-blue-500' :
+            category.color === 'purple' ? 'bg-purple-500' :
+            category.color === 'green' ? 'bg-green-500' :
+            category.color === 'red' ? 'bg-red-500' :
+            category.color === 'pink' ? 'bg-pink-500' :
+            'bg-orange-500'
+          } bg-opacity-90 flex items-center justify-center`}>
+            
+            {category.icon === 'dumbbell' && (
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
+              </svg>
+            )}
+            
+            {category.icon === 'yoga' && (
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83z"/>
+              </svg>
+            )}
+            
+            {category.icon === 'apple' && (
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            )}
+            
+            {category.icon === 'muscle' && (
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            )}
+            
+            {category.icon === 'balance' && (
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            )}
+            
+            {category.icon === 'heart' && (
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            )}
+          </div>
+        </div>
+
+        <!-- Trainer Count Badge -->
+        <div class="absolute top-4 right-4">
+          <span class="bg-white bg-opacity-90 text-gray-800 text-xs font-semibold px-2 py-1 rounded-full">
+            {category.trainerCount.toLocaleString()} trainers
+          </span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+          {category.name}
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          {category.description}
+        </p>
+        
+        <!-- View Category Link -->
+        <div class="mt-4 flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700">
+          Explore {category.name}
+          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </div>
+      </div>
+    </a>
+  ))}
+</div>
+
+<!-- View All Categories -->
+<div class="text-center mt-12">
+  <a 
+    href="/categories"
+    class="inline-flex items-center text-gray-600 hover:text-gray-900 font-medium"
+  >
+    View All Categories
+    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+  </a>
+</div> 

@@ -1,0 +1,506 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "For Trainers - Grow Your Fitness Business | FitProFinder";
+const description =
+  "Join FitProFinder and grow your fitness business. Connect with more clients, manage bookings easily, and increase your income.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <section class='hero-gradient text-white py-20'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center'>
+        <h1 class='text-4xl md:text-6xl font-bold mb-6'>
+          Grow Your
+          <span class='text-purple-300'>Fitness Business</span>
+        </h1>
+        <p
+          class='text-xl md:text-2xl text-purple-100 mb-8 max-w-3xl mx-auto leading-relaxed'
+        >
+          Join thousands of successful fitness professionals on FitProFinder.
+          Get more clients, streamline bookings, and build your reputation.
+        </p>
+        <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+          <a
+            href='/trainers/signup'
+            class='inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-purple-600 bg-white hover:bg-gray-50 transition-colors shadow-lg'
+          >
+            Join as a Trainer
+            <svg
+              class='ml-2 -mr-1 w-5 h-5'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+            >
+              <path
+                fill-rule='evenodd'
+                d='M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z'
+                clip-rule='evenodd'></path>
+            </svg>
+          </a>
+          <a
+            href='#how-it-works'
+            class='inline-flex items-center px-8 py-4 border border-white text-lg font-medium rounded-lg text-white hover:bg-purple-700 transition-colors'
+          >
+            Learn More
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class='py-16 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='grid grid-cols-2 md:grid-cols-4 gap-8 text-center'>
+        <div>
+          <div class='text-4xl font-bold text-purple-600 mb-2'>1,200+</div>
+          <div class='text-gray-600'>Active Trainers</div>
+        </div>
+        <div>
+          <div class='text-4xl font-bold text-purple-600 mb-2'>50K+</div>
+          <div class='text-gray-600'>Sessions Booked</div>
+        </div>
+        <div>
+          <div class='text-4xl font-bold text-purple-600 mb-2'>$2.3M+</div>
+          <div class='text-gray-600'>Trainer Earnings</div>
+        </div>
+        <div>
+          <div class='text-4xl font-bold text-purple-600 mb-2'>4.9★</div>
+          <div class='text-gray-600'>Average Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Why Trainers Choose FitProFinder
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Everything you need to grow and manage your fitness business
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        <div
+          class='bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow'
+        >
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-3'>More Clients</h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Connect with motivated clients actively searching for fitness
+            professionals in your area. Increase your client base and grow your
+            business.
+          </p>
+        </div>
+
+        <div
+          class='bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow'
+        >
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+            Easy Scheduling
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Let clients book sessions directly through your calendar. Automated
+            reminders and easy rescheduling save you time and reduce no-shows.
+          </p>
+        </div>
+
+        <div
+          class='bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow'
+        >
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+            Secure Payments
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Get paid instantly after each session with automatic payment
+            processing. No more chasing clients for payments or handling cash.
+          </p>
+        </div>
+
+        <div
+          class='bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow'
+        >
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M13 10V3L4 14h7v7l9-11h-7z'></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+            Flexible Options
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Offer both in-person and online sessions. Set your own rates,
+            availability, and service areas. You're in complete control.
+          </p>
+        </div>
+
+        <div
+          class='bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow'
+        >
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+            Build Your Reputation
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Collect reviews and ratings from satisfied clients. Build a strong
+            profile that attracts more high-quality clients to your business.
+          </p>
+        </div>
+
+        <div
+          class='bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow'
+        >
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+            Business Analytics
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Track your earnings, session history, and client progress. Make
+            data-driven decisions to grow your fitness business effectively.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works for Trainers -->
+  <section id='how-it-works' class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Get Started in Minutes
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Simple steps to launch your fitness business on FitProFinder
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-12'>
+        <!-- Step 1 -->
+        <div class='text-center'>
+          <div
+            class='bg-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6'
+          >
+            <span class='text-2xl font-bold text-purple-600'>1</span>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Create Your Profile
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Sign up and create a compelling profile showcasing your experience,
+            certifications, and specialties. Upload photos and describe your
+            training style.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class='text-center'>
+          <div
+            class='bg-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6'
+          >
+            <span class='text-2xl font-bold text-purple-600'>2</span>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Set Your Schedule
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Configure your availability, set your rates, and choose your service
+            areas. Decide whether to offer in-person, online, or both types of
+            sessions.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class='text-center'>
+          <div
+            class='bg-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6'
+          >
+            <span class='text-2xl font-bold text-purple-600'>3</span>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Start Training
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Once verified, you'll start receiving booking requests from clients.
+            Accept bookings, conduct sessions, and grow your business!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+        Simple, Transparent Pricing
+      </h2>
+      <p class='text-lg text-gray-600 mb-12'>
+        No monthly fees. You only pay when you earn.
+      </p>
+
+      <div class='bg-white rounded-2xl shadow-lg p-8 md:p-12'>
+        <div class='text-5xl font-bold text-purple-600 mb-4'>5%</div>
+        <div class='text-xl text-gray-900 mb-6'>Commission per booking</div>
+        <div class='text-gray-600 mb-8'>
+          We only succeed when you do. No hidden fees, no monthly charges, no
+          setup costs.
+        </div>
+
+        <ul class='text-left space-y-3 mb-8'>
+          <li class='flex items-center'>
+            <svg
+              class='w-5 h-5 text-green-500 mr-3'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M5 13l4 4L19 7'></path>
+            </svg>
+            Instant payment processing
+          </li>
+          <li class='flex items-center'>
+            <svg
+              class='w-5 h-5 text-green-500 mr-3'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M5 13l4 4L19 7'></path>
+            </svg>
+            Automated booking management
+          </li>
+          <li class='flex items-center'>
+            <svg
+              class='w-5 h-5 text-green-500 mr-3'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M5 13l4 4L19 7'></path>
+            </svg>
+            24/7 customer support
+          </li>
+          <li class='flex items-center'>
+            <svg
+              class='w-5 h-5 text-green-500 mr-3'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M5 13l4 4L19 7'></path>
+            </svg>
+            Marketing and promotion tools
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>What Trainers Say</h2>
+        <p class='text-lg text-gray-600'>
+          Real stories from successful FitProFinder trainers
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-8'>
+        <div class='bg-gray-50 rounded-lg p-8'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "FitProFinder helped me triple my client base in just 6 months. The
+            booking system is seamless, and I love getting paid instantly after
+            each session."
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1594381898411-846e7d193883?w=50&h=50&fit=crop&crop=face'
+              alt='Sarah J.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Sarah Johnson</div>
+              <div class='text-sm text-gray-600'>
+                Personal Trainer, Los Angeles
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-gray-50 rounded-lg p-8'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "The platform is incredibly user-friendly. I can manage my entire
+            business from one place - scheduling, payments, client
+            communication. It's a game-changer!"
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face'
+              alt='Mike C.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Mike Chen</div>
+              <div class='text-sm text-gray-600'>
+                Yoga Instructor, San Francisco
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-gray-50 rounded-lg p-8'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "I was hesitant about online training, but FitProFinder made it so
+            easy. Now I train clients worldwide and my income has doubled!"
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=50&h=50&fit=crop&crop=face'
+              alt='Jessica R.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Jessica Rodriguez</div>
+              <div class='text-sm text-gray-600'>Nutrition Coach, Austin</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class='py-16 bg-purple-600'>
+    <div class='max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <h2 class='text-3xl font-bold text-white mb-4'>
+        Ready to Grow Your Fitness Business?
+      </h2>
+      <p class='text-xl text-purple-100 mb-8'>
+        Join FitProFinder today and start connecting with clients who are ready
+        to achieve their fitness goals.
+      </p>
+      <a
+        href='/trainers/signup'
+        class='inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-purple-600 bg-white hover:bg-gray-50 transition-colors shadow-lg'
+      >
+        Get Started Now - It's Free
+        <svg class='ml-2 -mr-1 w-5 h-5' fill='currentColor' viewBox='0 0 20 20'>
+          <path
+            fill-rule='evenodd'
+            d='M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z'
+            clip-rule='evenodd'></path>
+        </svg>
+      </a>
+      <div class='text-sm text-purple-200 mt-4'>
+        No setup fees • No monthly charges • Start earning immediately
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,328 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Reviews & Testimonials - FitProFinder";
+const description =
+  "Read real reviews and success stories from clients and trainers using FitProFinder to achieve their fitness goals.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <div class='bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <h1 class='text-4xl md:text-5xl font-bold mb-6'>Success Stories</h1>
+      <p class='text-xl text-blue-100 max-w-3xl mx-auto'>
+        Real reviews from clients and trainers who are achieving amazing results
+        with FitProFinder.
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <section class='py-16 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='grid grid-cols-2 md:grid-cols-4 gap-8 text-center'>
+        <div>
+          <div class='text-4xl font-bold text-blue-600 mb-2'>4.9★</div>
+          <div class='text-gray-600'>Average Rating</div>
+        </div>
+        <div>
+          <div class='text-4xl font-bold text-blue-600 mb-2'>12,500+</div>
+          <div class='text-gray-600'>Happy Clients</div>
+        </div>
+        <div>
+          <div class='text-4xl font-bold text-blue-600 mb-2'>8,200+</div>
+          <div class='text-gray-600'>Five-Star Reviews</div>
+        </div>
+        <div>
+          <div class='text-4xl font-bold text-blue-600 mb-2'>98%</div>
+          <div class='text-gray-600'>Would Recommend</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Reviews Section -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          What Our Clients Say
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Real stories of transformation and success
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        <div class='bg-white rounded-lg p-8 shadow-sm'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "I lost 30 pounds in 4 months working with my trainer from
+            FitProFinder. The platform made it so easy to find someone who
+            understood my goals and schedule."
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face'
+              alt='Emily R.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Emily Rodriguez</div>
+              <div class='text-sm text-gray-600'>Weight Loss Success</div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-white rounded-lg p-8 shadow-sm'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "After my knee surgery, I thought I'd never get back in shape. My
+            trainer created a perfect rehabilitation program that got me
+            stronger than ever."
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face'
+              alt='Michael T.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Michael Thompson</div>
+              <div class='text-sm text-gray-600'>Injury Recovery</div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-white rounded-lg p-8 shadow-sm'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "As a busy mom, finding time to work out was impossible. Online
+            sessions with my trainer fit perfectly into my schedule. I'm in the
+            best shape of my life!"
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face'
+              alt='Sarah W.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Sarah Williams</div>
+              <div class='text-sm text-gray-600'>Busy Professional</div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-white rounded-lg p-8 shadow-sm'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "I was intimidated by gyms and didn't know where to start. My
+            trainer made me feel comfortable and confident. Now I actually look
+            forward to workouts!"
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face'
+              alt='David L.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>David Lee</div>
+              <div class='text-sm text-gray-600'>Fitness Beginner</div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-white rounded-lg p-8 shadow-sm'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "Training for my first marathon seemed impossible until I found my
+            running coach on FitProFinder. Not only did I finish, but I beat my
+            goal time!"
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop&crop=face'
+              alt='Lisa K.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Lisa Kim</div>
+              <div class='text-sm text-gray-600'>Marathon Runner</div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-white rounded-lg p-8 shadow-sm'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic'>
+            "At 55, I thought it was too late to start strength training. My
+            trainer proved me wrong! I'm stronger now than I was in my 30s."
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=50&h=50&fit=crop&crop=face'
+              alt='Robert M.'
+              class='w-12 h-12 rounded-full mr-4'
+            />
+            <div>
+              <div class='font-semibold text-gray-900'>Robert Martinez</div>
+              <div class='text-sm text-gray-600'>Active Senior</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trainer Success Stories -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Trainer Success Stories
+        </h2>
+        <p class='text-lg text-gray-600'>
+          How FitProFinder is helping fitness professionals grow their business
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 lg:grid-cols-2 gap-12'>
+        <div class='bg-gray-50 rounded-lg p-8'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic text-lg'>
+            "FitProFinder completely transformed my business. I went from
+            struggling to find clients to having a waiting list. The platform
+            handles everything - booking, payments, scheduling. I can focus on
+            what I love: helping people achieve their goals."
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1594381898411-846e7d193883?w=60&h=60&fit=crop&crop=face'
+              alt='Jessica M.'
+              class='w-16 h-16 rounded-full mr-6'
+            />
+            <div>
+              <div class='text-lg font-semibold text-gray-900'>
+                Jessica Martinez
+              </div>
+              <div class='text-blue-600 font-medium'>
+                Certified Personal Trainer
+              </div>
+              <div class='text-sm text-gray-600'>
+                3x client growth in 6 months
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='bg-gray-50 rounded-lg p-8'>
+          <div class='text-yellow-400 mb-4'>★★★★★</div>
+          <p class='text-gray-700 mb-6 italic text-lg'>
+            "As a new trainer, I was worried about building credibility.
+            FitProFinder's review system helped me build trust with clients
+            quickly. Now I'm booked solid and earning more than I ever imagined
+            possible."
+          </p>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face'
+              alt='Carlos R.'
+              class='w-16 h-16 rounded-full mr-6'
+            />
+            <div>
+              <div class='text-lg font-semibold text-gray-900'>
+                Carlos Rodriguez
+              </div>
+              <div class='text-blue-600 font-medium'>Fitness Coach</div>
+              <div class='text-sm text-gray-600'>New trainer success story</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Reviews -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Reviews by Category
+        </h2>
+        <p class='text-lg text-gray-600'>
+          See what clients say about different types of training
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-8'>
+        <div class='text-center'>
+          <div class='bg-white rounded-lg p-6 shadow-sm'>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              Personal Training
+            </h3>
+            <div class='text-3xl font-bold text-blue-600 mb-2'>4.9★</div>
+            <div class='text-gray-600 mb-4'>1,247 reviews</div>
+            <p class='text-sm text-gray-600'>
+              "Personalized attention and custom workouts that actually work"
+            </p>
+          </div>
+        </div>
+
+        <div class='text-center'>
+          <div class='bg-white rounded-lg p-6 shadow-sm'>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>Yoga</h3>
+            <div class='text-3xl font-bold text-blue-600 mb-2'>4.8★</div>
+            <div class='text-gray-600 mb-4'>892 reviews</div>
+            <p class='text-sm text-gray-600'>
+              "Peaceful, mindful sessions that improve both body and mind"
+            </p>
+          </div>
+        </div>
+
+        <div class='text-center'>
+          <div class='bg-white rounded-lg p-6 shadow-sm'>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              Nutrition Coaching
+            </h3>
+            <div class='text-3xl font-bold text-blue-600 mb-2'>4.9★</div>
+            <div class='text-gray-600 mb-4'>634 reviews</div>
+            <p class='text-sm text-gray-600'>
+              "Life-changing guidance on healthy eating habits"
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class='py-16 bg-blue-600'>
+    <div class='max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <h2 class='text-3xl font-bold text-white mb-4'>
+        Ready to Start Your Success Story?
+      </h2>
+      <p class='text-xl text-blue-100 mb-8'>
+        Join thousands of people already achieving their fitness goals with
+        FitProFinder.
+      </p>
+      <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+        <a
+          href='/search'
+          class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors'
+        >
+          Find Your Trainer
+        </a>
+        <a
+          href='/for-trainers'
+          class='inline-flex items-center px-8 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors'
+        >
+          Become a Trainer
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

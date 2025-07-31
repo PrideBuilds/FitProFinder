@@ -1,0 +1,232 @@
+---
+// Sample trainer listings data - in production this would come from an API
+const trainers = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    specialties: ["Personal Training", "Weight Loss", "Strength Training"],
+    location: "Los Angeles, CA",
+    distance: "2.3 miles",
+    rating: 4.9,
+    reviewCount: 124,
+    hourlyRate: 85,
+    responseTime: "Usually responds within 1 hour",
+    verified: true,
+    instantBooking: true,
+    experience: 8,
+    bio: "Certified personal trainer with 8+ years helping clients achieve their weight loss and strength goals. Specializing in sustainable lifestyle changes and progressive training methods.",
+    availability: "Available today",
+    image: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=400&h=400&fit=crop&crop=face"
+  },
+  {
+    id: 2,
+    name: "Mike Chen",
+    specialties: ["Strength Training", "Sports Performance", "Nutrition"],
+    location: "San Francisco, CA",
+    distance: "4.1 miles",
+    rating: 4.8,
+    reviewCount: 89,
+    hourlyRate: 95,
+    responseTime: "Usually responds within 2 hours",
+    verified: true,
+    instantBooking: false,
+    experience: 6,
+    bio: "Former college athlete turned certified trainer. I help clients build strength, improve athletic performance, and optimize nutrition for peak results.",
+    availability: "Available tomorrow",
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=face"
+  },
+  {
+    id: 3,
+    name: "Emma Rodriguez",
+    specialties: ["Yoga", "Mindfulness", "Flexibility"],
+    location: "Austin, TX",
+    distance: "1.8 miles",
+    rating: 5.0,
+    reviewCount: 156,
+    hourlyRate: 70,
+    responseTime: "Usually responds within 30 minutes",
+    verified: true,
+    instantBooking: true,
+    experience: 10,
+    bio: "RYT-500 certified yoga instructor with a holistic approach to wellness. Combining traditional yoga practices with modern mindfulness techniques.",
+    availability: "Available today",
+    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop&crop=face"
+  },
+  {
+    id: 4,
+    name: "David Thompson",
+    specialties: ["Nutrition Coaching", "Weight Loss", "Meal Planning"],
+    location: "Miami, FL",
+    distance: "3.2 miles",
+    rating: 4.7,
+    reviewCount: 78,
+    hourlyRate: 80,
+    responseTime: "Usually responds within 3 hours",
+    verified: true,
+    instantBooking: false,
+    experience: 5,
+    bio: "Registered dietitian and certified nutrition coach. I help clients develop sustainable eating habits and create personalized meal plans for lasting results.",
+    availability: "Available this week",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
+  },
+  {
+    id: 5,
+    name: "Lisa Park",
+    specialties: ["Pilates", "Injury Recovery", "Core Strength"],
+    location: "Seattle, WA", 
+    distance: "5.7 miles",
+    rating: 4.9,
+    reviewCount: 92,
+    hourlyRate: 90,
+    responseTime: "Usually responds within 1 hour",
+    verified: true,
+    instantBooking: true,
+    experience: 7,
+    bio: "Licensed physical therapist and certified Pilates instructor. Specializing in injury recovery, core strengthening, and movement rehabilitation.",
+    availability: "Available today",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
+  }
+];
+---
+
+<div class="space-y-6">
+  {trainers.map((trainer) => (
+    <div key={trainer.id} class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300 overflow-hidden">
+      <div class="p-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Trainer Image -->
+          <div class="relative flex-shrink-0">
+            <img 
+              src={trainer.image}
+              alt={trainer.name}
+              class="w-32 h-32 lg:w-40 lg:h-40 rounded-xl object-cover"
+            />
+            {trainer.verified && (
+              <div class="absolute -top-2 -right-2">
+                <span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center">
+                  <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  Verified
+                </span>
+              </div>
+            )}
+          </div>
+
+          <!-- Trainer Info -->
+          <div class="flex-1 min-w-0">
+            <!-- Header -->
+            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-3">
+              <div>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-1">
+                  {trainer.name}
+                </h3>
+                <div class="flex items-center gap-4 text-sm text-gray-600">
+                  <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {trainer.location} • {trainer.distance}
+                  </div>
+                  <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {trainer.experience} years experience
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-3 lg:mt-0 lg:text-right">
+                <div class="text-2xl font-bold text-gray-900">
+                  ${trainer.hourlyRate}
+                  <span class="text-base font-normal text-gray-600">/session</span>
+                </div>
+                <div class="flex items-center justify-start lg:justify-end mt-1">
+                  <div class="flex items-center">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <svg 
+                        key={i}
+                        class={`w-4 h-4 ${i < Math.floor(trainer.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                        fill="currentColor" 
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span class="text-sm text-gray-600 ml-1">
+                    {trainer.rating} ({trainer.reviewCount} reviews)
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Specialties -->
+            <div class="flex flex-wrap gap-2 mb-4">
+              {trainer.specialties.map((specialty) => (
+                <span key={specialty} class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
+                  {specialty}
+                </span>
+              ))}
+            </div>
+
+            <!-- Bio -->
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              {trainer.bio}
+            </p>
+
+            <!-- Availability & Response Time -->
+            <div class="flex flex-col sm:flex-row gap-4 mb-6 text-sm">
+              <div class="flex items-center">
+                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                <span class="text-gray-700">{trainer.availability}</span>
+              </div>
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <span class="text-gray-600">{trainer.responseTime}</span>
+              </div>
+              {trainer.instantBooking && (
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-1 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span class="text-green-700 font-medium">Instant Booking</span>
+                </div>
+              )}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a 
+                href={`/trainers/${trainer.id}`}
+                class="flex-1 bg-blue-600 text-white text-center py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+              >
+                View Profile
+              </a>
+              <a 
+                href={`/trainers/${trainer.id}/book`}
+                class="flex-1 border-2 border-blue-600 text-blue-600 text-center py-3 px-6 rounded-lg hover:bg-blue-50 transition-colors font-semibold"
+              >
+                Book Session
+              </a>
+              <button class="sm:w-auto border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </button>
+              <button class="sm:w-auto border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div> 

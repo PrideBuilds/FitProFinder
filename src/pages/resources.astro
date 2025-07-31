@@ -1,0 +1,489 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Fitness Resources - FitProFinder";
+const description =
+  "Free fitness resources, guides, and tips to help you achieve your health and wellness goals. Expert advice for all fitness levels.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <div class='bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <h1 class='text-4xl md:text-5xl font-bold mb-6'>Fitness Resources</h1>
+      <p class='text-xl text-blue-100 max-w-3xl mx-auto'>
+        Expert guides, tips, and resources to help you succeed on your fitness
+        journey.
+      </p>
+    </div>
+  </div>
+
+  <!-- Categories Section -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-8'>
+        <!-- Beginner Guides -->
+        <div class='bg-blue-50 rounded-lg p-8'>
+          <div class='text-blue-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Beginner Guides
+          </h3>
+          <p class='text-gray-600 mb-6'>
+            Everything you need to know to start your fitness journey safely and
+            effectively.
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>• Getting Started with Exercise</li>
+            <li>• Setting Realistic Fitness Goals</li>
+            <li>• Understanding Basic Nutrition</li>
+            <li>• Building Healthy Habits</li>
+          </ul>
+        </div>
+
+        <!-- Workout Plans -->
+        <div class='bg-green-50 rounded-lg p-8'>
+          <div class='text-green-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M13 10V3L4 14h7v7l9-11h-7z'></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Workout Plans
+          </h3>
+          <p class='text-gray-600 mb-6'>
+            Free workout routines for different fitness levels and goals.
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>• 30-Day Beginner Program</li>
+            <li>• Home Workout Routines</li>
+            <li>• Strength Training Plans</li>
+            <li>• Cardio Workout Ideas</li>
+          </ul>
+        </div>
+
+        <!-- Nutrition Tips -->
+        <div class='bg-purple-50 rounded-lg p-8'>
+          <div class='text-purple-600 mb-4'>
+            <svg
+              class='w-12 h-12'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Nutrition & Wellness
+          </h3>
+          <p class='text-gray-600 mb-6'>
+            Science-based nutrition advice to fuel your workouts and recovery.
+          </p>
+          <ul class='space-y-2 text-sm text-gray-600'>
+            <li>• Meal Planning Basics</li>
+            <li>• Pre & Post Workout Nutrition</li>
+            <li>• Healthy Recipe Ideas</li>
+            <li>• Hydration Guidelines</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Articles -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>Featured Articles</h2>
+        <p class='text-lg text-gray-600'>
+          Expert advice and insights from certified fitness professionals
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        <!-- Article 1 -->
+        <article class='bg-white rounded-lg shadow-sm overflow-hidden'>
+          <img
+            src='https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop'
+            alt='Home workouts'
+            class='w-full h-48 object-cover'
+          />
+          <div class='p-6'>
+            <div class='text-sm text-blue-600 font-medium mb-2'>
+              BEGINNER GUIDE
+            </div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+              10 Effective Home Workouts You Can Do Without Equipment
+            </h3>
+            <p class='text-gray-600 mb-4'>
+              Discover simple yet effective exercises that require no gym or
+              equipment. Perfect for beginners or anyone working out at home.
+            </p>
+            <div class='flex items-center text-sm text-gray-500'>
+              <span>5 min read</span>
+              <span class='mx-2'>•</span>
+              <span>Beginner</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 2 -->
+        <article class='bg-white rounded-lg shadow-sm overflow-hidden'>
+          <img
+            src='https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=200&fit=crop'
+            alt='Healthy meal prep'
+            class='w-full h-48 object-cover'
+          />
+          <div class='p-6'>
+            <div class='text-sm text-green-600 font-medium mb-2'>NUTRITION</div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+              Meal Prep 101: Planning Healthy Meals for the Week
+            </h3>
+            <p class='text-gray-600 mb-4'>
+              Learn how to plan, prepare, and store nutritious meals that
+              support your fitness goals and save you time.
+            </p>
+            <div class='flex items-center text-sm text-gray-500'>
+              <span>8 min read</span>
+              <span class='mx-2'>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 3 -->
+        <article class='bg-white rounded-lg shadow-sm overflow-hidden'>
+          <img
+            src='https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&h=200&fit=crop'
+            alt='Strength training'
+            class='w-full h-48 object-cover'
+          />
+          <div class='p-6'>
+            <div class='text-sm text-purple-600 font-medium mb-2'>TRAINING</div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+              Building Strength: A Complete Guide for Beginners
+            </h3>
+            <p class='text-gray-600 mb-4'>
+              Everything you need to know about strength training, from proper
+              form to progressive overload principles.
+            </p>
+            <div class='flex items-center text-sm text-gray-500'>
+              <span>12 min read</span>
+              <span class='mx-2'>•</span>
+              <span>Beginner</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 4 -->
+        <article class='bg-white rounded-lg shadow-sm overflow-hidden'>
+          <img
+            src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=200&fit=crop'
+            alt='Yoga benefits'
+            class='w-full h-48 object-cover'
+          />
+          <div class='p-6'>
+            <div class='text-sm text-blue-600 font-medium mb-2'>WELLNESS</div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+              The Mental Health Benefits of Regular Exercise
+            </h3>
+            <p class='text-gray-600 mb-4'>
+              Explore how physical activity impacts mental well-being and
+              discover exercises that boost mood and reduce stress.
+            </p>
+            <div class='flex items-center text-sm text-gray-500'>
+              <span>7 min read</span>
+              <span class='mx-2'>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 5 -->
+        <article class='bg-white rounded-lg shadow-sm overflow-hidden'>
+          <img
+            src='https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=200&fit=crop'
+            alt='Setting goals'
+            class='w-full h-48 object-cover'
+          />
+          <div class='p-6'>
+            <div class='text-sm text-green-600 font-medium mb-2'>
+              MOTIVATION
+            </div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+              Setting SMART Fitness Goals That Actually Work
+            </h3>
+            <p class='text-gray-600 mb-4'>
+              Learn how to set specific, measurable, achievable fitness goals
+              that keep you motivated and on track.
+            </p>
+            <div class='flex items-center text-sm text-gray-500'>
+              <span>6 min read</span>
+              <span class='mx-2'>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 6 -->
+        <article class='bg-white rounded-lg shadow-sm overflow-hidden'>
+          <img
+            src='https://images.unsplash.com/photo-1434596922112-19c563067271?w=400&h=200&fit=crop'
+            alt='Recovery tips'
+            class='w-full h-48 object-cover'
+          />
+          <div class='p-6'>
+            <div class='text-sm text-purple-600 font-medium mb-2'>RECOVERY</div>
+            <h3 class='text-xl font-semibold text-gray-900 mb-3'>
+              The Importance of Rest and Recovery in Your Fitness Routine
+            </h3>
+            <p class='text-gray-600 mb-4'>
+              Understand why rest days are crucial for progress and learn
+              effective recovery strategies.
+            </p>
+            <div class='flex items-center text-sm text-gray-500'>
+              <span>9 min read</span>
+              <span class='mx-2'>•</span>
+              <span>Intermediate</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Tips Section -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          Quick Fitness Tips
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Simple, actionable advice you can implement today
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-2 gap-8'>
+        <div class='space-y-6'>
+          <div class='flex items-start'>
+            <div class='bg-blue-100 rounded-full p-2 mr-4 mt-1'>
+              <svg
+                class='w-5 h-5 text-blue-600'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M13 10V3L4 14h7v7l9-11h-7z'></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+                Start Small
+              </h3>
+              <p class='text-gray-600'>
+                Begin with just 10-15 minutes of activity per day. Consistency
+                beats intensity when you're starting out.
+              </p>
+            </div>
+          </div>
+
+          <div class='flex items-start'>
+            <div class='bg-green-100 rounded-full p-2 mr-4 mt-1'>
+              <svg
+                class='w-5 h-5 text-green-600'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+                Listen to Your Body
+              </h3>
+              <p class='text-gray-600'>
+                Pay attention to how you feel. Some muscle soreness is normal,
+                but sharp pain means you should stop.
+              </p>
+            </div>
+          </div>
+
+          <div class='flex items-start'>
+            <div class='bg-purple-100 rounded-full p-2 mr-4 mt-1'>
+              <svg
+                class='w-5 h-5 text-purple-600'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+                Schedule Your Workouts
+              </h3>
+              <p class='text-gray-600'>
+                Treat exercise like any other important appointment. Schedule it
+                in your calendar and stick to it.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class='space-y-6'>
+          <div class='flex items-start'>
+            <div class='bg-yellow-100 rounded-full p-2 mr-4 mt-1'>
+              <svg
+                class='w-5 h-5 text-yellow-600'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+                Stay Hydrated
+              </h3>
+              <p class='text-gray-600'>
+                Drink water before, during, and after your workout. Aim for 8-10
+                glasses throughout the day.
+              </p>
+            </div>
+          </div>
+
+          <div class='flex items-start'>
+            <div class='bg-red-100 rounded-full p-2 mr-4 mt-1'>
+              <svg
+                class='w-5 h-5 text-red-600'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+                Track Your Progress
+              </h3>
+              <p class='text-gray-600'>
+                Keep a simple log of your workouts. Seeing your progress over
+                time is incredibly motivating.
+              </p>
+            </div>
+          </div>
+
+          <div class='flex items-start'>
+            <div class='bg-indigo-100 rounded-full p-2 mr-4 mt-1'>
+              <svg
+                class='w-5 h-5 text-indigo-600'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+                Find a Workout Buddy
+              </h3>
+              <p class='text-gray-600'>
+                Having someone to exercise with increases accountability and
+                makes workouts more enjoyable.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class='py-16 bg-blue-600'>
+    <div class='max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <h2 class='text-3xl font-bold text-white mb-4'>
+        Ready to Put This Knowledge into Action?
+      </h2>
+      <p class='text-xl text-blue-100 mb-8'>
+        Connect with a certified trainer who can create a personalized plan
+        based on your goals and fitness level.
+      </p>
+      <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+        <a
+          href='/search'
+          class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors'
+        >
+          Find Your Trainer
+        </a>
+        <a
+          href='/how-it-works'
+          class='inline-flex items-center px-8 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors'
+        >
+          Learn How It Works
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

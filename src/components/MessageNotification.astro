@@ -1,0 +1,130 @@
+---
+// Message notification component for navigation
+---
+
+<div id='messageNotification' class='relative'>
+  <a
+    href='/messages'
+    class='text-gray-700 hover:text-blue-600 font-medium flex items-center space-x-1 px-2 py-1 rounded-md hover:bg-gray-50 transition-colors min-w-0'
+  >
+    <span class='hidden lg:inline'>Messages</span>
+    <span class='lg:hidden'>
+      <svg
+        class='w-5 h-5'
+        fill='none'
+        stroke='currentColor'
+        viewBox='0 0 24 24'
+      >
+        <path
+          stroke-linecap='round'
+          stroke-linejoin='round'
+          stroke-width='2'
+          d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.013 8.013 0 01-2.6-.424l-3.4.424a1.001 1.001 0 01-1.018-1.018l.424-3.4A7.972 7.972 0 014 12C4 7.582 7.582 4 12 4s8 3.582 8 8z'
+        ></path>
+      </svg>
+    </span>
+    <div
+      id='unreadBadge'
+      class='hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center border-2 border-white'
+    >
+      <span id='unreadCount'>0</span>
+    </div>
+  </a>
+</div>
+
+<script>
+  import { messagingApi } from "../utils/api";
+  import socketService from "../utils/socket";
+
+  class MessageNotificationManager {
+    private unreadCount = 0;
+    private badgeElement: HTMLElement | null = null;
+    private countElement: HTMLElement | null = null;
+
+    constructor() {
+      this.badgeElement = document.getElementById("unreadBadge");
+      this.countElement = document.getElementById("unreadCount");
+      this.init();
+    }
+
+    private async init() {
+      // Check if user is authenticated
+      const userData = localStorage.getItem("fitpro_user");
+      if (!userData) return;
+
+      try {
+        const user = JSON.parse(userData);
+        if (!user.isAuthenticated) return;
+
+        // Load initial unread count
+        await this.loadUnreadCount();
+
+        // Set up socket listeners for real-time updates
+        this.setupSocketListeners();
+      } catch (error) {
+        console.error("Failed to initialize message notifications:", error);
+      }
+    }
+
+    private async loadUnreadCount() {
+      try {
+        const response = await messagingApi.getConversations(1, 50);
+        const conversations = response.conversations;
+
+        // Calculate total unread count
+        const userData = localStorage.getItem("fitpro_user");
+        if (!userData) return;
+
+        const user = JSON.parse(userData);
+        this.unreadCount = conversations.reduce((total, conversation) => {
+          return (
+            total +
+            (user.role === "client"
+              ? conversation.clientUnreadCount
+              : conversation.trainerUnreadCount)
+          );
+        }, 0);
+
+        this.updateBadge();
+      } catch (error) {
+        console.error("Failed to load unread count:", error);
+      }
+    }
+
+    private setupSocketListeners() {
+      socketService.on("new_message", (message) => {
+        // Only increment if message is not from current user
+        const userData = localStorage.getItem("fitpro_user");
+        if (userData) {
+          const user = JSON.parse(userData);
+          if (message.senderId !== user.id) {
+            this.unreadCount++;
+            this.updateBadge();
+          }
+        }
+      });
+
+      socketService.on("messages_read", (data) => {
+        // Decrease unread count when messages are read
+        this.loadUnreadCount(); // Reload to get accurate count
+      });
+    }
+
+    private updateBadge() {
+      if (!this.badgeElement || !this.countElement) return;
+
+      if (this.unreadCount > 0) {
+        this.badgeElement.classList.remove("hidden");
+        this.countElement.textContent =
+          this.unreadCount > 99 ? "99+" : this.unreadCount.toString();
+      } else {
+        this.badgeElement.classList.add("hidden");
+      }
+    }
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    new MessageNotificationManager();
+  });
+</script>

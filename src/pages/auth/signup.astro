@@ -1,0 +1,716 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "Sign Up - FitProFinder";
+const description =
+  "Create your FitProFinder account to start booking sessions with fitness professionals or grow your training business.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class='min-h-screen bg-gray-50 py-12 sm:px-6 lg:px-8'>
+    <div class='sm:mx-auto sm:w-full sm:max-w-2xl'>
+      <div class='text-center mb-8'>
+        <h1 class='text-3xl font-bold text-gray-900'>Join FitProFinder</h1>
+        <p class='mt-2 text-gray-600'>
+          Create your account and start your fitness journey
+        </p>
+      </div>
+
+      <!-- User Type Selection -->
+      <div class='bg-white shadow-lg rounded-lg p-6 mb-8'>
+        <h2 class='text-lg font-semibold text-gray-900 mb-4 text-center'>
+          I want to...
+        </h2>
+        <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <button
+            id='clientTypeBtn'
+            class='user-type-btn active p-6 border-2 border-blue-500 bg-blue-50 rounded-lg text-center hover:bg-blue-100 transition-colors'
+          >
+            <div class='text-4xl mb-2'>🧑‍💼</div>
+            <h3 class='font-semibold text-gray-900'>Find Trainers</h3>
+            <p class='text-sm text-gray-600 mt-1'>
+              Book sessions and achieve my fitness goals
+            </p>
+          </button>
+          <button
+            id='trainerTypeBtn'
+            class='user-type-btn p-6 border-2 border-gray-300 rounded-lg text-center hover:bg-gray-50 transition-colors'
+          >
+            <div class='text-4xl mb-2'>🏋️</div>
+            <h3 class='font-semibold text-gray-900'>Offer Training</h3>
+            <p class='text-sm text-gray-600 mt-1'>
+              Build my business and help clients
+            </p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Signup Forms -->
+      <div class='bg-white shadow-lg rounded-lg p-6'>
+        <!-- Client Signup Form -->
+        <div id='clientForm' class='signup-form'>
+          <h2 class='text-xl font-semibold text-gray-900 mb-6'>
+            Client Registration
+          </h2>
+          <form id='clientSignupForm' class='space-y-4'>
+            <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div>
+                <label
+                  for='client_firstName'
+                  class='block text-sm font-medium text-gray-700'
+                >
+                  First Name
+                </label>
+                <input
+                  type='text'
+                  id='client_firstName'
+                  name='firstName'
+                  required
+                  class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                  placeholder='John'
+                />
+              </div>
+              <div>
+                <label
+                  for='client_lastName'
+                  class='block text-sm font-medium text-gray-700'
+                >
+                  Last Name
+                </label>
+                <input
+                  type='text'
+                  id='client_lastName'
+                  name='lastName'
+                  required
+                  class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                  placeholder='Smith'
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for='client_email'
+                class='block text-sm font-medium text-gray-700'
+              >
+                Email Address
+              </label>
+              <input
+                type='email'
+                id='client_email'
+                name='email'
+                required
+                class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                placeholder='john@example.com'
+              />
+            </div>
+
+            <div>
+              <label
+                for='client_password'
+                class='block text-sm font-medium text-gray-700'
+              >
+                Password
+              </label>
+              <input
+                type='password'
+                id='client_password'
+                name='password'
+                required
+                minlength='6'
+                class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                placeholder='Minimum 6 characters'
+              />
+            </div>
+
+            <div>
+              <label
+                for='client_phone'
+                class='block text-sm font-medium text-gray-700'
+              >
+                Phone Number (Optional)
+              </label>
+              <input
+                type='tel'
+                id='client_phone'
+                name='phoneNumber'
+                class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                placeholder='(555) 123-4567'
+              />
+            </div>
+
+            <!-- Fitness Goals -->
+            <div>
+              <label class='block text-sm font-medium text-gray-700 mb-2'>
+                Fitness Goals (Optional)
+              </label>
+              <div class='grid grid-cols-2 gap-2'>
+                <label class='flex items-center'>
+                  <input
+                    type='checkbox'
+                    name='goals'
+                    value='weight-loss'
+                    class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                  />
+                  <span class='ml-2 text-sm'>Weight Loss</span>
+                </label>
+                <label class='flex items-center'>
+                  <input
+                    type='checkbox'
+                    name='goals'
+                    value='muscle-gain'
+                    class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                  />
+                  <span class='ml-2 text-sm'>Muscle Gain</span>
+                </label>
+                <label class='flex items-center'>
+                  <input
+                    type='checkbox'
+                    name='goals'
+                    value='endurance'
+                    class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                  />
+                  <span class='ml-2 text-sm'>Endurance</span>
+                </label>
+                <label class='flex items-center'>
+                  <input
+                    type='checkbox'
+                    name='goals'
+                    value='flexibility'
+                    class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                  />
+                  <span class='ml-2 text-sm'>Flexibility</span>
+                </label>
+              </div>
+            </div>
+
+            <button
+              type='submit'
+              id='clientSubmitBtn'
+              class='w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors font-medium'
+            >
+              Create Client Account
+            </button>
+          </form>
+        </div>
+
+        <!-- Trainer Signup Form -->
+        <div id='trainerForm' class='signup-form hidden'>
+          <h2 class='text-xl font-semibold text-gray-900 mb-6'>
+            Trainer Registration
+          </h2>
+          <form id='trainerSignupForm' class='space-y-4'>
+            <!-- Personal Information -->
+            <div class='border-b border-gray-200 pb-4 mb-4'>
+              <h3 class='text-lg font-medium text-gray-900 mb-3'>
+                Personal Information
+              </h3>
+              <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                <div>
+                  <label
+                    for='trainer_firstName'
+                    class='block text-sm font-medium text-gray-700'
+                  >
+                    First Name
+                  </label>
+                  <input
+                    type='text'
+                    id='trainer_firstName'
+                    name='firstName'
+                    required
+                    class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='Sarah'
+                  />
+                </div>
+                <div>
+                  <label
+                    for='trainer_lastName'
+                    class='block text-sm font-medium text-gray-700'
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    type='text'
+                    id='trainer_lastName'
+                    name='lastName'
+                    required
+                    class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='Johnson'
+                  />
+                </div>
+              </div>
+
+              <div class='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
+                <div>
+                  <label
+                    for='trainer_email'
+                    class='block text-sm font-medium text-gray-700'
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    type='email'
+                    id='trainer_email'
+                    name='email'
+                    required
+                    class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='sarah@example.com'
+                  />
+                </div>
+                <div>
+                  <label
+                    for='trainer_phone'
+                    class='block text-sm font-medium text-gray-700'
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    type='tel'
+                    id='trainer_phone'
+                    name='phoneNumber'
+                    required
+                    class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='(555) 123-4567'
+                  />
+                </div>
+              </div>
+
+              <div class='mt-4'>
+                <label
+                  for='trainer_password'
+                  class='block text-sm font-medium text-gray-700'
+                >
+                  Password
+                </label>
+                <input
+                  type='password'
+                  id='trainer_password'
+                  name='password'
+                  required
+                  minlength='6'
+                  class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                  placeholder='Minimum 6 characters'
+                />
+              </div>
+            </div>
+
+            <!-- Business Information -->
+            <div class='border-b border-gray-200 pb-4 mb-4'>
+              <h3 class='text-lg font-medium text-gray-900 mb-3'>
+                Business Information
+              </h3>
+
+              <div>
+                <label
+                  for='businessName'
+                  class='block text-sm font-medium text-gray-700'
+                >
+                  Business Name (Optional)
+                </label>
+                <input
+                  type='text'
+                  id='businessName'
+                  name='businessName'
+                  class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                  placeholder='FitWise Personal Training'
+                />
+              </div>
+
+              <div class='mt-4'>
+                <label
+                  for='experienceYears'
+                  class='block text-sm font-medium text-gray-700'
+                >
+                  Years of Experience
+                </label>
+                <select
+                  id='experienceYears'
+                  name='experienceYears'
+                  required
+                  class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                >
+                  <option value=''>Select experience level</option>
+                  <option value='1'>Less than 1 year</option>
+                  <option value='2'>1-2 years</option>
+                  <option value='3'>3-5 years</option>
+                  <option value='5'>5-10 years</option>
+                  <option value='10'>10+ years</option>
+                </select>
+              </div>
+
+              <div class='mt-4'>
+                <label class='block text-sm font-medium text-gray-700 mb-2'>
+                  Specialties (Select all that apply)
+                </label>
+                <div class='grid grid-cols-2 md:grid-cols-3 gap-2'>
+                  <label class='flex items-center'>
+                    <input
+                      type='checkbox'
+                      name='specialties'
+                      value='Personal Training'
+                      class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                    />
+                    <span class='ml-2 text-sm'>Personal Training</span>
+                  </label>
+                  <label class='flex items-center'>
+                    <input
+                      type='checkbox'
+                      name='specialties'
+                      value='Yoga'
+                      class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                    />
+                    <span class='ml-2 text-sm'>Yoga</span>
+                  </label>
+                  <label class='flex items-center'>
+                    <input
+                      type='checkbox'
+                      name='specialties'
+                      value='Nutrition Coaching'
+                      class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                    />
+                    <span class='ml-2 text-sm'>Nutrition</span>
+                  </label>
+                  <label class='flex items-center'>
+                    <input
+                      type='checkbox'
+                      name='specialties'
+                      value='Strength Training'
+                      class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                    />
+                    <span class='ml-2 text-sm'>Strength Training</span>
+                  </label>
+                  <label class='flex items-center'>
+                    <input
+                      type='checkbox'
+                      name='specialties'
+                      value='HIIT'
+                      class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                    />
+                    <span class='ml-2 text-sm'>HIIT</span>
+                  </label>
+                  <label class='flex items-center'>
+                    <input
+                      type='checkbox'
+                      name='specialties'
+                      value='Cardio Training'
+                      class='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                    />
+                    <span class='ml-2 text-sm'>Cardio</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class='mt-4'>
+                <label
+                  for='bio'
+                  class='block text-sm font-medium text-gray-700'
+                >
+                  Professional Bio
+                </label>
+                <textarea
+                  id='bio'
+                  name='bio'
+                  rows='3'
+                  required
+                  class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                  placeholder='Describe your experience, training philosophy, and what makes you unique...'
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div>
+              <h3 class='text-lg font-medium text-gray-900 mb-3'>Location</h3>
+              <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                <div>
+                  <label
+                    for='city'
+                    class='block text-sm font-medium text-gray-700'
+                  >
+                    City
+                  </label>
+                  <input
+                    type='text'
+                    id='city'
+                    name='city'
+                    required
+                    class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='Los Angeles'
+                  />
+                </div>
+                <div>
+                  <label
+                    for='state'
+                    class='block text-sm font-medium text-gray-700'
+                  >
+                    State
+                  </label>
+                  <input
+                    type='text'
+                    id='state'
+                    name='state'
+                    required
+                    class='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='CA'
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              type='submit'
+              id='trainerSubmitBtn'
+              class='w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors font-medium'
+            >
+              Create Trainer Account
+            </button>
+          </form>
+        </div>
+
+        <!-- Error Message -->
+        <div id='errorMessage' class='hidden mt-4'>
+          <div
+            class='bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm'
+          >
+            <span id='errorText'></span>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id='successMessage' class='hidden mt-4'>
+          <div
+            class='bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-md text-sm'
+          >
+            <span id='successText'></span>
+          </div>
+        </div>
+
+        <!-- Sign in link -->
+        <div class='mt-6 text-center'>
+          <p class='text-sm text-gray-600'>
+            Already have an account?
+            <a
+              href='/auth/login'
+              class='font-medium text-blue-600 hover:text-blue-500'
+            >
+              Sign in here
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Import the auth utilities
+  const { authApi } = await import("../../utils/api.js");
+
+  // DOM elements
+  const clientTypeBtn = document.getElementById("clientTypeBtn");
+  const trainerTypeBtn = document.getElementById("trainerTypeBtn");
+  const clientForm = document.getElementById("clientForm");
+  const trainerForm = document.getElementById("trainerForm");
+  const clientSignupForm = document.getElementById("clientSignupForm");
+  const trainerSignupForm = document.getElementById("trainerSignupForm");
+  const errorMessage = document.getElementById("errorMessage");
+  const successMessage = document.getElementById("successMessage");
+  const errorText = document.getElementById("errorText");
+  const successText = document.getElementById("successText");
+
+  let selectedUserType = "client";
+
+  // User type selection
+  function selectUserType(type) {
+    selectedUserType = type;
+
+    // Update button styles
+    document.querySelectorAll(".user-type-btn").forEach((btn) => {
+      btn.classList.remove("active", "border-blue-500", "bg-blue-50");
+      btn.classList.add("border-gray-300");
+    });
+
+    if (type === "client") {
+      clientTypeBtn.classList.add("active", "border-blue-500", "bg-blue-50");
+      clientTypeBtn.classList.remove("border-gray-300");
+      clientForm.classList.remove("hidden");
+      trainerForm.classList.add("hidden");
+    } else {
+      trainerTypeBtn.classList.add("active", "border-blue-500", "bg-blue-50");
+      trainerTypeBtn.classList.remove("border-gray-300");
+      trainerForm.classList.remove("hidden");
+      clientForm.classList.add("hidden");
+    }
+  }
+
+  // Event listeners for user type selection
+  clientTypeBtn?.addEventListener("click", () => selectUserType("client"));
+  trainerTypeBtn?.addEventListener("click", () => selectUserType("trainer"));
+
+  // Utility functions
+  function showError(message) {
+    if (errorText) errorText.textContent = message;
+    errorMessage?.classList.remove("hidden");
+    successMessage?.classList.add("hidden");
+  }
+
+  function showSuccess(message) {
+    if (successText) successText.textContent = message;
+    successMessage?.classList.remove("hidden");
+    errorMessage?.classList.add("hidden");
+  }
+
+  function hideMessages() {
+    errorMessage?.classList.add("hidden");
+    successMessage?.classList.add("hidden");
+  }
+
+  function setButtonLoading(
+    buttonId,
+    loading,
+    loadingText = "Creating Account...",
+    normalText = "Create Account"
+  ) {
+    const button = document.getElementById(buttonId);
+    if (button) {
+      button.disabled = loading;
+      button.textContent = loading ? loadingText : normalText;
+    }
+  }
+
+  function redirectToDashboard(userRole) {
+    if (userRole === "trainer") {
+      window.location.href = "/dashboard/trainer";
+    } else {
+      window.location.href = "/dashboard/client";
+    }
+  }
+
+  // Client signup
+  clientSignupForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideMessages();
+    setButtonLoading("clientSubmitBtn", true);
+
+    const formData = new FormData(clientSignupForm);
+
+    try {
+      const response = await authApi.register({
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+        firstName: formData.get("firstName") as string,
+        lastName: formData.get("lastName") as string,
+        role: "client",
+        phoneNumber: (formData.get("phoneNumber") as string) || undefined,
+      });
+
+      // Store user data in localStorage (for compatibility with existing code)
+      localStorage.setItem(
+        "fitpro_user",
+        JSON.stringify({
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
+          role: response.user.role,
+          profileImageUrl: response.user.profileImageUrl,
+          isAuthenticated: true,
+          signupDate: new Date().toISOString(),
+        })
+      );
+
+      showSuccess(
+        "Account created successfully! Redirecting to your dashboard..."
+      );
+
+      setTimeout(() => {
+        redirectToDashboard(response.user.role);
+      }, 2000);
+    } catch (error) {
+      console.error("Registration error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Registration failed. Please try again.";
+      showError(errorMessage);
+      setButtonLoading("clientSubmitBtn", false, "", "Create Client Account");
+    }
+  });
+
+  // Trainer signup
+  trainerSignupForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideMessages();
+    setButtonLoading("trainerSubmitBtn", true);
+
+    const formData = new FormData(trainerSignupForm);
+    const specialties = Array.from(formData.getAll("specialties"));
+
+    if (specialties.length === 0) {
+      showError("Please select at least one specialty.");
+      setButtonLoading("trainerSubmitBtn", false, "", "Create Trainer Account");
+      return;
+    }
+
+    try {
+      const response = await authApi.register({
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+        firstName: formData.get("firstName") as string,
+        lastName: formData.get("lastName") as string,
+        role: "trainer",
+        phoneNumber: (formData.get("phoneNumber") as string) || undefined,
+      });
+
+      // Store user data in localStorage (for compatibility with existing code)
+      localStorage.setItem(
+        "fitpro_user",
+        JSON.stringify({
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
+          role: response.user.role,
+          profileImageUrl: response.user.profileImageUrl,
+          isAuthenticated: true,
+          signupDate: new Date().toISOString(),
+        })
+      );
+
+      showSuccess(
+        "Trainer account created successfully! Redirecting to your dashboard..."
+      );
+
+      setTimeout(() => {
+        redirectToDashboard(response.user.role);
+      }, 2000);
+    } catch (error) {
+      console.error("Registration error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Registration failed. Please try again.";
+      showError(errorMessage);
+      setButtonLoading("trainerSubmitBtn", false, "", "Create Trainer Account");
+    }
+  });
+
+  // Check if already logged in
+  const existingUser = localStorage.getItem("fitpro_user");
+  if (existingUser) {
+    const userData = JSON.parse(existingUser);
+    if (userData.isAuthenticated) {
+      redirectToDashboard(userData.role);
+    }
+  }
+</script>
+
+<style>
+  .user-type-btn.active {
+    transform: scale(1.02);
+  }
+
+  .signup-form {
+    transition: opacity 0.3s ease-in-out;
+  }
+</style>

@@ -1,0 +1,1596 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// Get the trainer ID from the URL params
+const { id } = Astro.params;
+
+const title = `Trainer Profile - FitProFinder`;
+const description = "View detailed trainer profile and book sessions.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class='min-h-screen bg-gray-50'>
+    <!-- Loading State -->
+    <div id='loadingState' class='max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
+      <div class='bg-white rounded-lg shadow-sm p-8 text-center'>
+        <div
+          class='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4'
+        >
+        </div>
+        <p class='text-gray-600'>Loading trainer profile...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div
+      id='errorState'
+      class='hidden max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16'
+    >
+      <div class='bg-white rounded-lg shadow-sm p-8 text-center'>
+        <div class='mb-6'>
+          <div
+            class='w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4'
+          >
+            <svg
+              class='w-10 h-10 text-red-600'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z'
+              ></path>
+            </svg>
+          </div>
+          <h1 class='text-3xl font-bold text-gray-900 mb-2'>
+            Trainer Not Found
+          </h1>
+          <p class='text-gray-600'>
+            The trainer profile you're looking for doesn't exist or has been
+            removed.
+          </p>
+        </div>
+
+        <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+          <a
+            href='/search'
+            class='px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium'
+          >
+            Find Trainers
+          </a>
+          <a
+            href='/'
+            class='px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium'
+          >
+            Return Home
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div id='profileContent' class='hidden'>
+      <!-- Profile Header -->
+      <div class='bg-white shadow-sm'>
+        <div class='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+          <div class='flex flex-col md:flex-row gap-8'>
+            <!-- Profile Image -->
+            <div class='flex-shrink-0'>
+              <img
+                id='trainerImage'
+                src=''
+                alt=''
+                class='w-48 h-48 rounded-2xl object-cover shadow-lg'
+              />
+            </div>
+
+            <!-- Basic Info -->
+            <div class='flex-1'>
+              <div class='flex items-start justify-between'>
+                <div>
+                  <div class='flex items-center gap-3 mb-2'>
+                    <h1
+                      id='trainerName'
+                      class='text-3xl font-bold text-gray-900'
+                    >
+                    </h1>
+                    <span
+                      id='verifiedBadge'
+                      class='hidden inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full'
+                    >
+                      ✓ Verified
+                    </span>
+                  </div>
+                  <p id='businessName' class='text-lg text-gray-600 mb-3'></p>
+                  <div class='flex items-center gap-4 mb-4'>
+                    <div class='flex items-center'>
+                      <span class='text-yellow-400 text-lg'>★</span>
+                      <span
+                        id='rating'
+                        class='text-lg font-semibold text-gray-900 ml-1'></span>
+                      <span id='reviewCount' class='text-gray-600 ml-1'></span>
+                    </div>
+                    <div id='location' class='text-gray-600'></div>
+                    <div id='experience' class='text-gray-600'></div>
+                  </div>
+
+                  <!-- Specialties -->
+                  <div
+                    id='specialtiesContainer'
+                    class='flex flex-wrap gap-2 mb-6'
+                  >
+                    <!-- Specialty tags will be inserted here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class='flex flex-col sm:flex-row gap-3'>
+                <button
+                  onclick='bookSession()'
+                  class='flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold'
+                >
+                  📅 Book Session
+                </button>
+                <button
+                  onclick='sendMessage()'
+                  class='flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-50 transition-colors font-semibold'
+                >
+                  💬 Send Message
+                </button>
+                <button
+                  onclick='toggleLike()'
+                  id='likeBtn'
+                  class='border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors'
+                >
+                  ❤️
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+        <div class='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+          <!-- Left Column -->
+          <div class='lg:col-span-2 space-y-8'>
+            <!-- About Section -->
+            <div class='bg-white rounded-xl shadow-sm p-6'>
+              <h2 class='text-2xl font-bold text-gray-900 mb-4'>About</h2>
+              <p id='trainerBio' class='text-gray-700 leading-relaxed mb-6'></p>
+
+              <!-- Specialties Details -->
+              <div id='specialtiesDetails' class='hidden'>
+                <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+                  Specialties & Experience
+                </h3>
+                <div id='specialtiesList' class='space-y-3'>
+                  <!-- Detailed specialties will be inserted here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact & Availability -->
+            <div class='bg-white rounded-xl shadow-sm p-6'>
+              <h2 class='text-2xl font-bold text-gray-900 mb-6'>
+                Training Options & Availability
+              </h2>
+
+              <!-- Training Options -->
+              <div class='mb-6'>
+                <h3 class='text-lg font-semibold text-gray-900 mb-3'>
+                  Session Types
+                </h3>
+                <div id='sessionTypes' class='flex gap-4'>
+                  <!-- Session type badges will be inserted here -->
+                </div>
+              </div>
+
+              <!-- Availability Status -->
+              <div class='p-4 rounded-lg' id='availabilityStatus'>
+                <!-- Availability info will be inserted here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div class='space-y-6'>
+            <!-- Quick Book Widget -->
+            <div class='bg-white rounded-xl shadow-sm p-6'>
+              <h3 class='text-lg font-semibold text-gray-900 mb-4'>
+                Book a Session
+              </h3>
+              <div class='space-y-3'>
+                <button
+                  onclick='viewAvailability()'
+                  class='w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors'
+                >
+                  View Availability
+                </button>
+                <p
+                  id='acceptingClients'
+                  class='text-sm text-gray-600 text-center'
+                >
+                  <!-- Availability status will be inserted here -->
+                </p>
+              </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class='bg-white rounded-xl shadow-sm p-6'>
+              <h3 class='text-lg font-semibold text-gray-900 mb-4'>
+                Contact & Location
+              </h3>
+              <div id='contactInfo' class='space-y-3'>
+                <!-- Contact details will be inserted here -->
+              </div>
+            </div>
+
+            <!-- Social Links -->
+            <div
+              id='socialLinksCard'
+              class='hidden bg-white rounded-xl shadow-sm p-6'
+            >
+              <h3 class='text-lg font-semibold text-gray-900 mb-4'>Follow</h3>
+              <div id='socialLinks' class='space-y-2'>
+                <!-- Social links will be inserted here -->
+              </div>
+            </div>
+
+            <!-- Back to Search -->
+            <div class='bg-white rounded-xl shadow-sm p-6'>
+              <h3 class='text-lg font-semibold text-gray-900 mb-4'>
+                Find More Trainers
+              </h3>
+              <div class='space-y-2'>
+                <a
+                  href='/search'
+                  class='block w-full text-center py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors'
+                >
+                  ← Back to Search
+                </a>
+                <a
+                  id='moreTrainersLink'
+                  href='/search'
+                  class='block w-full text-center py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm'
+                >
+                  More trainers nearby
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div
+      id='bookingModal'
+      class='fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4'
+    >
+      <div
+        class='bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden'
+      >
+        <!-- Modal Header -->
+        <div
+          class='bg-blue-600 text-white p-6 flex justify-between items-center'
+        >
+          <h2 class='text-2xl font-bold'>Book Your Session</h2>
+          <button
+            onclick='bookingModal.close()'
+            class='text-white hover:text-gray-200 text-3xl font-light'>×</button
+          >
+        </div>
+
+        <!-- Modal Content -->
+        <div class='max-h-[70vh] overflow-y-auto'>
+          <!-- Step 1: Session Type Selection -->
+          <div id='bookingStep1' class='p-6 border-b'>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              1. Choose Session Type
+            </h3>
+            <div
+              id='sessionTypesList'
+              class='grid grid-cols-1 md:grid-cols-2 gap-4'
+            >
+              <!-- Session types will be loaded here -->
+            </div>
+          </div>
+
+          <!-- Step 2: Date & Time Selection -->
+          <div id='bookingStep2' class='p-6 border-b hidden'>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              2. Select Date & Time
+            </h3>
+
+            <!-- Date Selection -->
+            <div class='mb-6'>
+              <label class='block text-sm font-medium text-gray-700 mb-2'
+                >Select Date</label
+              >
+              <input
+                type='date'
+                id='sessionDate'
+                class='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                min=''
+              />
+            </div>
+
+            <!-- Time Slots -->
+            <div>
+              <label class='block text-sm font-medium text-gray-700 mb-2'
+                >Available Times</label
+              >
+              <div
+                id='timeSlots'
+                class='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2'
+              >
+                <!-- Time slots will be loaded here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Session Details -->
+          <div id='bookingStep3' class='p-6 border-b hidden'>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              3. Session Details
+            </h3>
+
+            <!-- Session Format -->
+            <div class='mb-4'>
+              <label class='block text-sm font-medium text-gray-700 mb-2'
+                >Session Format</label
+              >
+              <div id='formatOptions' class='flex gap-4'>
+                <!-- Format options will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Location (for in-person) -->
+            <div id='locationSection' class='mb-4 hidden'>
+              <label class='block text-sm font-medium text-gray-700 mb-2'
+                >Location Details</label
+              >
+              <input
+                type='text'
+                id='locationDetails'
+                placeholder='Specific location or address'
+                class='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+              />
+            </div>
+
+            <!-- Notes -->
+            <div class='mb-4'>
+              <label class='block text-sm font-medium text-gray-700 mb-2'
+                >Notes for Trainer (Optional)</label
+              >
+              <textarea
+                id='clientNotes'
+                placeholder='Any specific goals, requirements, or questions for your trainer...'
+                rows='3'
+                class='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Step 4: Review & Payment -->
+          <div id='bookingStep4' class='p-6 hidden'>
+            <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+              4. Review & Payment
+            </h3>
+
+            <!-- Booking Summary -->
+            <div class='bg-gray-50 rounded-lg p-4 mb-6'>
+              <h4 class='font-semibold text-gray-900 mb-3'>Booking Summary</h4>
+              <div class='space-y-2 text-sm'>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Trainer:</span>
+                  <span id='summaryTrainer' class='font-medium'></span>
+                </div>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Session Type:</span>
+                  <span id='summarySessionType' class='font-medium'></span>
+                </div>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Date & Time:</span>
+                  <span id='summaryDateTime' class='font-medium'></span>
+                </div>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Duration:</span>
+                  <span id='summaryDuration' class='font-medium'></span>
+                </div>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Format:</span>
+                  <span id='summaryFormat' class='font-medium'></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Breakdown -->
+            <div class='bg-blue-50 rounded-lg p-4 mb-6'>
+              <h4 class='font-semibold text-gray-900 mb-3'>
+                Payment Breakdown
+              </h4>
+              <div class='space-y-2 text-sm'>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Session Price:</span>
+                  <span id='paymentSessionPrice' class='font-medium'></span>
+                </div>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Processing Fee:</span>
+                  <span id='paymentStripeFee' class='font-medium text-gray-500'
+                  ></span>
+                </div>
+                <div class='flex justify-between'>
+                  <span class='text-gray-600'>Platform Fee (15%):</span>
+                  <span
+                    id='paymentPlatformFee'
+                    class='font-medium text-gray-500'></span>
+                </div>
+                <div class='border-t pt-2 mt-2'>
+                  <div class='flex justify-between text-lg font-semibold'>
+                    <span>Total to Pay:</span>
+                    <span id='paymentTotal' class='text-blue-600'></span>
+                  </div>
+                </div>
+                <div class='text-xs text-gray-500 mt-2'>
+                  <p>• Processing fee: 2.9% + $0.30</p>
+                  <p>
+                    • Platform fee supports secure booking and customer service
+                  </p>
+                  <p>• Trainer receives: $<span id='trainerAmount'></span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class='mb-6'>
+              <h4 class='font-semibold text-gray-900 mb-3'>Payment Method</h4>
+
+              <!-- Saved Payment Methods -->
+              <div id='savedPaymentMethods' class='mb-4 hidden'>
+                <h5 class='text-sm font-medium text-gray-700 mb-2'>
+                  Saved Cards
+                </h5>
+                <div id='savedCardsList' class='space-y-2'></div>
+                <button
+                  id='addNewCardBtn'
+                  class='text-sm text-blue-600 hover:text-blue-700 mt-2'
+                  onclick='bookingModal.showNewCardForm()'
+                >
+                  + Add new card
+                </button>
+              </div>
+
+              <!-- New Card Form -->
+              <div id='newCardForm'>
+                <div class='bg-white border border-gray-200 rounded-lg p-4'>
+                  <!-- Stripe Elements will be mounted here -->
+                  <div id='card-element' class='mb-4'>
+                    <!-- Stripe card element will be inserted here -->
+                  </div>
+                  <div id='card-errors' class='text-red-600 text-sm hidden'>
+                  </div>
+
+                  <!-- Save card option -->
+                  <label class='flex items-center gap-2 mt-3'>
+                    <input type='checkbox' id='saveCard' class='rounded' />
+                    <span class='text-sm text-gray-600'
+                      >Save this card for future bookings</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms -->
+            <div class='mb-6'>
+              <label class='flex items-start gap-3'>
+                <input
+                  type='checkbox'
+                  id='termsAccepted'
+                  class='mt-1'
+                  required
+                />
+                <span class='text-sm text-gray-600'>
+                  I agree to the <a
+                    href='#'
+                    class='text-blue-600 hover:underline'>Terms of Service</a
+                  >
+                  and <a href='#' class='text-blue-600 hover:underline'
+                    >Cancellation Policy</a
+                  >. By booking, I authorize FitProFinder to charge my payment
+                  method.
+                </span>
+              </label>
+            </div>
+
+            <!-- Payment Processing Status -->
+            <div
+              id='paymentProcessing'
+              class='hidden bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4'
+            >
+              <div class='flex items-center gap-3'>
+                <div
+                  class='animate-spin h-5 w-5 border-2 border-yellow-500 border-t-transparent rounded-full'
+                >
+                </div>
+                <span class='text-yellow-800 font-medium'
+                  >Processing payment...</span
+                >
+              </div>
+            </div>
+
+            <!-- Payment Error -->
+            <div
+              id='paymentError'
+              class='hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-4'
+            >
+              <div class='flex items-center gap-3'>
+                <span class='text-red-600'>❌</span>
+                <span class='text-red-800 font-medium' id='paymentErrorMessage'
+                ></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class='bg-gray-50 px-6 py-4 flex justify-between items-center'>
+          <button
+            id='backBtn'
+            onclick='bookingModal.previousStep()'
+            class='px-4 py-2 text-gray-600 hover:text-gray-800 font-medium hidden'
+          >
+            ← Back
+          </button>
+          <div class='flex-1'></div>
+          <button
+            id='nextBtn'
+            onclick='bookingModal.nextStep()'
+            class='px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium'
+          >
+            Next
+          </button>
+          <button
+            id='bookBtn'
+            onclick='bookingModal.confirmBooking()'
+            class='px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium hidden'
+          >
+            Confirm Booking
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ trainerId: id }}>
+  class TrainerProfile {
+    constructor(trainerId) {
+      this.trainerId = trainerId;
+      this.trainer = null;
+      this.isLiked = false;
+      this.init();
+    }
+
+    async init() {
+      await this.loadTrainer();
+    }
+
+    async loadTrainer() {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/trainers/${this.trainerId}`
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          this.trainer = data.data.trainer;
+          this.renderProfile();
+        } else {
+          throw new Error(data.error?.message || "Trainer not found");
+        }
+      } catch (error) {
+        console.error("Failed to load trainer:", error);
+        this.showError();
+      }
+    }
+
+    renderProfile() {
+      const trainer = this.trainer;
+
+      // Hide loading, show content
+      document.getElementById("loadingState").classList.add("hidden");
+      document.getElementById("profileContent").classList.remove("hidden");
+
+      // Update page title
+      document.title = `${trainer.firstName} ${trainer.lastName} - Personal Trainer | FitProFinder`;
+
+      // Basic info
+      document.getElementById("trainerImage").src = trainer.profileImageUrl;
+      document.getElementById("trainerImage").alt =
+        `${trainer.firstName} ${trainer.lastName}`;
+      document.getElementById("trainerName").textContent =
+        `${trainer.firstName} ${trainer.lastName}`;
+      document.getElementById("businessName").textContent =
+        trainer.businessName;
+      document.getElementById("rating").textContent = trainer.rating.toFixed(1);
+      document.getElementById("reviewCount").textContent =
+        `(${trainer.reviewCount} reviews)`;
+      document.getElementById("location").textContent =
+        `📍 ${trainer.location.city}, ${trainer.location.state}`;
+      document.getElementById("experience").textContent =
+        `${trainer.experienceYears} years experience`;
+      document.getElementById("trainerBio").textContent = trainer.bio;
+
+      // Verified badge
+      if (trainer.isVerified) {
+        document.getElementById("verifiedBadge").classList.remove("hidden");
+      }
+
+      // Specialties
+      this.renderSpecialties(trainer.specialties);
+
+      // Session types
+      this.renderSessionTypes(trainer.offers);
+
+      // Availability status
+      this.renderAvailability(trainer.isAcceptingClients);
+
+      // Contact info
+      this.renderContactInfo(trainer);
+
+      // Social links
+      this.renderSocialLinks(trainer.socialLinks);
+
+      // Update "more trainers" link
+      const moreLink = document.getElementById("moreTrainersLink");
+      moreLink.href = `/search?city=${encodeURIComponent(trainer.location.city)}&state=${trainer.location.state}`;
+      moreLink.textContent = `More trainers in ${trainer.location.city}`;
+    }
+
+    renderSpecialties(specialties) {
+      const container = document.getElementById("specialtiesContainer");
+      const detailsContainer = document.getElementById("specialtiesList");
+
+      container.innerHTML = "";
+      detailsContainer.innerHTML = "";
+
+      if (specialties && specialties.length > 0) {
+        // Main specialty tags
+        specialties.slice(0, 4).forEach((specialty) => {
+          const tag = document.createElement("span");
+          tag.className =
+            "inline-flex items-center px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full";
+          tag.textContent = specialty.name;
+          container.appendChild(tag);
+        });
+
+        // Detailed specialties
+        document
+          .getElementById("specialtiesDetails")
+          .classList.remove("hidden");
+        specialties.forEach((specialty) => {
+          const item = document.createElement("div");
+          item.className = "flex items-start gap-3 p-3 rounded-lg bg-gray-50";
+          item.innerHTML = `
+            <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: ${specialty.color}20; color: ${specialty.color}">
+              <span class="text-sm font-semibold">${specialty.name.charAt(0)}</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-900">${specialty.name}</h4>
+              <p class="text-sm text-gray-600">${specialty.description}</p>
+              <p class="text-xs text-gray-500 mt-1">${specialty.experienceYears} years experience</p>
+            </div>
+            ${specialty.isPrimary ? '<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Primary</span>' : ""}
+          `;
+          detailsContainer.appendChild(item);
+        });
+      }
+    }
+
+    renderSessionTypes(offers) {
+      const container = document.getElementById("sessionTypes");
+      container.innerHTML = "";
+
+      if (offers.onlineSessions) {
+        const tag = document.createElement("span");
+        tag.className =
+          "inline-flex items-center px-3 py-1 text-sm bg-green-100 text-green-800 rounded-full";
+        tag.textContent = "💻 Online Sessions";
+        container.appendChild(tag);
+      }
+
+      if (offers.inPersonSessions) {
+        const tag = document.createElement("span");
+        tag.className =
+          "inline-flex items-center px-3 py-1 text-sm bg-purple-100 text-purple-800 rounded-full";
+        tag.textContent = "🏋️ In-Person Sessions";
+        container.appendChild(tag);
+      }
+    }
+
+    renderAvailability(isAccepting) {
+      const statusContainer = document.getElementById("availabilityStatus");
+      const acceptingText = document.getElementById("acceptingClients");
+
+      if (isAccepting) {
+        statusContainer.className =
+          "p-4 rounded-lg bg-green-50 border border-green-200";
+        statusContainer.innerHTML =
+          '<p class="text-green-800 font-medium">✅ Currently accepting new clients</p>';
+        acceptingText.textContent = "✅ Accepting new clients";
+      } else {
+        statusContainer.className =
+          "p-4 rounded-lg bg-orange-50 border border-orange-200";
+        statusContainer.innerHTML =
+          '<p class="text-orange-800 font-medium">⏸️ Not currently accepting new clients</p>';
+        acceptingText.textContent = "❌ Not accepting new clients";
+      }
+    }
+
+    renderContactInfo(trainer) {
+      const container = document.getElementById("contactInfo");
+      container.innerHTML = `
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400">📍</span>
+          <div>
+            <p class="text-gray-900">${trainer.location.city}, ${trainer.location.state}</p>
+            <p class="text-sm text-gray-600">${trainer.location.address}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400">📞</span>
+          <p class="text-gray-900">${trainer.phoneNumber || "Contact via message"}</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400">✉️</span>
+          <p class="text-gray-900">${trainer.email || "Contact via platform"}</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400">📅</span>
+          <p class="text-gray-900">Member since ${new Date(trainer.memberSince).getFullYear()}</p>
+        </div>
+      `;
+    }
+
+    renderSocialLinks(socialLinks) {
+      if (!socialLinks || Object.keys(socialLinks).length === 0) return;
+
+      const card = document.getElementById("socialLinksCard");
+      const container = document.getElementById("socialLinks");
+
+      card.classList.remove("hidden");
+      container.innerHTML = "";
+
+      Object.entries(socialLinks).forEach(([platform, handle]) => {
+        const link = document.createElement("a");
+        link.className =
+          "flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors";
+        link.href = this.getSocialUrl(platform, handle);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        const icon = this.getSocialIcon(platform);
+        link.innerHTML = `${icon} <span>${handle}</span>`;
+
+        container.appendChild(link);
+      });
+    }
+
+    getSocialUrl(platform, handle) {
+      const cleanHandle = handle.replace("@", "");
+      switch (platform.toLowerCase()) {
+        case "instagram":
+          return `https://instagram.com/${cleanHandle}`;
+        case "youtube":
+          return `https://youtube.com/@${cleanHandle}`;
+        case "website":
+          return handle.startsWith("http") ? handle : `https://${handle}`;
+        case "twitter":
+          return `https://twitter.com/${cleanHandle}`;
+        case "linkedin":
+          return `https://linkedin.com/in/${cleanHandle}`;
+        default:
+          return handle;
+      }
+    }
+
+    getSocialIcon(platform) {
+      switch (platform.toLowerCase()) {
+        case "instagram":
+          return "📷";
+        case "youtube":
+          return "📺";
+        case "website":
+          return "🌐";
+        case "twitter":
+          return "🐦";
+        case "linkedin":
+          return "💼";
+        default:
+          return "🔗";
+      }
+    }
+
+    showError() {
+      document.getElementById("loadingState").classList.add("hidden");
+      document.getElementById("errorState").classList.remove("hidden");
+    }
+  }
+
+  // Interactive functions - attach to window for global access
+  window.bookSession = function () {
+    console.log("Book Session button clicked!"); // Debug log
+
+    // Check if modal exists
+    if (!window.bookingModal) {
+      console.error("BookingModal not initialized!");
+      alert("Booking system is loading. Please try again in a moment.");
+      return;
+    }
+
+    // Check authentication
+    const userData = localStorage.getItem("fitpro_user");
+    const authToken = localStorage.getItem("authToken");
+
+    console.log("Auth check:", {
+      userData: !!userData,
+      authToken: !!authToken,
+    });
+
+    if (!userData && !authToken) {
+      alert("Please log in to book a session");
+      window.location.href = "/auth/login";
+      return;
+    }
+
+    window.bookingModal.open();
+  };
+
+  window.sendMessage = async function () {
+    // Check if user is authenticated
+    const token = localStorage.getItem("fitpro_access_token");
+    if (!token) {
+      window.location.href =
+        "/auth/login?redirect=" + encodeURIComponent(window.location.pathname);
+      return;
+    }
+
+    try {
+      // Create or get conversation with this trainer
+      const response = await fetch(
+        "http://localhost:5000/api/messages/conversations",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            participantId: trainerId,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Redirect to messages page
+        window.location.href = "/messages";
+      } else {
+        throw new Error(data.error?.message || "Failed to create conversation");
+      }
+    } catch (error) {
+      console.error("Error creating conversation:", error);
+      alert("Failed to start conversation. Please try again.");
+    }
+  };
+
+  window.toggleLike = function () {
+    const instance = window.trainerProfileInstance;
+    if (instance) {
+      instance.isLiked = !instance.isLiked;
+      const likeBtn = document.getElementById("likeBtn");
+      if (likeBtn) {
+        if (instance.isLiked) {
+          likeBtn.innerHTML = "💖";
+          likeBtn.classList.add("bg-red-50", "border-red-300", "text-red-600");
+          likeBtn.classList.remove("border-gray-300", "text-gray-700");
+        } else {
+          likeBtn.innerHTML = "❤️";
+          likeBtn.classList.remove(
+            "bg-red-50",
+            "border-red-300",
+            "text-red-600"
+          );
+          likeBtn.classList.add("border-gray-300", "text-gray-700");
+        }
+      }
+    }
+  };
+
+  window.viewAvailability = function () {
+    alert(
+      "Availability calendar coming soon! This will show the trainer's available time slots for booking sessions."
+    );
+  };
+
+  // Booking Modal Class
+  class BookingModal {
+    constructor() {
+      console.log("BookingModal constructor called"); // Debug log
+      this.currentStep = 1;
+      this.maxSteps = 4;
+      this.selectedSessionType = null;
+      this.selectedDate = null;
+      this.selectedTime = null;
+      this.selectedFormat = null;
+      this.sessionTypes = [];
+      this.availableSlots = [];
+      this.trainerId = trainerId;
+
+      // Payment-related properties
+      this.stripe = null;
+      this.cardElement = null;
+      this.paymentBreakdown = null;
+      this.clientSecret = null;
+      this.savedPaymentMethods = [];
+      this.selectedPaymentMethod = null;
+
+      this.init();
+    }
+
+    init() {
+      console.log("BookingModal init called"); // Debug log
+      // Set minimum date to today
+      const today = new Date().toISOString().split("T")[0];
+      const dateInput = document.getElementById("sessionDate");
+      if (dateInput) {
+        dateInput.setAttribute("min", today);
+
+        // Set default date to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.value = tomorrow.toISOString().split("T")[0];
+
+        // Add event listeners
+        dateInput.addEventListener("change", () => {
+          this.loadAvailableSlots();
+        });
+      } else {
+        console.error("sessionDate input not found!");
+      }
+    }
+
+    async open() {
+      console.log("BookingModal open called"); // Debug log
+      // Reset modal state
+      this.currentStep = 1;
+      this.selectedSessionType = null;
+      this.selectedDate = null;
+      this.selectedTime = null;
+      this.selectedFormat = null;
+
+      // Show modal
+      const modal = document.getElementById("bookingModal");
+      if (modal) {
+        modal.classList.remove("hidden");
+        console.log("Modal should now be visible");
+      } else {
+        console.error("bookingModal element not found!");
+        return;
+      }
+
+      // Load session types
+      await this.loadSessionTypes();
+
+      // Update UI
+      this.updateStepVisibility();
+      this.updateButtons();
+    }
+
+    close() {
+      document.getElementById("bookingModal").classList.add("hidden");
+    }
+
+    async loadSessionTypes() {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/bookings/session-types/${this.trainerId}`
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          this.sessionTypes = data.data.sessionTypes;
+          this.renderSessionTypes();
+        }
+      } catch (error) {
+        console.error("Error loading session types:", error);
+      }
+    }
+
+    renderSessionTypes() {
+      const container = document.getElementById("sessionTypesList");
+      container.innerHTML = "";
+
+      this.sessionTypes.forEach((sessionType) => {
+        const card = document.createElement("div");
+        card.className =
+          "border border-gray-200 rounded-lg p-4 hover:border-blue-300 cursor-pointer transition-colors";
+        card.onclick = () => this.selectSessionType(sessionType);
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <h4 class="font-semibold text-gray-900">${sessionType.name}</h4>
+            <span class="text-lg font-bold text-blue-600">$${sessionType.price}</span>
+          </div>
+          <p class="text-sm text-gray-600 mb-3">${sessionType.description}</p>
+          <div class="flex justify-between text-xs text-gray-500">
+            <span>${sessionType.duration_minutes} minutes</span>
+            <span>${sessionType.type} session</span>
+          </div>
+          ${
+            sessionType.type === "package"
+              ? `
+            <div class="mt-2 text-xs text-purple-600">
+              ${sessionType.session_count} sessions • Valid for ${sessionType.validity_days} days
+            </div>
+          `
+              : ""
+          }
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    selectSessionType(sessionType) {
+      this.selectedSessionType = sessionType;
+
+      // Update visual selection
+      document
+        .querySelectorAll("#sessionTypesList .border-blue-500")
+        .forEach((el) => {
+          el.classList.remove("border-blue-500", "bg-blue-50");
+          el.classList.add("border-gray-200");
+        });
+
+      event.target
+        .closest(".border")
+        .classList.add("border-blue-500", "bg-blue-50");
+      event.target.closest(".border").classList.remove("border-gray-200");
+
+      // Load available slots for tomorrow by default
+      this.loadAvailableSlots();
+    }
+
+    async loadAvailableSlots() {
+      if (!this.selectedSessionType) return;
+
+      const date = document.getElementById("sessionDate").value;
+      if (!date) return;
+
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/bookings/availability/${this.trainerId}?date=${date}&duration=${this.selectedSessionType.duration_minutes}`
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          this.availableSlots = data.data.availableSlots;
+          this.renderTimeSlots();
+        }
+      } catch (error) {
+        console.error("Error loading availability:", error);
+      }
+    }
+
+    renderTimeSlots() {
+      const container = document.getElementById("timeSlots");
+      container.innerHTML = "";
+
+      if (this.availableSlots.length === 0) {
+        container.innerHTML =
+          '<p class="col-span-full text-center text-gray-500 py-4">No available slots for this date</p>';
+        return;
+      }
+
+      this.availableSlots.forEach((slot) => {
+        const button = document.createElement("button");
+        button.className =
+          "px-3 py-2 text-sm border border-gray-300 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors";
+
+        const startTime = new Date(slot.start_time);
+        const timeString = startTime.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+
+        button.textContent = timeString;
+        button.onclick = () => this.selectTimeSlot(slot, button);
+
+        container.appendChild(button);
+      });
+    }
+
+    selectTimeSlot(slot, buttonElement) {
+      this.selectedTime = slot;
+      this.selectedDate = document.getElementById("sessionDate").value;
+
+      // Update visual selection
+      document.querySelectorAll("#timeSlots .bg-blue-500").forEach((el) => {
+        el.classList.remove("bg-blue-500", "text-white");
+        el.classList.add("border-gray-300");
+      });
+
+      buttonElement.classList.add("bg-blue-500", "text-white");
+      buttonElement.classList.remove("border-gray-300");
+    }
+
+    nextStep() {
+      if (this.currentStep === 1 && !this.selectedSessionType) {
+        alert("Please select a session type");
+        return;
+      }
+
+      if (
+        this.currentStep === 2 &&
+        (!this.selectedDate || !this.selectedTime)
+      ) {
+        alert("Please select a date and time");
+        return;
+      }
+
+      if (this.currentStep === 2) {
+        // Load format options when moving to step 3
+        this.renderFormatOptions();
+      }
+
+      if (this.currentStep === 3) {
+        // Validate step 3
+        if (!this.selectedFormat) {
+          alert("Please select a session format");
+          return;
+        }
+
+        // Update summary
+        this.updateBookingSummary();
+      }
+
+      this.currentStep = Math.min(this.currentStep + 1, this.maxSteps);
+      this.updateStepVisibility();
+      this.updateButtons();
+    }
+
+    previousStep() {
+      this.currentStep = Math.max(this.currentStep - 1, 1);
+      this.updateStepVisibility();
+      this.updateButtons();
+    }
+
+    updateStepVisibility() {
+      for (let i = 1; i <= this.maxSteps; i++) {
+        const step = document.getElementById(`bookingStep${i}`);
+        if (step) {
+          if (i === this.currentStep) {
+            step.classList.remove("hidden");
+          } else {
+            step.classList.add("hidden");
+          }
+        }
+      }
+    }
+
+    updateButtons() {
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const bookBtn = document.getElementById("bookBtn");
+
+      if (this.currentStep === 1) {
+        backBtn.classList.add("hidden");
+      } else {
+        backBtn.classList.remove("hidden");
+      }
+
+      if (this.currentStep === this.maxSteps) {
+        nextBtn.classList.add("hidden");
+        bookBtn.classList.remove("hidden");
+      } else {
+        nextBtn.classList.remove("hidden");
+        bookBtn.classList.add("hidden");
+      }
+    }
+
+    renderFormatOptions() {
+      const container = document.getElementById("formatOptions");
+      container.innerHTML = "";
+
+      const sessionType = this.selectedSessionType;
+
+      if (sessionType.allows_online) {
+        const option = this.createFormatOption(
+          "online",
+          "💻 Online Session",
+          "Video call via Google Meet"
+        );
+        container.appendChild(option);
+      }
+
+      if (sessionType.allows_in_person) {
+        const option = this.createFormatOption(
+          "in_person",
+          "🏋️ In-Person Session",
+          "Meet at trainer location or gym"
+        );
+        container.appendChild(option);
+      }
+    }
+
+    createFormatOption(value, title, description) {
+      const div = document.createElement("div");
+      div.className =
+        "border border-gray-300 rounded-lg p-4 cursor-pointer hover:border-blue-300 transition-colors";
+      div.onclick = () => this.selectFormat(value, div);
+
+      div.innerHTML = `
+        <h5 class="font-medium text-gray-900 mb-1">${title}</h5>
+        <p class="text-sm text-gray-600">${description}</p>
+      `;
+
+      return div;
+    }
+
+    selectFormat(format, element) {
+      this.selectedFormat = format;
+
+      // Update visual selection
+      document
+        .querySelectorAll("#formatOptions .border-blue-500")
+        .forEach((el) => {
+          el.classList.remove("border-blue-500", "bg-blue-50");
+          el.classList.add("border-gray-300");
+        });
+
+      element.classList.add("border-blue-500", "bg-blue-50");
+      element.classList.remove("border-gray-300");
+
+      // Show/hide location section
+      const locationSection = document.getElementById("locationSection");
+      if (format === "in_person") {
+        locationSection.classList.remove("hidden");
+      } else {
+        locationSection.classList.add("hidden");
+      }
+    }
+
+    updateBookingSummary() {
+      const trainer = window.trainerProfileInstance?.trainer;
+
+      document.getElementById("summaryTrainer").textContent = trainer
+        ? `${trainer.firstName} ${trainer.lastName}`
+        : "Loading...";
+
+      document.getElementById("summarySessionType").textContent =
+        this.selectedSessionType.name;
+
+      const dateTime = new Date(
+        `${this.selectedDate}T${new Date(this.selectedTime.start_time).toTimeString()}`
+      );
+      document.getElementById("summaryDateTime").textContent =
+        dateTime.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+
+      document.getElementById("summaryDuration").textContent =
+        `${this.selectedSessionType.duration_minutes} minutes`;
+
+      document.getElementById("summaryFormat").textContent =
+        this.selectedFormat === "online"
+          ? "Online Session"
+          : "In-Person Session";
+
+      // Load payment breakdown and setup payment
+      this.loadPaymentBreakdown();
+    }
+
+    async confirmBooking() {
+      const token = this.getAuthToken();
+      if (!token) {
+        alert("Please log in to book a session");
+        window.location.href = "/auth/login";
+        return;
+      }
+
+      // Validate terms acceptance
+      if (!document.getElementById("termsAccepted").checked) {
+        alert("Please accept the terms and conditions");
+        return;
+      }
+
+      // Validate payment method selection
+      if (!this.selectedPaymentMethod && !this.cardElement) {
+        alert("Please select a payment method or enter card details");
+        return;
+      }
+
+      try {
+        // Show processing state
+        this.showPaymentProcessing(true);
+
+        // Step 1: Create payment intent
+        const paymentIntent = await this.createPaymentIntent();
+        if (!paymentIntent) return;
+
+        // Step 2: Confirm payment
+        const paymentResult = await this.confirmPayment(
+          paymentIntent.client_secret
+        );
+        if (!paymentResult.success) return;
+
+        // Step 3: Create booking
+        await this.createBooking(paymentResult.payment_intent_id);
+      } catch (error) {
+        console.error("Booking error:", error);
+        this.showPaymentError(
+          "An unexpected error occurred. Please try again."
+        );
+      } finally {
+        this.showPaymentProcessing(false);
+      }
+    }
+
+    async createPaymentIntent() {
+      try {
+        const token = this.getAuthToken();
+        const response = await fetch(
+          "http://localhost:5000/api/payments/create-intent",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              sessionTypeId: this.selectedSessionType.id,
+              amount: this.paymentBreakdown.totalAmount,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        if (data.success) {
+          return data.data;
+        } else {
+          this.showPaymentError(
+            data.error?.message || "Failed to create payment intent"
+          );
+          return null;
+        }
+      } catch (error) {
+        console.error("Error creating payment intent:", error);
+        this.showPaymentError("Failed to initialize payment");
+        return null;
+      }
+    }
+
+    async confirmPayment(clientSecret) {
+      try {
+        let paymentMethod;
+
+        if (this.selectedPaymentMethod) {
+          // Use saved payment method
+          paymentMethod = {
+            payment_method: this.selectedPaymentMethod.stripe_payment_method_id,
+          };
+        } else {
+          // Use new card
+          const { error, paymentMethod: newPaymentMethod } =
+            await this.stripe.createPaymentMethod({
+              type: "card",
+              card: this.cardElement,
+            });
+
+          if (error) {
+            this.showPaymentError(error.message);
+            return { success: false };
+          }
+
+          paymentMethod = {
+            payment_method: newPaymentMethod.id,
+          };
+
+          // Save card if requested
+          if (document.getElementById("saveCard").checked) {
+            await this.savePaymentMethod(newPaymentMethod.id);
+          }
+        }
+
+        // Confirm payment with Stripe
+        const { error, paymentIntent } = await this.stripe.confirmCardPayment(
+          clientSecret,
+          paymentMethod
+        );
+
+        if (error) {
+          this.showPaymentError(error.message);
+          return { success: false };
+        }
+
+        if (paymentIntent.status === "succeeded") {
+          return { success: true, payment_intent_id: paymentIntent.id };
+        } else {
+          this.showPaymentError("Payment was not completed successfully");
+          return { success: false };
+        }
+      } catch (error) {
+        console.error("Error confirming payment:", error);
+        this.showPaymentError("Payment confirmation failed");
+        return { success: false };
+      }
+    }
+
+    async savePaymentMethod(paymentMethodId) {
+      try {
+        const token = this.getAuthToken();
+        await fetch("http://localhost:5000/api/payments/payment-methods", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            payment_method_id: paymentMethodId,
+          }),
+        });
+      } catch (error) {
+        console.error("Error saving payment method:", error);
+        // Don't show error to user as this is not critical
+      }
+    }
+
+    async createBooking(paymentIntentId) {
+      try {
+        const token = this.getAuthToken();
+        const bookingData = {
+          trainerId: this.trainerId,
+          sessionTypeId: this.selectedSessionType.id,
+          scheduledAt: this.selectedTime.start_time,
+          sessionFormat: this.selectedFormat,
+          locationDetails:
+            this.selectedFormat === "in_person"
+              ? document.getElementById("locationDetails").value
+              : null,
+          clientNotes: document.getElementById("clientNotes").value,
+          paymentIntentId: paymentIntentId,
+        };
+
+        const response = await fetch("http://localhost:5000/api/bookings/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(bookingData),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Confirm payment on backend
+          await this.confirmPaymentOnBackend(paymentIntentId);
+
+          alert(
+            "🎉 Booking confirmed! Payment processed successfully. You will receive a confirmation email shortly."
+          );
+          this.close();
+          // Optionally redirect to bookings page
+          // window.location.href = '/dashboard/client';
+        } else {
+          throw new Error(data.error?.message || "Booking failed");
+        }
+      } catch (error) {
+        console.error("Error creating booking:", error);
+        this.showPaymentError(
+          "Booking creation failed. Please contact support."
+        );
+      }
+    }
+
+    async confirmPaymentOnBackend(paymentIntentId) {
+      try {
+        const token = this.getAuthToken();
+        await fetch("http://localhost:5000/api/payments/confirm", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            payment_intent_id: paymentIntentId,
+          }),
+        });
+      } catch (error) {
+        console.error("Error confirming payment on backend:", error);
+        // Don't show error to user as payment already succeeded
+      }
+    }
+
+    showPaymentProcessing(show) {
+      const processingEl = document.getElementById("paymentProcessing");
+      const errorEl = document.getElementById("paymentError");
+      const bookBtn = document.getElementById("bookBtn");
+
+      if (show) {
+        processingEl.classList.remove("hidden");
+        errorEl.classList.add("hidden");
+        bookBtn.disabled = true;
+        bookBtn.textContent = "Processing Payment...";
+      } else {
+        processingEl.classList.add("hidden");
+        bookBtn.disabled = false;
+        bookBtn.textContent = "Confirm Booking";
+      }
+    }
+
+    showPaymentError(message) {
+      const errorEl = document.getElementById("paymentError");
+      const errorMessageEl = document.getElementById("paymentErrorMessage");
+
+      errorMessageEl.textContent = message;
+      errorEl.classList.remove("hidden");
+
+      // Hide processing state
+      this.showPaymentProcessing(false);
+    }
+
+    getAuthToken() {
+      let token = localStorage.getItem("authToken");
+      const userData = localStorage.getItem("fitpro_user");
+
+      if (!token && userData) {
+        try {
+          const user = JSON.parse(userData);
+          token = user.accessToken || user.token;
+        } catch (error) {
+          console.error("Error parsing user data:", error);
+        }
+      }
+
+      return token;
+    }
+
+    async setupPayment() {
+      // Initialize Stripe
+      if (!this.stripe) {
+        // Using Stripe's test publishable key for development
+        this.stripe = Stripe("pk_test_umoSweHFlQkoX29f7lOj5rgR00C41bckNg"); // Updated with user's new key
+      }
+
+      // Load saved payment methods
+      await this.loadSavedPaymentMethods();
+
+      // Setup new card form
+      this.setupNewCardForm();
+    }
+  }
+
+  // Initialize the profile page
+  document.addEventListener("DOMContentLoaded", () => {
+    window.trainerProfileInstance = new TrainerProfile(trainerId);
+    window.bookingModal = new BookingModal();
+  });
+</script>

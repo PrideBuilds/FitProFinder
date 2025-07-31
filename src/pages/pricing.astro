@@ -1,0 +1,409 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Pricing - FitProFinder";
+const description =
+  "Simple, transparent pricing for FitProFinder. No hidden fees for clients, and low commission rates for fitness professionals.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <div class='bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <h1 class='text-4xl md:text-5xl font-bold mb-6'>
+        Simple, Transparent Pricing
+      </h1>
+      <p class='text-xl text-blue-100 max-w-3xl mx-auto'>
+        No hidden fees, no monthly charges. Pay only for what you use.
+      </p>
+    </div>
+  </div>
+
+  <!-- For Clients Section -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>For Clients</h2>
+        <p class='text-lg text-gray-600'>
+          Finding and booking trainers is completely free
+        </p>
+      </div>
+
+      <div class='max-w-4xl mx-auto'>
+        <div
+          class='bg-white rounded-2xl shadow-xl border-2 border-blue-200 p-8 md:p-12 text-center'
+        >
+          <div class='text-6xl font-bold text-blue-600 mb-4'>FREE</div>
+          <div class='text-2xl text-gray-900 mb-6'>Platform Access</div>
+          <div class='text-gray-600 mb-8'>
+            Browse trainers, read reviews, and book sessions at no extra cost
+          </div>
+
+          <ul class='text-left space-y-4 mb-8 max-w-md mx-auto'>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Search and browse all trainers
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Read reviews and ratings
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Message trainers directly
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Book and manage sessions
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Secure payment processing
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              24/7 customer support
+            </li>
+          </ul>
+
+          <div class='bg-blue-50 rounded-lg p-6 mb-8'>
+            <h3 class='text-lg font-semibold text-blue-900 mb-2'>
+              How It Works
+            </h3>
+            <p class='text-blue-800'>
+              You pay trainers directly at their set rates. FitProFinder handles
+              the payment processing securely, but we don't add any additional
+              fees for clients.
+            </p>
+          </div>
+
+          <a
+            href='/search'
+            class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors'
+          >
+            Find Your Trainer
+            <svg
+              class='ml-2 -mr-1 w-5 h-5'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+            >
+              <path
+                fill-rule='evenodd'
+                d='M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z'
+                clip-rule='evenodd'></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Trainers Section -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>
+          For Fitness Professionals
+        </h2>
+        <p class='text-lg text-gray-600'>
+          Simple commission-based pricing with no upfront costs
+        </p>
+      </div>
+
+      <div class='max-w-4xl mx-auto'>
+        <div
+          class='bg-white rounded-2xl shadow-xl border-2 border-purple-200 p-8 md:p-12 text-center'
+        >
+          <div class='text-6xl font-bold text-purple-600 mb-4'>5%</div>
+          <div class='text-2xl text-gray-900 mb-6'>Commission per booking</div>
+          <div class='text-gray-600 mb-8'>
+            We only succeed when you do. No monthly fees, no setup costs, no
+            hidden charges.
+          </div>
+
+          <ul class='text-left space-y-4 mb-8 max-w-md mx-auto'>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Professional profile creation
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Automated booking management
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Instant payment processing
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Client communication tools
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Review and rating system
+            </li>
+            <li class='flex items-center'>
+              <svg
+                class='w-5 h-5 text-green-500 mr-3'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M5 13l4 4L19 7'></path>
+              </svg>
+              Business analytics dashboard
+            </li>
+          </ul>
+
+          <div class='bg-purple-50 rounded-lg p-6 mb-8'>
+            <h3 class='text-lg font-semibold text-purple-900 mb-2'>
+              Payment Example
+            </h3>
+            <div class='text-purple-800'>
+              <div class='mb-2'>
+                Session Rate: <span class='font-semibold'>$80</span>
+              </div>
+              <div class='mb-2'>
+                Platform Fee (5%): <span class='font-semibold'>$4</span>
+              </div>
+              <div class='text-lg font-bold border-t border-purple-200 pt-2'>
+                You Receive: <span class='text-purple-600'>$76</span>
+              </div>
+            </div>
+          </div>
+
+          <a
+            href='/for-trainers'
+            class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 transition-colors'
+          >
+            Join as a Trainer
+            <svg
+              class='ml-2 -mr-1 w-5 h-5'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+            >
+              <path
+                fill-rule='evenodd'
+                d='M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z'
+                clip-rule='evenodd'></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class='py-16 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-12'>
+        <h2 class='text-2xl font-bold text-gray-900 mb-4'>Pricing FAQs</h2>
+      </div>
+
+      <div class='max-w-3xl mx-auto space-y-8'>
+        <div class='bg-gray-50 rounded-lg p-6'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Are there any hidden fees for clients?
+          </h3>
+          <p class='text-gray-600'>
+            No, absolutely not. Clients pay exactly what the trainer charges for
+            their session. FitProFinder doesn't add any additional fees for
+            clients.
+          </p>
+        </div>
+
+        <div class='bg-gray-50 rounded-lg p-6'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            When do trainers get paid?
+          </h3>
+          <p class='text-gray-600'>
+            Trainers receive payment within 24 hours after the session is
+            completed. Our automated system ensures quick and reliable payments.
+          </p>
+        </div>
+
+        <div class='bg-gray-50 rounded-lg p-6'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Can trainers set their own rates?
+          </h3>
+          <p class='text-gray-600'>
+            Yes! Trainers have complete control over their pricing. They can set
+            different rates for different types of sessions and adjust them
+            anytime.
+          </p>
+        </div>
+
+        <div class='bg-gray-50 rounded-lg p-6'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            What payment methods do you accept?
+          </h3>
+          <p class='text-gray-600'>
+            We accept all major credit cards, debit cards, and digital payment
+            methods through our secure payment processor, Stripe.
+          </p>
+        </div>
+
+        <div class='bg-gray-50 rounded-lg p-6'>
+          <h3 class='text-lg font-semibold text-gray-900 mb-2'>
+            Is there a contract or commitment required?
+          </h3>
+          <p class='text-gray-600'>
+            No contracts or long-term commitments required. Both clients and
+            trainers can use the platform on a session-by-session basis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class='py-16 bg-blue-600'>
+    <div class='max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <h2 class='text-3xl font-bold text-white mb-4'>Ready to Get Started?</h2>
+      <p class='text-xl text-blue-100 mb-8'>
+        Join thousands of people already using FitProFinder to achieve their
+        fitness goals.
+      </p>
+      <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+        <a
+          href='/search'
+          class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors'
+        >
+          Find a Trainer
+        </a>
+        <a
+          href='/for-trainers'
+          class='inline-flex items-center px-8 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors'
+        >
+          Become a Trainer
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

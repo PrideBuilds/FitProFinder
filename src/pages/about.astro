@@ -1,0 +1,261 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "About Us - FitProFinder";
+const description =
+  "Learn about FitProFinder's mission to connect people with qualified fitness professionals and make health and wellness accessible to everyone.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <div class='bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <h1 class='text-4xl md:text-5xl font-bold mb-6'>About FitProFinder</h1>
+      <p class='text-xl text-blue-100 max-w-3xl mx-auto'>
+        We're on a mission to make fitness accessible, personal, and effective
+        for everyone by connecting people with the right fitness professionals.
+      </p>
+    </div>
+  </div>
+
+  <!-- Mission Section -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>Our Mission</h2>
+        <p class='text-lg text-gray-600 max-w-3xl mx-auto'>
+          To democratize access to quality fitness guidance and empower both
+          clients and trainers to achieve their goals through meaningful
+          connections.
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
+        <div>
+          <h3 class='text-2xl font-semibold text-gray-900 mb-6'>
+            Why We Started FitProFinder
+          </h3>
+          <p class='text-gray-600 mb-6 leading-relaxed'>
+            Finding the right fitness professional shouldn't be a challenge. Too
+            many people struggle to find qualified trainers who understand their
+            unique needs, while amazing fitness professionals struggle to grow
+            their client base.
+          </p>
+          <p class='text-gray-600 mb-6 leading-relaxed'>
+            We created FitProFinder to bridge this gap. Our platform connects
+            motivated individuals with certified fitness professionals, creating
+            meaningful relationships that lead to lasting health
+            transformations.
+          </p>
+          <p class='text-gray-600 leading-relaxed'>
+            Whether you're just starting your fitness journey or you're a
+            seasoned athlete looking to reach the next level, we believe
+            everyone deserves access to professional guidance that fits their
+            lifestyle and goals.
+          </p>
+        </div>
+        <div class='bg-gray-50 rounded-lg p-8'>
+          <div class='grid grid-cols-2 gap-6 text-center'>
+            <div>
+              <div class='text-3xl font-bold text-blue-600 mb-2'>1,200+</div>
+              <div class='text-gray-600'>Verified Trainers</div>
+            </div>
+            <div>
+              <div class='text-3xl font-bold text-blue-600 mb-2'>50K+</div>
+              <div class='text-gray-600'>Sessions Completed</div>
+            </div>
+            <div>
+              <div class='text-3xl font-bold text-blue-600 mb-2'>500+</div>
+              <div class='text-gray-600'>Cities Covered</div>
+            </div>
+            <div>
+              <div class='text-3xl font-bold text-blue-600 mb-2'>4.9★</div>
+              <div class='text-gray-600'>Average Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class='py-20 bg-gray-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>Our Values</h2>
+        <p class='text-lg text-gray-600'>
+          The principles that guide everything we do
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-8'>
+        <div class='text-center'>
+          <div
+            class='bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6'
+          >
+            <svg
+              class='w-8 h-8 text-blue-600'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Quality First
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Every trainer on our platform is thoroughly vetted and certified. We
+            maintain the highest standards to ensure you get the best possible
+            experience.
+          </p>
+        </div>
+
+        <div class='text-center'>
+          <div
+            class='bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6'
+          >
+            <svg
+              class='w-8 h-8 text-purple-600'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+              ></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Personal Connection
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Fitness is personal. We believe in creating meaningful connections
+            between trainers and clients that go beyond just exercise routines.
+          </p>
+        </div>
+
+        <div class='text-center'>
+          <div
+            class='bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6'
+          >
+            <svg
+              class='w-8 h-8 text-green-600'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                stroke-width='2'
+                d='M13 10V3L4 14h7v7l9-11h-7z'></path>
+            </svg>
+          </div>
+          <h3 class='text-xl font-semibold text-gray-900 mb-4'>
+            Accessibility
+          </h3>
+          <p class='text-gray-600 leading-relaxed'>
+            Everyone deserves access to quality fitness guidance. We're
+            committed to making professional training accessible to people of
+            all backgrounds and fitness levels.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class='py-20 bg-white'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl font-bold text-gray-900 mb-4'>Meet Our Team</h2>
+        <p class='text-lg text-gray-600'>
+          The passionate people behind FitProFinder
+        </p>
+      </div>
+
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-8'>
+        <div class='text-center'>
+          <img
+            src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face'
+            alt='Alex Chen'
+            class='w-32 h-32 rounded-full mx-auto mb-6 object-cover'
+          />
+          <h3 class='text-xl font-semibold text-gray-900 mb-2'>Alex Chen</h3>
+          <p class='text-blue-600 mb-4'>CEO & Co-Founder</p>
+          <p class='text-gray-600 text-sm'>
+            Former fitness trainer turned tech entrepreneur. Passionate about
+            making fitness accessible to everyone through technology.
+          </p>
+        </div>
+
+        <div class='text-center'>
+          <img
+            src='https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face'
+            alt='Sarah Williams'
+            class='w-32 h-32 rounded-full mx-auto mb-6 object-cover'
+          />
+          <h3 class='text-xl font-semibold text-gray-900 mb-2'>
+            Sarah Williams
+          </h3>
+          <p class='text-blue-600 mb-4'>CTO & Co-Founder</p>
+          <p class='text-gray-600 text-sm'>
+            Software engineer with 10+ years experience building scalable
+            platforms. Believes in using technology to solve real-world
+            problems.
+          </p>
+        </div>
+
+        <div class='text-center'>
+          <img
+            src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'
+            alt='David Rodriguez'
+            class='w-32 h-32 rounded-full mx-auto mb-6 object-cover'
+          />
+          <h3 class='text-xl font-semibold text-gray-900 mb-2'>
+            David Rodriguez
+          </h3>
+          <p class='text-blue-600 mb-4'>Head of Trainer Relations</p>
+          <p class='text-gray-600 text-sm'>
+            Certified personal trainer and business coach. Dedicated to helping
+            fitness professionals grow their businesses and serve more clients.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class='py-16 bg-blue-600'>
+    <div class='max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <h2 class='text-3xl font-bold text-white mb-4'>Have Questions?</h2>
+      <p class='text-xl text-blue-100 mb-8'>
+        We'd love to hear from you. Reach out to our team anytime.
+      </p>
+      <div class='flex flex-col sm:flex-row gap-4 justify-center'>
+        <a
+          href='/contact'
+          class='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors'
+        >
+          Contact Us
+        </a>
+        <a
+          href='/search'
+          class='inline-flex items-center px-8 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors'
+        >
+          Find a Trainer
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

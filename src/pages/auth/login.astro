@@ -1,0 +1,303 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "Login - FitProFinder";
+const description =
+  "Login to your FitProFinder account to book sessions, manage your profile, and connect with fitness professionals.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div
+    class='min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8'
+  >
+    <div class='sm:mx-auto sm:w-full sm:max-w-md'>
+      <div class='text-center'>
+        <h1 class='text-3xl font-bold text-gray-900'>Welcome Back</h1>
+        <p class='mt-2 text-gray-600'>Sign in to your FitProFinder account</p>
+      </div>
+    </div>
+
+    <div class='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
+      <div class='bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10'>
+        <!-- Login Form -->
+        <form id='loginForm' class='space-y-6'>
+          <!-- Email -->
+          <div>
+            <label for='email' class='block text-sm font-medium text-gray-700'>
+              Email address
+            </label>
+            <div class='mt-1'>
+              <input
+                id='email'
+                name='email'
+                type='email'
+                autocomplete='email'
+                required
+                class='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                placeholder='Enter your email'
+              />
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label
+              for='password'
+              class='block text-sm font-medium text-gray-700'
+            >
+              Password
+            </label>
+            <div class='mt-1'>
+              <input
+                id='password'
+                name='password'
+                type='password'
+                autocomplete='current-password'
+                required
+                class='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500'
+                placeholder='Enter your password'
+              />
+            </div>
+          </div>
+
+          <!-- Remember me and Forgot password -->
+          <div class='flex items-center justify-between'>
+            <div class='flex items-center'>
+              <input
+                id='remember-me'
+                name='remember-me'
+                type='checkbox'
+                class='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+              />
+              <label for='remember-me' class='ml-2 block text-sm text-gray-900'>
+                Remember me
+              </label>
+            </div>
+
+            <div class='text-sm'>
+              <a
+                href='/auth/forgot-password'
+                class='font-medium text-blue-600 hover:text-blue-500'
+              >
+                Forgot your password?
+              </a>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div>
+            <button
+              type='submit'
+              id='loginBtn'
+              class='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
+            >
+              Sign in
+            </button>
+          </div>
+
+          <!-- Error Message -->
+          <div id='errorMessage' class='hidden'>
+            <div
+              class='bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm'
+            >
+              <span id='errorText'></span>
+            </div>
+          </div>
+        </form>
+
+        <!-- Divider -->
+        <div class='mt-6'>
+          <div class='relative'>
+            <div class='absolute inset-0 flex items-center'>
+              <div class='w-full border-t border-gray-300'></div>
+            </div>
+            <div class='relative flex justify-center text-sm'>
+              <span class='px-2 bg-white text-gray-500'>Or</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo Login Buttons -->
+        <div class='mt-6 space-y-3'>
+          <h3 class='text-sm font-medium text-gray-700 text-center'>
+            Demo Accounts
+          </h3>
+          <button
+            type='button'
+            id='demoClientBtn'
+            class='w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
+          >
+            🧑‍💼 Login as Demo Client
+          </button>
+          <button
+            type='button'
+            id='demoTrainerBtn'
+            class='w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
+          >
+            🏋️ Login as Demo Trainer
+          </button>
+        </div>
+
+        <!-- Sign up link -->
+        <div class='mt-6 text-center'>
+          <p class='text-sm text-gray-600'>
+            Don't have an account?
+            <a
+              href='/auth/signup'
+              class='font-medium text-blue-600 hover:text-blue-500'
+            >
+              Sign up here
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Import the auth utilities (need to be available globally or imported dynamically)
+  const { authApi } = await import("../../utils/api.js");
+
+  // Authentication functionality
+  const loginForm = document.getElementById("loginForm");
+  const loginBtn = document.getElementById("loginBtn");
+  const demoClientBtn = document.getElementById("demoClientBtn");
+  const demoTrainerBtn = document.getElementById("demoTrainerBtn");
+  const errorMessage = document.getElementById("errorMessage");
+  const errorText = document.getElementById("errorText");
+
+  // Demo user credentials for quick testing
+  const demoCredentials = {
+    client: { email: "client@demo.com", password: "demo123456" },
+    trainer: { email: "trainer@demo.com", password: "demo123456" },
+  };
+
+  function showError(message) {
+    errorText.textContent = message;
+    errorMessage.classList.remove("hidden");
+  }
+
+  function hideError() {
+    errorMessage.classList.add("hidden");
+  }
+
+  function setLoading(loading) {
+    if (loginBtn) {
+      loginBtn.disabled = loading;
+      loginBtn.textContent = loading ? "Signing in..." : "Sign in";
+    }
+  }
+
+  function redirectToDashboard(userRole) {
+    // Redirect based on role
+    if (userRole === "trainer") {
+      window.location.href = "/dashboard/trainer";
+    } else {
+      window.location.href = "/dashboard/client";
+    }
+  }
+
+  // Handle form submission
+  loginForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideError();
+    setLoading(true);
+
+    const formData = new FormData(loginForm);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    try {
+      // Call real backend API
+      const response = await authApi.login({
+        email: email as string,
+        password: password as string,
+      });
+
+      // Store user data in localStorage (for compatibility with existing code)
+      localStorage.setItem(
+        "fitpro_user",
+        JSON.stringify({
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
+          role: response.user.role,
+          profileImageUrl: response.user.profileImageUrl,
+          isAuthenticated: true,
+          loginTime: new Date().toISOString(),
+        })
+      );
+
+      // Redirect to dashboard
+      redirectToDashboard(response.user.role);
+    } catch (error) {
+      console.error("Login error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Login failed. Please check your credentials and try again.";
+      showError(errorMessage);
+      setLoading(false);
+    }
+  });
+
+  // Demo login buttons
+  demoClientBtn?.addEventListener("click", async () => {
+    setLoading(true);
+    try {
+      const response = await authApi.login(demoCredentials.client);
+      localStorage.setItem(
+        "fitpro_user",
+        JSON.stringify({
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
+          role: response.user.role,
+          profileImageUrl: response.user.profileImageUrl,
+          isAuthenticated: true,
+          loginTime: new Date().toISOString(),
+        })
+      );
+      redirectToDashboard(response.user.role);
+    } catch (error) {
+      showError("Demo login failed. Please try manual login.");
+      setLoading(false);
+    }
+  });
+
+  demoTrainerBtn?.addEventListener("click", async () => {
+    setLoading(true);
+    try {
+      const response = await authApi.login(demoCredentials.trainer);
+      localStorage.setItem(
+        "fitpro_user",
+        JSON.stringify({
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
+          role: response.user.role,
+          profileImageUrl: response.user.profileImageUrl,
+          isAuthenticated: true,
+          loginTime: new Date().toISOString(),
+        })
+      );
+      redirectToDashboard(response.user.role);
+    } catch (error) {
+      showError("Demo login failed. Please try manual login.");
+      setLoading(false);
+    }
+  });
+
+  // Check if already logged in
+  const existingUser = localStorage.getItem("fitpro_user");
+  if (existingUser) {
+    const userData = JSON.parse(existingUser);
+    if (userData.isAuthenticated) {
+      redirectToDashboard(userData.role);
+    }
+  }
+</script>
