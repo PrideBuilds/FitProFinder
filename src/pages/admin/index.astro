@@ -1220,13 +1220,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       // Check if user is properly authenticated before initializing
       const token = localStorage.getItem('fitpro_access_token');
       const userData = localStorage.getItem('fitpro_user');
-      
+
       if (!token || !userData) {
         console.log('Admin: No authentication data, redirecting to login');
         window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
         return;
       }
-      
+
       try {
         const user = JSON.parse(userData);
         if (user.role !== 'admin') {
@@ -1234,7 +1234,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           window.location.href = '/';
           return;
         }
-        
+
         console.log('Admin: User authenticated, initializing dashboard');
         const adminDashboard = new AdminDashboard();
       } catch (error) {
