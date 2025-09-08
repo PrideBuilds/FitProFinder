@@ -1214,33 +1214,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       }
     }
 
-    // Initialize the dashboard only after authentication is confirmed
-    // Wait for DOM to be ready and authentication to be checked
+    // Initialize the dashboard - BaseLayout already handles authentication
     document.addEventListener('DOMContentLoaded', () => {
-      // Check if user is properly authenticated before initializing
-      const token = localStorage.getItem('fitpro_access_token');
-      const userData = localStorage.getItem('fitpro_user');
-
-      if (!token || !userData) {
-        console.log('Admin: No authentication data, redirecting to login');
-        window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
-        return;
-      }
-
-      try {
-        const user = JSON.parse(userData);
-        if (user.role !== 'admin') {
-          console.log('Admin: User is not admin, redirecting to home');
-          window.location.href = '/';
-          return;
-        }
-
-        console.log('Admin: User authenticated, initializing dashboard');
-        const adminDashboard = new AdminDashboard();
-      } catch (error) {
-        console.error('Admin: Error parsing user data:', error);
-        window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
-      }
+      console.log('Admin: Initializing dashboard (authentication handled by BaseLayout)');
+      const adminDashboard = new AdminDashboard();
     });
 
     // Make it globally available for inline event handlers
