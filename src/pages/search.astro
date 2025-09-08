@@ -256,8 +256,30 @@ const description =
     }
 
     async loadSpecialties() {
+      // Check if we're in production (no localhost backend)
+      const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+      
+      if (isProduction) {
+        console.log("Production environment detected, using mock specialties data");
+        this.specialties = [
+          { id: 1, name: "Personal Training", slug: "personal-training" },
+          { id: 2, name: "Yoga", slug: "yoga" },
+          { id: 3, name: "Nutrition Coaching", slug: "nutrition-coaching" },
+          { id: 4, name: "Strength Training", slug: "strength-training" },
+          { id: 5, name: "Pilates", slug: "pilates" },
+          { id: 6, name: "Cardio Training", slug: "cardio-training" },
+          { id: 7, name: "HIIT", slug: "hiit" },
+          { id: 8, name: "Weight Loss", slug: "weight-loss" },
+          { id: 9, name: "Sports Performance", slug: "sports-performance" },
+          { id: 10, name: "Boxing", slug: "boxing" },
+          { id: 11, name: "CrossFit", slug: "crossfit" },
+          { id: 12, name: "Meditation", slug: "meditation" }
+        ];
+        this.populateSpecialtyFilter();
+        return;
+      }
+
       try {
-        // Try production API first, fallback to mock data
         const response = await fetch(
           "http://localhost:3000/api/specialties"
         );
@@ -424,6 +446,16 @@ const description =
     async searchTrainers() {
       this.showLoading();
 
+      // Check if we're in production (no localhost backend)
+      const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+      
+      if (isProduction) {
+        console.log("Production environment detected, using mock data");
+        const mockData = this.getMockTrainersData();
+        this.displayResults(mockData);
+        return;
+      }
+
       try {
         const params = this.getSearchParams();
         const response = await fetch(
@@ -558,7 +590,7 @@ const description =
 
       // Apply search term filter
       if (searchTerm) {
-        filteredTrainers = filteredTrainers.filter(trainer => 
+        filteredTrainers = filteredTrainers.filter(trainer =>
           trainer.name.toLowerCase().includes(searchTerm) ||
           trainer.businessName.toLowerCase().includes(searchTerm) ||
           trainer.bio.toLowerCase().includes(searchTerm) ||
@@ -687,8 +719,8 @@ const description =
       card.innerHTML = `
         <div class="p-6">
           <div class="flex items-start space-x-4">
-            <img 
-              src="${trainer.profileImage || '/default-avatar.svg'}" 
+            <img
+              src="${trainer.profileImageUrl || trainer.profileImage || '/default-avatar.svg'}"
               alt="${trainer.name}"
               class="w-16 h-16 rounded-full object-cover"
             />
@@ -696,7 +728,7 @@ const description =
               <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-900">
                   ${trainer.name}
-                  ${trainer.isVerified ? '<span class="text-blue-500 ml-1">✓</span>' : ""}
+                  ${trainer.verified ? '<span class="text-blue-500 ml-1">✓</span>' : ""}
                 </h3>
                 <div class="flex items-center">
                   <span class="text-yellow-400">★</span>
@@ -704,12 +736,12 @@ const description =
                   <span class="text-sm text-gray-500 ml-1">(${trainer.reviewCount})</span>
                 </div>
               </div>
-              
-              <p class="text-blue-600 font-medium text-sm">$${trainer.hourlyRate}/hour</p>
+
+              <p class="text-blue-600 font-medium text-sm">$${trainer.priceRange?.min || 'N/A'}/hour</p>
               <p class="text-gray-600 text-sm">${trainer.location.city}, ${trainer.location.state}</p>
-              
+
               <p class="text-gray-700 text-sm mt-2 line-clamp-2">${trainer.bio}</p>
-              
+
               <div class="flex flex-wrap gap-1 mt-3">
                 ${trainer.specialties
                   .slice(0, 3)
@@ -724,13 +756,13 @@ const description =
                     : ""
                 }
               </div>
-              
+
               <div class="flex items-center justify-between mt-4">
                 <div class="flex space-x-2 text-xs text-gray-600">
-                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded">Online</span>
-                  <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded">In-Person</span>
+                  ${trainer.offersOnline ? '<span class="bg-green-100 text-green-800 px-2 py-1 rounded">Online</span>' : ''}
+                  ${trainer.offersInPerson ? '<span class="bg-purple-100 text-purple-800 px-2 py-1 rounded">In-Person</span>' : ''}
                 </div>
-                <span class="text-sm text-gray-500">${trainer.experience}</span>
+                <span class="text-sm text-gray-500">${trainer.experienceYears} years exp.</span>
               </div>
             </div>
           </div>
