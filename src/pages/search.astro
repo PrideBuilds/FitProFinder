@@ -258,7 +258,7 @@ const description =
     async loadSpecialties() {
       // Check if we're in production (no localhost backend)
       const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-      
+
       if (isProduction) {
         console.log("Production environment detected, using mock specialties data");
         this.specialties = [
@@ -448,7 +448,7 @@ const description =
 
       // Check if we're in production (no localhost backend)
       const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-      
+
       if (isProduction) {
         console.log("Production environment detected, using mock data");
         const mockData = this.getMockTrainersData();
@@ -588,6 +588,18 @@ const description =
       const inPersonFilter = document.getElementById("inPersonFilter")?.checked || false;
       const verifiedFilter = document.getElementById("verifiedFilter")?.checked || false;
 
+      console.log("Mock data filters:", {
+        searchTerm,
+        specialtyFilter,
+        cityFilter,
+        stateFilter,
+        ratingFilter,
+        onlineFilter,
+        inPersonFilter,
+        verifiedFilter,
+        totalTrainers: mockTrainers.length
+      });
+
       // Apply search term filter
       if (searchTerm) {
         filteredTrainers = filteredTrainers.filter(trainer =>
@@ -644,6 +656,15 @@ const description =
       const startIndex = (this.currentPage - 1) * 12;
       const endIndex = startIndex + 12;
       const paginatedTrainers = filteredTrainers.slice(startIndex, endIndex);
+
+      console.log("Mock data results:", {
+        totalTrainers: mockTrainers.length,
+        filteredTrainers: filteredTrainers.length,
+        paginatedTrainers: paginatedTrainers.length,
+        currentPage: this.currentPage,
+        startIndex,
+        endIndex
+      });
 
       return {
         success: true,
