@@ -258,11 +258,11 @@ const description =
     async loadSpecialties() {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/trainers/specialties"
+          "http://localhost:3000/api/specialties"
         );
         const data = await response.json();
         if (data.success) {
-          this.specialties = data.data.specialties;
+          this.specialties = data.data;
           this.populateSpecialtyFilter();
         }
       } catch (error) {
@@ -410,12 +410,12 @@ const description =
       try {
         const params = this.getSearchParams();
         const response = await fetch(
-          `http://localhost:5000/api/trainers?${params}`
+          `http://localhost:3000/api/trainers?${params}`
         );
         const data = await response.json();
 
         if (data.success) {
-          this.displayResults(data.data);
+          this.displayResults(data);
         } else {
           throw new Error(data.error?.message || "Search failed");
         }
@@ -438,7 +438,10 @@ const description =
     }
 
     displayResults(data) {
-      const { trainers, pagination } = data;
+      console.log("displayResults called with data:", data);
+      const trainers = data.data || [];
+      const pagination = data.pagination || {};
+      console.log("trainers:", trainers, "pagination:", pagination);
 
       const loadingState = document.getElementById("loadingState");
       if (loadingState) loadingState.classList.add("hidden");
@@ -446,10 +449,11 @@ const description =
       // Update results count
       const resultsCount = document.getElementById("resultsCount");
       if (resultsCount) {
-        resultsCount.textContent = `${pagination.total} trainer${pagination.total !== 1 ? "s" : ""} found`;
+        const totalCount = pagination?.totalCount || trainers?.length || 0;
+        resultsCount.textContent = `${totalCount} trainer${totalCount !== 1 ? "s" : ""} found`;
       }
 
-      if (trainers.length === 0) {
+      if (!trainers || trainers.length === 0) {
         const noResults = document.getElementById("noResults");
         if (noResults) noResults.classList.remove("hidden");
         return;
@@ -480,14 +484,14 @@ const description =
         <div class="p-6">
           <div class="flex items-start space-x-4">
             <img 
-              src="${trainer.profileImageUrl}" 
-              alt="${trainer.firstName} ${trainer.lastName}"
+              src="${trainer.profileImage || '/default-avatar.svg'}" 
+              alt="${trainer.name}"
               class="w-16 h-16 rounded-full object-cover"
             />
             <div class="flex-1">
               <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-900">
-                  ${trainer.firstName} ${trainer.lastName}
+                  ${trainer.name}
                   ${trainer.isVerified ? '<span class="text-blue-500 ml-1">✓</span>' : ""}
                 </h3>
                 <div class="flex items-center">
@@ -497,7 +501,7 @@ const description =
                 </div>
               </div>
               
-              <p class="text-blue-600 font-medium text-sm">${trainer.businessName}</p>
+              <p class="text-blue-600 font-medium text-sm">$${trainer.hourlyRate}/hour</p>
               <p class="text-gray-600 text-sm">${trainer.location.city}, ${trainer.location.state}</p>
               
               <p class="text-gray-700 text-sm mt-2 line-clamp-2">${trainer.bio}</p>
@@ -519,10 +523,10 @@ const description =
               
               <div class="flex items-center justify-between mt-4">
                 <div class="flex space-x-2 text-xs text-gray-600">
-                  ${trainer.offers.onlineSessions ? '<span class="bg-green-100 text-green-800 px-2 py-1 rounded">Online</span>' : ""}
-                  ${trainer.offers.inPersonSessions ? '<span class="bg-purple-100 text-purple-800 px-2 py-1 rounded">In-Person</span>' : ""}
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded">Online</span>
+                  <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded">In-Person</span>
                 </div>
-                <span class="text-sm text-gray-500">${trainer.experienceYears} years exp.</span>
+                <span class="text-sm text-gray-500">${trainer.experience}</span>
               </div>
             </div>
           </div>
@@ -538,14 +542,14 @@ const description =
       const nextBtn = document.getElementById("nextPage");
       const pageInfo = document.getElementById("pageInfo");
 
-      if (pagination.pages > 1) {
+      if (pagination && pagination.totalPages > 1) {
         if (paginationEl) paginationEl.classList.remove("hidden");
 
-        if (prevBtn) prevBtn.disabled = pagination.page === 1;
-        if (nextBtn) nextBtn.disabled = pagination.page === pagination.pages;
+        if (prevBtn) prevBtn.disabled = pagination.currentPage === 1;
+        if (nextBtn) nextBtn.disabled = pagination.currentPage === pagination.totalPages;
 
         if (pageInfo)
-          pageInfo.textContent = `Page ${pagination.page} of ${pagination.pages}`;
+          pageInfo.textContent = `Page ${pagination.currentPage} of ${pagination.totalPages}`;
       } else {
         if (paginationEl) paginationEl.classList.add("hidden");
       }

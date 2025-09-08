@@ -1,8 +1,27 @@
-import type { Trainer, SearchFilters, SearchResult, User, SessionType, Review, Conversation, Message, GetConversationsResponse, GetMessagesResponse, SearchMessagesResponse, CreateConversationRequest, SendMessageRequest, ConversationStats } from '../types';
+import type {
+  Trainer,
+  SearchFilters,
+  SearchResult,
+  User,
+  SessionType,
+  Review,
+  Conversation,
+  Message,
+  GetConversationsResponse,
+  GetMessagesResponse,
+  SearchMessagesResponse,
+  CreateConversationRequest,
+  SendMessageRequest,
+  ConversationStats,
+} from '../types';
 
-const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL =
+  import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
 
-// API response wrapper type
+/**
+ * API response wrapper type
+ * @template T - The type of data in the response
+ */
 interface ApiResponse<T> {
   success: boolean;
   data?: T;
@@ -13,11 +32,18 @@ interface ApiResponse<T> {
   message?: string;
 }
 
-// Authentication token management
+/**
+ * Manages authentication tokens in localStorage
+ * Handles access and refresh token storage and retrieval
+ */
 class TokenManager {
   private static readonly ACCESS_TOKEN_KEY = 'fitpro_access_token';
   private static readonly REFRESH_TOKEN_KEY = 'fitpro_refresh_token';
 
+  /**
+   * Retrieves the access token from localStorage
+   * @returns The access token or null if not found
+   */
   static getAccessToken(): string | null {
     if (typeof window !== 'undefined') {
       return localStorage.getItem(this.ACCESS_TOKEN_KEY);
@@ -25,6 +51,11 @@ class TokenManager {
     return null;
   }
 
+  /**
+   * Stores both access and refresh tokens in localStorage
+   * @param accessToken - The access token to store
+   * @param refreshToken - The refresh token to store
+   */
   static setTokens(accessToken: string, refreshToken: string): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
@@ -32,6 +63,9 @@ class TokenManager {
     }
   }
 
+  /**
+   * Removes both tokens from localStorage
+   */
   static clearTokens(): void {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(this.ACCESS_TOKEN_KEY);
@@ -39,19 +73,30 @@ class TokenManager {
     }
   }
 
+  /**
+   * Returns authorization headers for API requests
+   * @returns Object containing Authorization header if token exists
+   */
   static getAuthHeaders(): Record<string, string> {
     const token = this.getAccessToken();
     return token ? { Authorization: `Bearer ${token}` } : {};
   }
 }
 
-// Generic API request function
+/**
+ * Generic API request function
+ * @template T - The expected response type
+ * @param endpoint - The API endpoint to call
+ * @param options - Additional fetch options
+ * @returns Promise resolving to the response data
+ * @throws Error if the request fails
+ */
 export async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
-  
+
   const config: RequestInit = {
     ...options,
     headers: {
@@ -66,7 +111,9 @@ export async function apiRequest<T>(
     const data: ApiResponse<T> = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error?.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        data.error?.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     if (!data.success) {
@@ -80,8 +127,16 @@ export async function apiRequest<T>(
   }
 }
 
-// Authentication API
+/**
+ * Authentication API endpoints
+ * Handles user registration, login, logout, and token management
+ */
 export const authApi = {
+  /**
+   * Register a new user
+   * @param userData - User registration data
+   * @returns Promise resolving to user data and tokens
+   */
   register: async (userData: {
     email: string;
     password: string;
@@ -104,11 +159,19 @@ export const authApi = {
     });
 
     // Store tokens
-    TokenManager.setTokens(response.tokens.accessToken, response.tokens.refreshToken);
-    
+    TokenManager.setTokens(
+      response.tokens.accessToken,
+      response.tokens.refreshToken
+    );
+
     return response;
   },
 
+  /**
+   * Login with email and password
+   * @param credentials - Login credentials
+   * @returns Promise resolving to user data and tokens
+   */
   login: async (credentials: { email: string; password: string }) => {
     const response = await apiRequest<{
       user: User;
@@ -124,11 +187,18 @@ export const authApi = {
     });
 
     // Store tokens
-    TokenManager.setTokens(response.tokens.accessToken, response.tokens.refreshToken);
-    
+    TokenManager.setTokens(
+      response.tokens.accessToken,
+      response.tokens.refreshToken
+    );
+
     return response;
   },
 
+  /**
+   * Logout the current user
+   * Clears stored tokens and calls logout endpoint
+   */
   logout: async () => {
     try {
       await apiRequest('/auth/logout', { method: 'POST' });
@@ -137,23 +207,42 @@ export const authApi = {
     }
   },
 
+  /**
+   * Get current user information
+   * @returns Promise resolving to current user data
+   */
   getCurrentUser: async (): Promise<{ user: User }> => {
     return await apiRequest<{ user: User }>('/auth/me');
   },
 
+  /**
+   * Verify email address with token
+   * @param token - Email verification token
+   * @returns Promise resolving to verification result
+   */
   verifyEmail: async (token: string) => {
     return await apiRequest('/auth/verify-email', {
       method: 'POST',
       body: JSON.stringify({ token }),
     });
-  }
+  },
 };
 
-// Trainers API
+/**
+ * Trainers API endpoints
+ * Handles trainer search, profile management, and related operations
+ */
 export const trainersApi = {
-  getTrainers: async (filters: Partial<SearchFilters> = {}): Promise<SearchResult> => {
+  /**
+   * Search for trainers with optional filters
+   * @param filters - Search filters to apply
+   * @returns Promise resolving to search results with pagination
+   */
+  getTrainers: async (
+    filters: Partial<SearchFilters> = {}
+  ): Promise<SearchResult> => {
     const queryParams = new URLSearchParams();
-    
+
     // Add filters to query params
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
@@ -169,10 +258,18 @@ export const trainersApi = {
             // Price range object
             queryParams.append(`${key}Min`, value.min.toString());
             queryParams.append(`${key}Max`, value.max.toString());
-          } else if ('city' in value || 'state' in value || 'zipCode' in value) {
+          } else if (
+            'city' in value ||
+            'state' in value ||
+            'zipCode' in value
+          ) {
             // Location object
             Object.entries(value).forEach(([subKey, subValue]) => {
-              if (subValue !== undefined && subValue !== null && subValue !== '') {
+              if (
+                subValue !== undefined &&
+                subValue !== null &&
+                subValue !== ''
+              ) {
                 queryParams.append(`${key}.${subKey}`, subValue.toString());
               }
             });
@@ -185,7 +282,14 @@ export const trainersApi = {
     return await apiRequest<SearchResult>(endpoint);
   },
 
-  getTrainerById: async (id: string): Promise<{
+  /**
+   * Get detailed trainer information by ID
+   * @param id - Trainer ID
+   * @returns Promise resolving to detailed trainer data
+   */
+  getTrainerById: async (
+    id: string
+  ): Promise<{
     trainer: Trainer & {
       contact: {
         email: string;
@@ -219,6 +323,11 @@ export const trainersApi = {
     }>(`/trainers/${id}`);
   },
 
+  /**
+   * Update trainer profile information
+   * @param profileData - Profile data to update
+   * @returns Promise resolving to update result
+   */
   updateProfile: async (profileData: {
     businessName?: string;
     bio: string;
@@ -246,23 +355,23 @@ export const trainersApi = {
       method: 'POST',
       body: JSON.stringify(profileData),
     });
-  }
+  },
 };
 
-// Search API (shorthand for trainers search)
+/**
+ * Search API endpoints
+ * Provides search functionality and related data
+ */
 export const searchApi = {
+  /** @see trainersApi.getTrainers */
   searchTrainers: trainersApi.getTrainers,
-  
-  getSpecialties: async (): Promise<Array<{
-    id: number;
-    name: string;
-    slug: string;
-    description?: string;
-    iconName?: string;
-    color?: string;
-    imageUrl?: string;
-  }>> => {
-    return await apiRequest<Array<{
+
+  /**
+   * Get all available specialties
+   * @returns Promise resolving to array of specialty data
+   */
+  getSpecialties: async (): Promise<
+    Array<{
       id: number;
       name: string;
       slug: string;
@@ -270,31 +379,62 @@ export const searchApi = {
       iconName?: string;
       color?: string;
       imageUrl?: string;
-    }>>('/specialties');
-  }
+    }>
+  > => {
+    return await apiRequest<
+      Array<{
+        id: number;
+        name: string;
+        slug: string;
+        description?: string;
+        iconName?: string;
+        color?: string;
+        imageUrl?: string;
+      }>
+    >('/specialties');
+  },
 };
 
-// Messaging API
+/**
+ * Messaging API endpoints
+ * Handles conversations, messages, and file uploads
+ */
 export const messagingApi = {
-  // Conversations
-  getConversations: async (page = 1, limit = 20): Promise<GetConversationsResponse> => {
+  /**
+   * Get user's conversations with pagination
+   * @param page - Page number (default: 1)
+   * @param limit - Items per page (default: 20)
+   * @returns Promise resolving to conversations and pagination data
+   */
+  getConversations: async (
+    page = 1,
+    limit = 20
+  ): Promise<GetConversationsResponse> => {
     const queryParams = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
     });
-    
-    // Use fetch directly to get the full response structure
-    const response = await fetch(`${API_BASE_URL}/messages/conversations?${queryParams}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...TokenManager.getAuthHeaders(),
-      },
-    });
 
-    const result: ApiResponse<{ conversations: Conversation[]; pagination: any }> = await response.json();
-    
+    // Use fetch directly to get the full response structure
+    const response = await fetch(
+      `${API_BASE_URL}/messages/conversations?${queryParams}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          ...TokenManager.getAuthHeaders(),
+        },
+      }
+    );
+
+    const result: ApiResponse<{
+      conversations: Conversation[];
+      pagination: any;
+    }> = await response.json();
+
     if (!response.ok) {
-      throw new Error(result.error?.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        result.error?.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     if (!result.success) {
@@ -304,40 +444,81 @@ export const messagingApi = {
     // Return in the expected format
     return {
       conversations: result.data?.conversations || [],
-      pagination: result.data?.pagination || { currentPage: page, totalPages: 1, totalCount: 0, hasNextPage: false, hasPrevPage: false, limit }
+      pagination: result.data?.pagination || {
+        currentPage: page,
+        totalPages: 1,
+        totalCount: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+        limit,
+      },
     };
   },
 
-  createOrGetConversation: async (data: CreateConversationRequest): Promise<{ conversation: Conversation }> => {
-    return await apiRequest<{ conversation: Conversation }>('/messages/conversations', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+  /**
+   * Create a new conversation or get existing one
+   * @param data - Conversation creation data
+   * @returns Promise resolving to conversation data
+   */
+  createOrGetConversation: async (
+    data: CreateConversationRequest
+  ): Promise<{ conversation: Conversation }> => {
+    return await apiRequest<{ conversation: Conversation }>(
+      '/messages/conversations',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }
+    );
   },
 
-  getConversationStats: async (conversationId: string): Promise<{ stats: ConversationStats }> => {
-    return await apiRequest<{ stats: ConversationStats }>(`/messages/conversations/${conversationId}/stats`);
+  /**
+   * Get conversation statistics
+   * @param conversationId - ID of the conversation
+   * @returns Promise resolving to conversation stats
+   */
+  getConversationStats: async (
+    conversationId: string
+  ): Promise<{ stats: ConversationStats }> => {
+    return await apiRequest<{ stats: ConversationStats }>(
+      `/messages/conversations/${conversationId}/stats`
+    );
   },
 
-  // Messages
-  getMessages: async (conversationId: string, page = 1, limit = 50): Promise<GetMessagesResponse> => {
+  /**
+   * Get messages for a conversation with pagination
+   * @param conversationId - ID of the conversation
+   * @param page - Page number (default: 1)
+   * @param limit - Items per page (default: 50)
+   * @returns Promise resolving to messages and pagination data
+   */
+  getMessages: async (
+    conversationId: string,
+    page = 1,
+    limit = 50
+  ): Promise<GetMessagesResponse> => {
     const queryParams = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
     });
-    
+
     // Use fetch directly to get the full response structure
-    const response = await fetch(`${API_BASE_URL}/messages/conversations/${conversationId}/messages?${queryParams}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...TokenManager.getAuthHeaders(),
-      },
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/messages/conversations/${conversationId}/messages?${queryParams}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          ...TokenManager.getAuthHeaders(),
+        },
+      }
+    );
 
     const result: ApiResponse<Message[]> = await response.json();
-    
+
     if (!response.ok) {
-      throw new Error(result.error?.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        result.error?.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     if (!result.success) {
@@ -347,11 +528,27 @@ export const messagingApi = {
     // Return in the expected format
     return {
       messages: result.data || [],
-      pagination: (result as any).pagination || { currentPage: page, totalPages: 1, totalCount: 0, hasNextPage: false, hasPrevPage: false, limit }
+      pagination: (result as any).pagination || {
+        currentPage: page,
+        totalPages: 1,
+        totalCount: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+        limit,
+      },
     };
   },
 
-  sendMessage: async (conversationId: string, data: SendMessageRequest): Promise<{ message: Message }> => {
+  /**
+   * Send a message to a conversation
+   * @param conversationId - ID of the conversation
+   * @param data - Message data
+   * @returns Promise resolving to sent message data
+   */
+  sendMessage: async (
+    conversationId: string,
+    data: SendMessageRequest
+  ): Promise<{ message: Message }> => {
     // Handle file uploads separately if attachments exist
     if (data.attachments && data.attachments.length > 0) {
       return await messagingApi.sendMessageWithFiles(conversationId, data);
@@ -359,18 +556,31 @@ export const messagingApi = {
 
     // Send text message
     const { attachments, ...messageData } = data;
-    return await apiRequest<{ message: Message }>(`/messages/conversations/${conversationId}/messages`, {
-      method: 'POST',
-      body: JSON.stringify(messageData),
-    });
+    return await apiRequest<{ message: Message }>(
+      `/messages/conversations/${conversationId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify(messageData),
+      }
+    );
   },
 
-  sendMessageWithFiles: async (conversationId: string, data: SendMessageRequest): Promise<{ message: Message }> => {
+  /**
+   * Send a message with file attachments
+   * @param conversationId - ID of the conversation
+   * @param data - Message data with attachments
+   * @returns Promise resolving to sent message data
+   */
+  sendMessageWithFiles: async (
+    conversationId: string,
+    data: SendMessageRequest
+  ): Promise<{ message: Message }> => {
     const formData = new FormData();
     formData.append('content', data.content);
     if (data.messageType) formData.append('messageType', data.messageType);
-    if (data.replyToMessageId) formData.append('replyToMessageId', data.replyToMessageId);
-    
+    if (data.replyToMessageId)
+      formData.append('replyToMessageId', data.replyToMessageId);
+
     // Add files
     if (data.attachments) {
       data.attachments.forEach((file, index) => {
@@ -378,38 +588,65 @@ export const messagingApi = {
       });
     }
 
-    const response = await fetch(`${API_BASE_URL}/messages/conversations/${conversationId}/messages`, {
-      method: 'POST',
-      headers: {
-        ...TokenManager.getAuthHeaders(),
-        // Don't set Content-Type for FormData - browser will set it with boundary
-      },
-      body: formData,
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/messages/conversations/${conversationId}/messages`,
+      {
+        method: 'POST',
+        headers: {
+          ...TokenManager.getAuthHeaders(),
+          // Don't set Content-Type for FormData - browser will set it with boundary
+        },
+        body: formData,
+      }
+    );
 
     const result: ApiResponse<{ message: Message }> = await response.json();
-    
+
     if (!response.ok) {
-      throw new Error(result.error?.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        result.error?.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     if (!result.success) {
-      throw new Error(result.error?.message || 'Failed to send message with files');
+      throw new Error(
+        result.error?.message || 'Failed to send message with files'
+      );
     }
 
     return result.data as { message: Message };
   },
 
-  markMessagesAsRead: async (conversationId: string, messageIds?: string[]): Promise<{ success: boolean }> => {
+  /**
+   * Mark messages as read in a conversation
+   * @param conversationId - ID of the conversation
+   * @param messageIds - Optional array of specific message IDs to mark as read
+   * @returns Promise resolving to success status
+   */
+  markMessagesAsRead: async (
+    conversationId: string,
+    messageIds?: string[]
+  ): Promise<{ success: boolean }> => {
     const body = messageIds ? { messageIds } : {};
-    return await apiRequest<{ success: boolean }>(`/messages/conversations/${conversationId}/read`, {
-      method: 'POST',
-      body: JSON.stringify(body),
-    });
+    return await apiRequest<{ success: boolean }>(
+      `/messages/conversations/${conversationId}/read`,
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+      }
+    );
   },
 
-  // File upload
-  uploadFiles: async (files: File[]): Promise<{ files: Array<{ url: string; filename: string; size: number; type: string }> }> => {
+  /**
+   * Upload files for messaging
+   * @param files - Array of files to upload
+   * @returns Promise resolving to uploaded file data
+   */
+  uploadFiles: async (
+    files: File[]
+  ): Promise<{
+    files: Array<{ url: string; filename: string; size: number; type: string }>;
+  }> => {
     const formData = new FormData();
     files.forEach(file => {
       formData.append('files', file);
@@ -423,30 +660,61 @@ export const messagingApi = {
       body: formData,
     });
 
-    const result: ApiResponse<{ files: Array<{ url: string; filename: string; size: number; type: string }> }> = await response.json();
-    
+    const result: ApiResponse<{
+      files: Array<{
+        url: string;
+        filename: string;
+        size: number;
+        type: string;
+      }>;
+    }> = await response.json();
+
     if (!response.ok) {
-      throw new Error(result.error?.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        result.error?.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     if (!result.success) {
       throw new Error(result.error?.message || 'Failed to upload files');
     }
 
-    return result.data as { files: Array<{ url: string; filename: string; size: number; type: string }> };
+    return result.data as {
+      files: Array<{
+        url: string;
+        filename: string;
+        size: number;
+        type: string;
+      }>;
+    };
   },
 
-  // Search
-  searchMessages: async (query: string, page = 1, limit = 20): Promise<SearchMessagesResponse> => {
+  /**
+   * Search messages across conversations
+   * @param query - Search query
+   * @param page - Page number (default: 1)
+   * @param limit - Items per page (default: 20)
+   * @returns Promise resolving to search results
+   */
+  searchMessages: async (
+    query: string,
+    page = 1,
+    limit = 20
+  ): Promise<SearchMessagesResponse> => {
     const queryParams = new URLSearchParams({
       q: query,
       page: page.toString(),
       limit: limit.toString(),
     });
-    return await apiRequest<SearchMessagesResponse>(`/messages/search?${queryParams}`);
+    return await apiRequest<SearchMessagesResponse>(
+      `/messages/search?${queryParams}`
+    );
   },
 
-  // Socket stats (for debugging/monitoring)
+  /**
+   * Get socket connection statistics (for debugging/monitoring)
+   * @returns Promise resolving to socket stats
+   */
   getSocketStats: async (): Promise<{ stats: any }> => {
     return await apiRequest<{ stats: any }>('/messages/socket/stats');
   },
@@ -455,12 +723,18 @@ export const messagingApi = {
 // Export token manager for use in components
 export { TokenManager };
 
-// Utility function to check if user is authenticated
+/**
+ * Check if user is currently authenticated
+ * @returns True if user has a valid access token
+ */
 export const isAuthenticated = (): boolean => {
   return TokenManager.getAccessToken() !== null;
 };
 
-// Utility function to get current user role from token (basic JWT decode)
+/**
+ * Get current user role from JWT token
+ * @returns User role or null if not authenticated or token is invalid
+ */
 export const getCurrentUserRole = (): string | null => {
   const token = TokenManager.getAccessToken();
   if (!token) return null;
@@ -473,7 +747,10 @@ export const getCurrentUserRole = (): string | null => {
   }
 };
 
-// Error handling types
+/**
+ * Custom error class for API-related errors
+ * Extends Error with additional status code and error code properties
+ */
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -483,4 +760,4 @@ export class ApiError extends Error {
     super(message);
     this.name = 'ApiError';
   }
-} 
+}

@@ -8,20 +8,22 @@ import db from '../database/connection.js';
 export const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new ApiError('Access token required', 401, 'TOKEN_REQUIRED');
     }
 
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-    
+
     // Verify token
     const decoded = verifyAccessToken(token);
     const user = extractUserFromToken(decoded);
 
     // Check if user still exists in database
-    const dbUser = await db('users').where({ id: user.id, is_active: true }).first();
-    
+    const dbUser = await db('users')
+      .where({ id: user.id, is_active: true })
+      .first();
+
     if (!dbUser) {
       throw new ApiError('User not found or inactive', 401, 'USER_NOT_FOUND');
     }
@@ -36,7 +38,7 @@ export const authenticate = async (req, res, next) => {
       isVerified: dbUser.is_verified,
       isActive: dbUser.is_active,
       admin_level: dbUser.admin_level,
-      admin_since: dbUser.admin_since
+      admin_since: dbUser.admin_since,
     };
 
     next();
@@ -55,11 +57,19 @@ export const authenticate = async (req, res, next) => {
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
-      return next(new ApiError('Authentication required', 401, 'AUTHENTICATION_REQUIRED'));
+      return next(
+        new ApiError('Authentication required', 401, 'AUTHENTICATION_REQUIRED')
+      );
     }
 
     if (!roles.includes(req.user.role)) {
-      return next(new ApiError('Insufficient permissions', 403, 'INSUFFICIENT_PERMISSIONS'));
+      return next(
+        new ApiError(
+          'Insufficient permissions',
+          403,
+          'INSUFFICIENT_PERMISSIONS'
+        )
+      );
     }
 
     next();
@@ -71,11 +81,19 @@ export const authorize = (...roles) => {
  */
 export const requireVerification = (req, res, next) => {
   if (!req.user) {
-    return next(new ApiError('Authentication required', 401, 'AUTHENTICATION_REQUIRED'));
+    return next(
+      new ApiError('Authentication required', 401, 'AUTHENTICATION_REQUIRED')
+    );
   }
 
   if (!req.user.isVerified) {
-    return next(new ApiError('Email verification required', 403, 'EMAIL_VERIFICATION_REQUIRED'));
+    return next(
+      new ApiError(
+        'Email verification required',
+        403,
+        'EMAIL_VERIFICATION_REQUIRED'
+      )
+    );
   }
 
   next();
@@ -87,15 +105,17 @@ export const requireVerification = (req, res, next) => {
 export const optionalAuth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    
+
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const token = authHeader.substring(7);
       const decoded = verifyAccessToken(token);
       const user = extractUserFromToken(decoded);
 
       // Check if user exists
-      const dbUser = await db('users').where({ id: user.id, is_active: true }).first();
-      
+      const dbUser = await db('users')
+        .where({ id: user.id, is_active: true })
+        .first();
+
       if (dbUser) {
         req.user = {
           id: dbUser.id,
@@ -106,14 +126,14 @@ export const optionalAuth = async (req, res, next) => {
           isVerified: dbUser.is_verified,
           isActive: dbUser.is_active,
           admin_level: dbUser.admin_level,
-          admin_since: dbUser.admin_since
+          admin_since: dbUser.admin_since,
         };
       }
     }
-    
+
     next();
   } catch (error) {
     // Ignore auth errors for optional auth
     next();
   }
-}; 
+};

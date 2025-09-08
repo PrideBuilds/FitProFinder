@@ -120,22 +120,43 @@ const description =
         <!-- Demo Login Buttons -->
         <div class='mt-6 space-y-3'>
           <h3 class='text-sm font-medium text-gray-700 text-center'>
-            Demo Accounts
+            🧪 Demo Accounts - Click to Login
           </h3>
-          <button
-            type='button'
-            id='demoClientBtn'
-            class='w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
-          >
-            🧑‍💼 Login as Demo Client
-          </button>
-          <button
-            type='button'
-            id='demoTrainerBtn'
-            class='w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
-          >
-            🏋️ Login as Demo Trainer
-          </button>
+          <div class='grid grid-cols-1 gap-2'>
+            <button
+              type='button'
+              id='demoClientBtn'
+              class='w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
+            >
+              <span class='mr-2'>🧑‍💼</span>
+              <div class='text-left'>
+                <div class='font-medium'>Sarah Johnson</div>
+                <div class='text-xs text-gray-500'>Client • sarah@fitpro.com</div>
+              </div>
+            </button>
+            <button
+              type='button'
+              id='demoTrainerBtn'
+              class='w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
+            >
+              <span class='mr-2'>🏋️</span>
+              <div class='text-left'>
+                <div class='font-medium'>Coach Taylor</div>
+                <div class='text-xs text-gray-500'>Trainer • coach@fitpro.com</div>
+              </div>
+            </button>
+            <button
+              type='button'
+              id='demoAdminBtn'
+              class='w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors'
+            >
+              <span class='mr-2'>👨‍💼</span>
+              <div class='text-left'>
+                <div class='font-medium'>Admin User</div>
+                <div class='text-xs text-gray-500'>Admin • admin@fitpro.com</div>
+              </div>
+            </button>
+          </div>
         </div>
 
         <!-- Sign up link -->
@@ -156,21 +177,40 @@ const description =
 </BaseLayout>
 
 <script>
-  // Import the auth utilities (need to be available globally or imported dynamically)
-  const { authApi } = await import("../../utils/api.js");
+  // Mock authentication system - no backend required
 
   // Authentication functionality
   const loginForm = document.getElementById("loginForm");
   const loginBtn = document.getElementById("loginBtn");
   const demoClientBtn = document.getElementById("demoClientBtn");
   const demoTrainerBtn = document.getElementById("demoTrainerBtn");
+  const demoAdminBtn = document.getElementById("demoAdminBtn");
   const errorMessage = document.getElementById("errorMessage");
   const errorText = document.getElementById("errorText");
 
   // Demo user credentials for quick testing
   const demoCredentials = {
-    client: { email: "client@demo.com", password: "demo123456" },
-    trainer: { email: "trainer@demo.com", password: "demo123456" },
+    client: {
+      email: "sarah@fitpro.com",
+      password: "sarah123",
+      name: "Sarah Johnson",
+      role: "client",
+      profileImageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+    },
+    trainer: {
+      email: "coach@fitpro.com",
+      password: "coach123",
+      name: "Coach Taylor",
+      role: "trainer",
+      profileImageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face"
+    },
+    admin: {
+      email: "admin@fitpro.com",
+      password: "admin123",
+      name: "Admin User",
+      role: "admin",
+      profileImageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    },
   };
 
   function showError(message) {
@@ -190,12 +230,46 @@ const description =
   }
 
   function redirectToDashboard(userRole) {
-    // Redirect based on role
-    if (userRole === "trainer") {
-      window.location.href = "/dashboard/trainer";
+    // Check for redirect parameter first
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectTo = urlParams.get('redirect');
+
+    if (redirectTo) {
+      // If there's a redirect parameter, use it
+      window.location.href = redirectTo;
     } else {
-      window.location.href = "/dashboard/client";
+      // Otherwise, redirect based on role
+      if (userRole === "admin") {
+        window.location.href = "/admin";
+      } else if (userRole === "trainer") {
+        window.location.href = "/dashboard/trainer";
+      } else {
+        window.location.href = "/dashboard/client";
+      }
     }
+  }
+
+  // Mock authentication function
+  function mockLogin(email, password) {
+    // Check against demo credentials
+    for (const [role, creds] of Object.entries(demoCredentials)) {
+      if (creds.email === email && creds.password === password) {
+        return {
+          success: true,
+          user: {
+            id: creds.uid || `user_${Date.now()}`,
+            email: creds.email,
+            firstName: creds.name.split(' ')[0],
+            lastName: creds.name.split(' ')[1] || '',
+            role: creds.role,
+            profileImageUrl: creds.profileImageUrl,
+            isAuthenticated: true,
+            loginTime: new Date().toISOString(),
+          }
+        };
+      }
+    }
+    return { success: false, error: "Invalid email or password" };
   }
 
   // Handle form submission
@@ -209,84 +283,119 @@ const description =
     const password = formData.get("password");
 
     try {
-      // Call real backend API
-      const response = await authApi.login({
-        email: email as string,
-        password: password as string,
-      });
+      // Use mock authentication
+      const response = mockLogin(email, password);
 
-      // Store user data in localStorage (for compatibility with existing code)
-      localStorage.setItem(
-        "fitpro_user",
-        JSON.stringify({
-          id: response.user.id,
-          email: response.user.email,
-          firstName: response.user.firstName,
-          lastName: response.user.lastName,
-          role: response.user.role,
-          profileImageUrl: response.user.profileImageUrl,
-          isAuthenticated: true,
-          loginTime: new Date().toISOString(),
-        })
-      );
+      if (response.success) {
+        // Store user data in localStorage
+        localStorage.setItem("fitpro_user", JSON.stringify(response.user));
 
-      // Redirect to dashboard
-      redirectToDashboard(response.user.role);
+        // Set mock access token for admin authentication
+        const mockToken = `mock_token_${response.user.id}_${Date.now()}`;
+        localStorage.setItem("fitpro_access_token", mockToken);
+
+        // Show success notification
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+        notification.textContent = `Welcome back, ${response.user.firstName}!`;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.remove();
+        }, 2000);
+
+        // Redirect to dashboard
+        setTimeout(() => {
+          redirectToDashboard(response.user.role);
+        }, 1000);
+      } else {
+        showError(response.error);
+        setLoading(false);
+      }
     } catch (error) {
       console.error("Login error:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Login failed. Please check your credentials and try again.";
-      showError(errorMessage);
+      showError("Login failed. Please try again.");
       setLoading(false);
     }
   });
 
   // Demo login buttons
-  demoClientBtn?.addEventListener("click", async () => {
+  demoClientBtn?.addEventListener("click", () => {
     setLoading(true);
-    try {
-      const response = await authApi.login(demoCredentials.client);
-      localStorage.setItem(
-        "fitpro_user",
-        JSON.stringify({
-          id: response.user.id,
-          email: response.user.email,
-          firstName: response.user.firstName,
-          lastName: response.user.lastName,
-          role: response.user.role,
-          profileImageUrl: response.user.profileImageUrl,
-          isAuthenticated: true,
-          loginTime: new Date().toISOString(),
-        })
-      );
-      redirectToDashboard(response.user.role);
-    } catch (error) {
+    const response = mockLogin(demoCredentials.client.email, demoCredentials.client.password);
+
+    if (response.success) {
+      localStorage.setItem("fitpro_user", JSON.stringify(response.user));
+
+      // Set mock access token for admin authentication
+      const mockToken = `mock_token_${response.user.id}_${Date.now()}`;
+      localStorage.setItem("fitpro_access_token", mockToken);
+
+      // Show success notification
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      notification.textContent = `Welcome back, ${response.user.firstName}!`;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+        redirectToDashboard(response.user.role);
+      }, 1000);
+    } else {
       showError("Demo login failed. Please try manual login.");
       setLoading(false);
     }
   });
 
-  demoTrainerBtn?.addEventListener("click", async () => {
+  demoTrainerBtn?.addEventListener("click", () => {
     setLoading(true);
-    try {
-      const response = await authApi.login(demoCredentials.trainer);
-      localStorage.setItem(
-        "fitpro_user",
-        JSON.stringify({
-          id: response.user.id,
-          email: response.user.email,
-          firstName: response.user.firstName,
-          lastName: response.user.lastName,
-          role: response.user.role,
-          profileImageUrl: response.user.profileImageUrl,
-          isAuthenticated: true,
-          loginTime: new Date().toISOString(),
-        })
-      );
-      redirectToDashboard(response.user.role);
-    } catch (error) {
+    const response = mockLogin(demoCredentials.trainer.email, demoCredentials.trainer.password);
+
+    if (response.success) {
+      localStorage.setItem("fitpro_user", JSON.stringify(response.user));
+
+      // Set mock access token for admin authentication
+      const mockToken = `mock_token_${response.user.id}_${Date.now()}`;
+      localStorage.setItem("fitpro_access_token", mockToken);
+
+      // Show success notification
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      notification.textContent = `Welcome back, ${response.user.firstName}!`;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+        redirectToDashboard(response.user.role);
+      }, 1000);
+    } else {
+      showError("Demo login failed. Please try manual login.");
+      setLoading(false);
+    }
+  });
+
+  demoAdminBtn?.addEventListener("click", () => {
+    setLoading(true);
+    const response = mockLogin(demoCredentials.admin.email, demoCredentials.admin.password);
+
+    if (response.success) {
+      localStorage.setItem("fitpro_user", JSON.stringify(response.user));
+
+      // Set mock access token for admin authentication
+      const mockToken = `mock_token_${response.user.id}_${Date.now()}`;
+      localStorage.setItem("fitpro_access_token", mockToken);
+
+      // Show success notification
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      notification.textContent = `Welcome back, ${response.user.firstName}!`;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+        redirectToDashboard(response.user.role);
+      }, 1000);
+    } else {
       showError("Demo login failed. Please try manual login.");
       setLoading(false);
     }

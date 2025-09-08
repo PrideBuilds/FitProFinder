@@ -6,16 +6,16 @@ const config = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './src/database/development.sqlite'
+      filename: './src/database/development.sqlite',
     },
     useNullAsDefault: true,
     migrations: {
       directory: './src/database/migrations',
-      extension: 'js'
+      extension: 'js',
     },
     seeds: {
-      directory: './src/database/seeds'
-    }
+      directory: './src/database/seeds',
+    },
   },
 
   test: {
@@ -29,15 +29,15 @@ const config = {
     },
     migrations: {
       directory: './src/database/migrations',
-      extension: 'js'
+      extension: 'js',
     },
     seeds: {
-      directory: './src/database/seeds'
+      directory: './src/database/seeds',
     },
     pool: {
       min: 1,
-      max: 5
-    }
+      max: 5,
+    },
   },
 
   staging: {
@@ -48,37 +48,39 @@ const config = {
       database: process.env.DB_NAME,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
+      ssl:
+        process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
     },
     migrations: {
       directory: './src/database/migrations',
-      extension: 'js'
+      extension: 'js',
     },
     seeds: {
-      directory: './src/database/seeds'
+      directory: './src/database/seeds',
     },
     pool: {
       min: 2,
-      max: 20
-    }
+      max: 20,
+    },
   },
 
   production: {
     client: 'postgresql',
     connection: {
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
+      ssl:
+        process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
     },
     migrations: {
       directory: './src/database/migrations',
-      extension: 'js'
+      extension: 'js',
     },
     seeds: {
-      directory: './src/database/seeds'
+      directory: './src/database/seeds',
     },
     pool: {
       min: 5,
-      max: 30
+      max: 30,
     },
     acquireConnectionTimeout: 60000,
     createTimeoutMillis: 30000,
@@ -86,8 +88,8 @@ const config = {
     idleTimeoutMillis: 30000,
     reapIntervalMillis: 1000,
     createRetryIntervalMillis: 100,
-    propagateCreateError: false
-  }
+    propagateCreateError: false,
+  },
 };
 
-export default config; 
+export default config;

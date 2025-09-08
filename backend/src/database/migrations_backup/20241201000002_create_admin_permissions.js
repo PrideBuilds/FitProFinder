@@ -1,6 +1,6 @@
-export const up = async (knex) => {
+export const up = async knex => {
   // Create admin permissions table
-  await knex.schema.createTable('admin_permissions', (table) => {
+  await knex.schema.createTable('admin_permissions', table => {
     table.string('id', 36).primary();
     table.string('user_id', 36).notNullable();
     table.string('permission_level', 20).notNullable(); // super_admin, admin, moderator
@@ -12,9 +12,17 @@ export const up = async (knex) => {
     table.timestamps(true, true);
 
     // Foreign keys
-    table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE');
-    table.foreign('granted_by').references('id').inTable('users').onDelete('SET NULL');
-    
+    table
+      .foreign('user_id')
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE');
+    table
+      .foreign('granted_by')
+      .references('id')
+      .inTable('users')
+      .onDelete('SET NULL');
+
     // Indexes
     table.index(['user_id']);
     table.index(['permission_level']);
@@ -22,7 +30,7 @@ export const up = async (knex) => {
   });
 
   // Create admin activity log
-  await knex.schema.createTable('admin_activity_log', (table) => {
+  await knex.schema.createTable('admin_activity_log', table => {
     table.string('id', 36).primary();
     table.string('admin_id', 36).notNullable();
     table.string('action', 100).notNullable(); // e.g., 'user_created', 'user_deleted', 'permissions_granted'
@@ -34,8 +42,12 @@ export const up = async (knex) => {
     table.timestamp('created_at').defaultTo(knex.fn.now());
 
     // Foreign keys
-    table.foreign('admin_id').references('id').inTable('users').onDelete('CASCADE');
-    
+    table
+      .foreign('admin_id')
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE');
+
     // Indexes
     table.index(['admin_id']);
     table.index(['action']);
@@ -44,20 +56,20 @@ export const up = async (knex) => {
   });
 
   // Update users table to add admin-specific fields
-  await knex.schema.table('users', (table) => {
+  await knex.schema.table('users', table => {
     table.timestamp('admin_since'); // When they became an admin
     table.string('admin_level', 20); // super_admin, admin, moderator, null
     table.json('admin_notes'); // Internal notes about this user
   });
 };
 
-export const down = async (knex) => {
-  await knex.schema.table('users', (table) => {
+export const down = async knex => {
+  await knex.schema.table('users', table => {
     table.dropColumn('admin_since');
     table.dropColumn('admin_level');
     table.dropColumn('admin_notes');
   });
-  
+
   await knex.schema.dropTableIfExists('admin_activity_log');
   await knex.schema.dropTableIfExists('admin_permissions');
-}; 
+};

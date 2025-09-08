@@ -8,7 +8,8 @@ class CalendarService {
     this.oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5000/api/calendar/oauth/callback'
+      process.env.GOOGLE_REDIRECT_URI ||
+        'http://localhost:5000/api/calendar/oauth/callback'
     );
 
     this.calendar = google.calendar({ version: 'v3', auth: this.oauth2Client });
@@ -18,14 +19,14 @@ class CalendarService {
   generateAuthUrl(trainerId) {
     const scopes = [
       'https://www.googleapis.com/auth/calendar',
-      'https://www.googleapis.com/auth/calendar.events'
+      'https://www.googleapis.com/auth/calendar.events',
     ];
 
     return this.oauth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: scopes,
       state: trainerId, // Pass trainer ID in state parameter
-      prompt: 'consent' // Force consent screen to get refresh token
+      prompt: 'consent', // Force consent screen to get refresh token
     });
   }
 
@@ -33,7 +34,7 @@ class CalendarService {
   async handleOAuthCallback(code, trainerId) {
     try {
       const { tokens } = await this.oauth2Client.getAccessToken(code);
-      
+
       // Set credentials for this session
       this.oauth2Client.setCredentials(tokens);
 
@@ -47,9 +48,8 @@ class CalendarService {
       return {
         success: true,
         calendars,
-        integration: tokens
+        integration: tokens,
       };
-
     } catch (error) {
       logger.error('Error handling OAuth callback:', error);
       throw new Error('Failed to connect Google Calendar');
@@ -73,7 +73,7 @@ class CalendarService {
       is_active: true,
       connected_at: new Date().toISOString(),
       created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
 
     // Check if integration already exists
@@ -87,7 +87,7 @@ class CalendarService {
         .update({
           ...integration,
           id: undefined, // Don't update ID
-          created_at: existing.created_at // Keep original created_at
+          created_at: existing.created_at, // Keep original created_at
         });
     } else {
       await db('calendar_integrations').insert(integration);
@@ -125,51 +125,65 @@ class CalendarService {
 
       // Get trainer's calendar integration
       const integration = await db('calendar_integrations')
-        .where({ trainer_id: booking.trainer_id, provider: 'google', is_active: true })
+        .where({
+          trainer_id: booking.trainer_id,
+          provider: 'google',
+          is_active: true,
+        })
         .first();
 
       if (!integration || !integration.create_events_in_external) {
-        logger.info(`No active Google Calendar integration for trainer ${booking.trainer_id}`);
+        logger.info(
+          `No active Google Calendar integration for trainer ${booking.trainer_id}`
+        );
         return null;
       }
 
       // Set up OAuth client with stored tokens
       await this.refreshTokenIfNeeded(integration);
-      
+
       this.oauth2Client.setCredentials({
         access_token: integration.access_token,
-        refresh_token: integration.refresh_token
+        refresh_token: integration.refresh_token,
       });
 
       // Create event
       const startTime = new Date(booking.scheduled_at);
-      const endTime = new Date(startTime.getTime() + booking.duration_minutes * 60000);
+      const endTime = new Date(
+        startTime.getTime() + booking.duration_minutes * 60000
+      );
 
-      const eventTitle = this.formatEventTitle(integration.event_title_template, booking);
-      const eventDescription = this.formatEventDescription(integration.event_description_template, booking);
+      const eventTitle = this.formatEventTitle(
+        integration.event_title_template,
+        booking
+      );
+      const eventDescription = this.formatEventDescription(
+        integration.event_description_template,
+        booking
+      );
 
       const event = {
         summary: eventTitle,
         description: eventDescription,
         start: {
           dateTime: startTime.toISOString(),
-          timeZone: 'America/Los_Angeles' // Should be configurable
+          timeZone: 'America/Los_Angeles', // Should be configurable
         },
         end: {
           dateTime: endTime.toISOString(),
-          timeZone: 'America/Los_Angeles'
+          timeZone: 'America/Los_Angeles',
         },
-        attendees: integration.include_client_contact ? [
-          { email: booking.client_email }
-        ] : [],
+        attendees: integration.include_client_contact
+          ? [{ email: booking.client_email }]
+          : [],
         visibility: integration.event_visibility || 'private',
         reminders: {
           useDefault: false,
           overrides: [
             { method: 'email', minutes: 24 * 60 }, // 1 day before
-            { method: 'popup', minutes: 30 } // 30 minutes before
-          ]
-        }
+            { method: 'popup', minutes: 30 }, // 30 minutes before
+          ],
+        },
       };
 
       // Add location for in-person sessions
@@ -182,24 +196,25 @@ class CalendarService {
         event.conferenceData = {
           createRequest: {
             requestId: `booking-${bookingId}`,
-            conferenceSolutionKey: { type: 'hangoutsMeet' }
-          }
+            conferenceSolutionKey: { type: 'hangoutsMeet' },
+          },
         };
       }
 
       const createdEvent = await this.calendar.events.insert({
         calendarId: integration.calendar_id,
         resource: event,
-        conferenceDataVersion: booking.session_format === 'online' ? 1 : 0
+        conferenceDataVersion: booking.session_format === 'online' ? 1 : 0,
       });
 
       // Update booking with Google Calendar event ID
       await db('bookings')
         .where('id', bookingId)
         .update({
-          meeting_link: booking.session_format === 'online' && createdEvent.data.hangoutLink 
-            ? createdEvent.data.hangoutLink 
-            : booking.meeting_link
+          meeting_link:
+            booking.session_format === 'online' && createdEvent.data.hangoutLink
+              ? createdEvent.data.hangoutLink
+              : booking.meeting_link,
         });
 
       // Update availability slot with sync info
@@ -207,13 +222,14 @@ class CalendarService {
         .where({ trainer_id: booking.trainer_id })
         .update({
           google_calendar_event_id: createdEvent.data.id,
-          last_synced_at: new Date().toISOString()
+          last_synced_at: new Date().toISOString(),
         });
 
-      logger.info(`Created Google Calendar event ${createdEvent.data.id} for booking ${bookingId}`);
-      
-      return createdEvent.data;
+      logger.info(
+        `Created Google Calendar event ${createdEvent.data.id} for booking ${bookingId}`
+      );
 
+      return createdEvent.data;
     } catch (error) {
       logger.error('Error creating calendar event:', error);
       throw error;
@@ -227,15 +243,22 @@ class CalendarService {
       if (!booking) return null;
 
       const integration = await db('calendar_integrations')
-        .where({ trainer_id: booking.trainer_id, provider: 'google', is_active: true })
+        .where({
+          trainer_id: booking.trainer_id,
+          provider: 'google',
+          is_active: true,
+        })
         .first();
 
       if (!integration) return null;
 
       // Find the calendar event (this is simplified - in practice you'd store the event ID)
       // For now, we'll just log the update
-      logger.info(`Would update Google Calendar event for booking ${bookingId}`, changes);
-      
+      logger.info(
+        `Would update Google Calendar event for booking ${bookingId}`,
+        changes
+      );
+
       return true;
     } catch (error) {
       logger.error('Error updating calendar event:', error);
@@ -250,14 +273,20 @@ class CalendarService {
       if (!booking) return null;
 
       const integration = await db('calendar_integrations')
-        .where({ trainer_id: booking.trainer_id, provider: 'google', is_active: true })
+        .where({
+          trainer_id: booking.trainer_id,
+          provider: 'google',
+          is_active: true,
+        })
         .first();
 
       if (!integration) return null;
 
       // Find and delete the calendar event
-      logger.info(`Would delete Google Calendar event for booking ${bookingId}`);
-      
+      logger.info(
+        `Would delete Google Calendar event for booking ${bookingId}`
+      );
+
       return true;
     } catch (error) {
       logger.error('Error deleting calendar event:', error);
@@ -269,41 +298,40 @@ class CalendarService {
   async refreshTokenIfNeeded(integration) {
     const expiresAt = new Date(integration.token_expires_at);
     const now = new Date();
-    
+
     // Refresh if token expires in less than 5 minutes
     if (expiresAt.getTime() - now.getTime() < 5 * 60 * 1000) {
       try {
         this.oauth2Client.setCredentials({
-          refresh_token: integration.refresh_token
+          refresh_token: integration.refresh_token,
         });
 
         const { credentials } = await this.oauth2Client.refreshAccessToken();
-        
+
         // Update stored tokens
         await db('calendar_integrations')
           .where('id', integration.id)
           .update({
             access_token: credentials.access_token,
             token_expires_at: new Date(credentials.expiry_date).toISOString(),
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
           });
 
         // Update local object
         integration.access_token = credentials.access_token;
-        integration.token_expires_at = new Date(credentials.expiry_date).toISOString();
-
+        integration.token_expires_at = new Date(
+          credentials.expiry_date
+        ).toISOString();
       } catch (error) {
         logger.error('Error refreshing Google Calendar token:', error);
-        
+
         // Mark integration as inactive if refresh fails
-        await db('calendar_integrations')
-          .where('id', integration.id)
-          .update({
-            is_active: false,
-            last_sync_error: error.message,
-            updated_at: new Date().toISOString()
-          });
-        
+        await db('calendar_integrations').where('id', integration.id).update({
+          is_active: false,
+          last_sync_error: error.message,
+          updated_at: new Date().toISOString(),
+        });
+
         throw new Error('Google Calendar integration needs to be reconnected');
       }
     }
@@ -316,10 +344,16 @@ class CalendarService {
     }
 
     return template
-      .replace('{client_name}', `${booking.client_first_name} ${booking.client_last_name}`)
+      .replace(
+        '{client_name}',
+        `${booking.client_first_name} ${booking.client_last_name}`
+      )
       .replace('{session_type}', booking.session_type_name)
       .replace('{business_name}', booking.business_name)
-      .replace('{trainer_name}', `${booking.trainer_first_name} ${booking.trainer_last_name}`);
+      .replace(
+        '{trainer_name}',
+        `${booking.trainer_first_name} ${booking.trainer_last_name}`
+      );
   }
 
   // Format event description using template
@@ -329,7 +363,10 @@ class CalendarService {
     }
 
     return template
-      .replace('{client_name}', `${booking.client_first_name} ${booking.client_last_name}`)
+      .replace(
+        '{client_name}',
+        `${booking.client_first_name} ${booking.client_last_name}`
+      )
       .replace('{session_type}', booking.session_type_name)
       .replace('{duration}', booking.duration_minutes)
       .replace('{format}', booking.session_format)
@@ -349,22 +386,24 @@ class CalendarService {
       }
 
       await this.refreshTokenIfNeeded(integration);
-      
+
       this.oauth2Client.setCredentials({
         access_token: integration.access_token,
-        refresh_token: integration.refresh_token
+        refresh_token: integration.refresh_token,
       });
 
       // Get events from the last sync time
       const timeMin = integration.last_sync_at || new Date().toISOString();
-      const timeMax = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days ahead
+      const timeMax = new Date(
+        Date.now() + 30 * 24 * 60 * 60 * 1000
+      ).toISOString(); // 30 days ahead
 
       const events = await this.calendar.events.list({
         calendarId: integration.calendar_id,
         timeMin,
         timeMax,
         singleEvents: true,
-        orderBy: 'startTime'
+        orderBy: 'startTime',
       });
 
       // Process events and create blocked time slots
@@ -376,13 +415,15 @@ class CalendarService {
           // Create blocked availability slot for this external event
           const startTime = new Date(event.start.dateTime);
           const endTime = new Date(event.end.dateTime);
-          const dayOfWeek = startTime.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+          const dayOfWeek = startTime
+            .toLocaleDateString('en-US', { weekday: 'long' })
+            .toLowerCase();
 
           // Check if we already have a blocked slot for this event
           const existingSlot = await db('availability_slots')
             .where({
               trainer_id: trainerId,
-              google_calendar_event_id: event.id
+              google_calendar_event_id: event.id,
             })
             .first();
 
@@ -400,42 +441,41 @@ class CalendarService {
               notes: `Blocked by external calendar event: ${event.summary}`,
               last_synced_at: new Date().toISOString(),
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
+              updated_at: new Date().toISOString(),
             });
-            
+
             blockedSlots++;
           }
         }
       }
 
       // Update last sync time
-      await db('calendar_integrations')
-        .where('id', integration.id)
-        .update({
-          last_sync_at: new Date().toISOString(),
-          last_sync_status: 'success',
-          last_sync_error: null,
-          updated_at: new Date().toISOString()
-        });
+      await db('calendar_integrations').where('id', integration.id).update({
+        last_sync_at: new Date().toISOString(),
+        last_sync_status: 'success',
+        last_sync_error: null,
+        updated_at: new Date().toISOString(),
+      });
 
-      logger.info(`Synced ${externalEvents.length} events, created ${blockedSlots} blocked slots for trainer ${trainerId}`);
+      logger.info(
+        `Synced ${externalEvents.length} events, created ${blockedSlots} blocked slots for trainer ${trainerId}`
+      );
 
       return {
         success: true,
         eventsProcessed: externalEvents.length,
-        slotsBlocked: blockedSlots
+        slotsBlocked: blockedSlots,
       };
-
     } catch (error) {
       logger.error('Error syncing calendar:', error);
-      
+
       // Update sync status
       await db('calendar_integrations')
         .where({ trainer_id: trainerId, provider: 'google' })
         .update({
           last_sync_status: 'error',
           last_sync_error: error.message,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         });
 
       throw error;
@@ -450,7 +490,7 @@ class CalendarService {
         .update({
           is_active: false,
           disconnected_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         });
 
       return { success: true };
@@ -461,4 +501,4 @@ class CalendarService {
   }
 }
 
-export default new CalendarService(); 
+export default new CalendarService();

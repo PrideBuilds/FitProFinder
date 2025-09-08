@@ -11,8 +11,8 @@ export interface Props {
   requireRole?: string;
 }
 
-const { 
-  title, 
+const {
+  title,
   description = "Find and book verified fitness and wellness professionals in your area",
   showHeader = true,
   showFooter = true,
@@ -29,7 +29,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} | FitProFinder</title>
-    
+
     <!-- SEO Meta Tags -->
     <meta property="og:title" content={`${title} | FitProFinder`} />
     <meta property="og:description" content={description} />
@@ -37,52 +37,86 @@ const {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={`${title} | FitProFinder`} />
     <meta name="twitter:description" content={description} />
-    
+
     <!-- Stripe.js for payment processing -->
     <script src="https://js.stripe.com/v3/"></script>
-    
+
     <!-- Auth and Role Protection Script -->
     {(requireAuth || requireRole) && (
       <script define:vars={{ requireAuth, requireRole }}>
         // Check authentication status on page load
         document.addEventListener('DOMContentLoaded', async () => {
+          console.log('BaseLayout: Starting authentication check');
           const token = localStorage.getItem('fitpro_access_token');
-          
+          const userData = localStorage.getItem('fitpro_user');
+
+          console.log('BaseLayout: Token exists:', !!token);
+          console.log('BaseLayout: UserData exists:', !!userData);
+          console.log('BaseLayout: RequireAuth:', requireAuth);
+          console.log('BaseLayout: RequireRole:', requireRole);
+
           if (requireAuth && !token) {
+            console.log('BaseLayout: No token, redirecting to login');
             window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
             return;
           }
-          
+
           if (requireRole && token) {
             try {
-              const response = await fetch('http://localhost:5000/api/auth/me', {
+              console.log('BaseLayout: Checking role requirements');
+              // For mock authentication, check localStorage directly
+              if (token.startsWith('mock_token_') && userData) {
+                const user = JSON.parse(userData);
+                console.log('BaseLayout: User role:', user.role);
+                console.log('BaseLayout: Required role:', requireRole);
+
+                // Check role access
+                if (requireRole === 'admin' && user.role !== 'admin') {
+                  console.log('BaseLayout: Role mismatch, redirecting to home');
+                  alert('Access denied. Admin privileges required.');
+                  window.location.href = '/';
+                  return;
+                }
+
+                // Additional admin level checking could be added here
+                if (requireRole === 'super_admin' && user.role !== 'admin') {
+                  alert('Access denied. Super admin privileges required.');
+                  window.location.href = '/';
+                  return;
+                }
+
+                return; // Mock auth successful
+              }
+
+              // For real tokens, call the API
+              const response = await fetch('http://localhost:3000/api/auth/me', {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 }
               });
-              
+
               if (!response.ok) {
                 throw new Error('Authentication failed');
               }
-              
+
               const data = await response.json();
               const userRole = data.data?.user?.role;
               const adminLevel = data.data?.user?.admin_level;
-              
+
               // Check role access
               if (requireRole === 'admin' && userRole !== 'admin') {
                 alert('Access denied. Admin privileges required.');
                 window.location.href = '/';
                 return;
               }
-              
+
               // Additional admin level checking could be added here
               if (requireRole === 'super_admin' && adminLevel !== 'super_admin') {
                 alert('Access denied. Super admin privileges required.');
                 window.location.href = '/';
                 return;
               }
-              
+
             } catch (error) {
               console.error('Auth check failed:', error);
               if (requireAuth) {
@@ -125,7 +159,7 @@ const {
                   <a href="/auth/login" class="text-gray-700 hover:text-blue-600 font-medium">Log in</a>
                   <a href="/auth/signup" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">Sign up</a>
                 </div>
-                
+
                 <!-- Logged in state -->
                 <div id="loggedIn" class="hidden flex items-center space-x-4">
                   <div class="flex items-center space-x-3">
@@ -159,7 +193,7 @@ const {
             <a href="/search" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">Find Trainers</a>
             <a href="/how-it-works" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">How it Works</a>
             <a href="/for-trainers" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">For Trainers</a>
-            
+
             <!-- Mobile Auth Section -->
             <div id="mobileAuthNavigation" class="pt-4 border-t border-gray-200">
               <!-- Default (not logged in) state -->
@@ -167,7 +201,7 @@ const {
                 <a href="/auth/login" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">Log in</a>
                 <a href="/auth/signup" class="block px-3 py-2 text-base font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">Sign up</a>
               </div>
-              
+
               <!-- Logged in state -->
               <div id="mobileLoggedIn" class="hidden space-y-2">
                 <!-- User info -->
@@ -178,7 +212,7 @@ const {
                     <div id="mobileNavUserRole" class="text-sm text-gray-500"></div>
                   </div>
                 </div>
-                
+
                 <!-- Mobile navigation items -->
                 <a href="/messages" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">Messages</a>
                 <a href="/bookings" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">My Bookings</a>
@@ -271,7 +305,7 @@ const {
     if (mobileMenuBtn && mobileMenu) {
       mobileMenuBtn.addEventListener('click', () => {
         const isMenuHidden = mobileMenu.classList.contains('hidden');
-        
+
         if (!isMenuHidden) {
           // Close menu
           mobileMenu.classList.add('hidden');
@@ -313,7 +347,7 @@ const {
   // Check authentication status and update navigation
   function updateNavigation() {
     const userData = localStorage.getItem('fitpro_user');
-    
+
     // Desktop elements
     const notLoggedIn = document.getElementById('notLoggedIn');
     const loggedIn = document.getElementById('loggedIn');
@@ -321,7 +355,7 @@ const {
     const navUserName = document.getElementById('navUserName');
     const dashboardLink = document.getElementById('dashboardLink');
     const navLogoutBtn = document.getElementById('navLogoutBtn');
-    
+
     // Mobile elements
     const mobileNotLoggedIn = document.getElementById('mobileNotLoggedIn');
     const mobileLoggedIn = document.getElementById('mobileLoggedIn');
@@ -338,11 +372,11 @@ const {
           // Show logged in state - Desktop
           if (notLoggedIn) notLoggedIn.classList.add('hidden');
           if (loggedIn) loggedIn.classList.remove('hidden');
-          
+
           // Show logged in state - Mobile
           if (mobileNotLoggedIn) mobileNotLoggedIn.classList.add('hidden');
           if (mobileLoggedIn) mobileLoggedIn.classList.remove('hidden');
-          
+
           // Update user info - Desktop
           if (navUserAvatar && navUserAvatar instanceof HTMLImageElement) {
             navUserAvatar.src = user.profileImageUrl || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
@@ -353,7 +387,7 @@ const {
           if (dashboardLink && dashboardLink instanceof HTMLAnchorElement) {
             dashboardLink.href = user.role === 'trainer' ? '/dashboard/trainer' : '/dashboard/client';
           }
-          
+
           // Update user info - Mobile
           if (mobileNavUserAvatar && mobileNavUserAvatar instanceof HTMLImageElement) {
             mobileNavUserAvatar.src = user.profileImageUrl || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
@@ -367,7 +401,7 @@ const {
           if (mobileDashboardLink && mobileDashboardLink instanceof HTMLAnchorElement) {
             mobileDashboardLink.href = user.role === 'trainer' ? '/dashboard/trainer' : '/dashboard/client';
           }
-          
+
           // Add admin link if user is admin
           if (user.role === 'admin') {
             // Desktop admin link
@@ -375,24 +409,24 @@ const {
             adminLinkDesktop.href = '/admin';
             adminLinkDesktop.className = 'text-red-600 hover:text-red-700 font-medium';
             adminLinkDesktop.innerHTML = '🛡️ Admin';
-            
+
             // Insert admin link before dashboard link in desktop nav
             if (dashboardLink && dashboardLink.parentNode) {
               dashboardLink.parentNode.insertBefore(adminLinkDesktop, dashboardLink);
             }
-            
+
             // Mobile admin link
             const adminLinkMobile = document.createElement('a');
             adminLinkMobile.href = '/admin';
             adminLinkMobile.className = 'block px-3 py-2 text-base font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md';
             adminLinkMobile.textContent = '🛡️ Admin Dashboard';
-            
+
             // Insert admin link before dashboard link in mobile nav
             if (mobileDashboardLink && mobileDashboardLink.parentNode) {
               mobileDashboardLink.parentNode.insertBefore(adminLinkMobile, mobileDashboardLink);
             }
           }
-          
+
           // Add logout handlers
           const logoutHandler = async () => {
             try {
@@ -441,4 +475,4 @@ const {
       if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
     }
   });
-</script> 
+</script>

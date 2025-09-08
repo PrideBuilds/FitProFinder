@@ -38,45 +38,32 @@ const developmentFormat = combine(
   simple()
 );
 
-const productionFormat = combine(
-  timestamp(),
-  errors({ stack: true }),
-  json()
-);
+const productionFormat = combine(timestamp(), errors({ stack: true }), json());
 
 // Determine format based on environment
-const logFormat = process.env.NODE_ENV === 'production' 
-  ? productionFormat 
-  : developmentFormat;
+const logFormat =
+  process.env.NODE_ENV === 'production' ? productionFormat : developmentFormat;
 
 // Define transports
 const transports = [
   // Console transport
   new winston.transports.Console({
     level: level(),
-    format: logFormat
+    format: logFormat,
   }),
-  
+
   // File transport for errors
   new winston.transports.File({
     filename: 'logs/error.log',
     level: 'error',
-    format: combine(
-      timestamp(),
-      errors({ stack: true }),
-      json()
-    )
+    format: combine(timestamp(), errors({ stack: true }), json()),
   }),
-  
+
   // File transport for all logs
   new winston.transports.File({
     filename: 'logs/combined.log',
-    format: combine(
-      timestamp(),
-      errors({ stack: true }),
-      json()
-    )
-  })
+    format: combine(timestamp(), errors({ stack: true }), json()),
+  }),
 ];
 
 // Create logger instance
@@ -85,12 +72,12 @@ export const logger = winston.createLogger({
   levels,
   format: logFormat,
   transports,
-  exitOnError: false
+  exitOnError: false,
 });
 
 // Stream object for Morgan HTTP logging
 export const stream = {
-  write: (message) => logger.http(message.trim())
+  write: message => logger.http(message.trim()),
 };
 
-export default logger; 
+export default logger;

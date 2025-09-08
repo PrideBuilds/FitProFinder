@@ -1,13 +1,15 @@
 import bcrypt from 'bcrypt';
 
-export const seed = async (knex) => {
+export const seed = async knex => {
   // Check if admin already exists
-  const adminExists = await knex('users').where({ email: 'admin@fitprofinder.com' }).first();
-  
+  const adminExists = await knex('users')
+    .where({ email: 'admin@fitprofinder.com' })
+    .first();
+
   if (!adminExists) {
     const adminId = crypto.randomUUID();
     const hashedPassword = await bcrypt.hash('admin123456', 12);
-    
+
     // Create master admin user
     await knex('users').insert({
       id: adminId,
@@ -21,7 +23,7 @@ export const seed = async (knex) => {
       is_verified: true,
       is_active: true,
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date(),
     });
 
     // Create admin permissions
@@ -35,12 +37,12 @@ export const seed = async (knex) => {
         admins: ['create', 'read', 'update', 'delete'],
         system: ['read', 'update', 'delete'],
         analytics: ['read'],
-        logs: ['read', 'delete']
+        logs: ['read', 'delete'],
       }),
       granted_by: adminId, // Self-granted for initial admin
       is_active: true,
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date(),
     });
 
     console.log('✅ Master admin created:');
@@ -51,4 +53,4 @@ export const seed = async (knex) => {
   } else {
     console.log('ℹ️  Admin user already exists, skipping creation');
   }
-}; 
+};

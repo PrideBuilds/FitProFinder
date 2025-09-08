@@ -1,12 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { TokenManager, getCurrentUserRole } from "../utils/api.js";
+import TrainerClientChat from "../components/TrainerClientChat.tsx";
 
-// Check authentication using the proper token check
-const hasToken =
-  typeof window !== "undefined" ? TokenManager.getAccessToken() : null;
+// Mock user data - in production, this would come from authentication
+const currentUser = {
+  uid: "trainer_123", // or client_xxx
+  name: "Coach Taylor",
+  avatar: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&h=100&fit=crop&crop=face"
+};
 
-// For server-side rendering, we'll handle auth check on the client side
+// Test users for demonstration
+const testUsers = [
+  { uid: "trainer_123", name: "Coach Taylor", role: "trainer", avatar: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&h=100&fit=crop&crop=face" },
+  { uid: "client_456", name: "Sarah Johnson", role: "client", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face" },
+  { uid: "trainer_789", name: "Mike Wilson", role: "trainer", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" },
+  { uid: "client_101", name: "Emily Davis", role: "client", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" }
+];
+
+const APP_ID = import.meta.env.PUBLIC_COMETCHAT_APP_ID || "28168615443c8a22";
+const REGION = import.meta.env.PUBLIC_COMETCHAT_REGION || "US";
+
 const pageTitle = "Messages - FitProFinder";
 ---
 
@@ -159,315 +172,132 @@ const pageTitle = "Messages - FitProFinder";
           <div class='flex items-center'>
             <h1 class='text-2xl font-bold text-gray-900'>Messages</h1>
           </div>
-          <div class='flex items-center space-x-4'>
-            <!-- Connection status indicator -->
-            <div id='connection-status' class='flex items-center space-x-2'>
-              <div
-                id='status-indicator'
-                class='w-2 h-2 bg-gray-400 rounded-full'
-              >
-              </div>
-              <span id='status-text' class='text-sm text-gray-500'
-                >Connecting...</span
-              >
-            </div>
-          </div>
         </div>
       </div>
     </div>
 
     <!-- Main content -->
     <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
-      <div
-        class='bg-white rounded-lg shadow-sm border border-gray-200 h-[calc(100vh-140px)]'
-      >
-        <div class='flex h-full'>
-          <!-- Conversations sidebar -->
-          <div class='w-1/3 border-r border-gray-200 flex flex-col'>
-            <!-- Search bar -->
-            <div class='p-4 border-b border-gray-200'>
-              <div class='relative'>
-                <input
-                  type='text'
-                  id='conversation-search'
-                  placeholder='Search conversations...'
-                  class='w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                />
-                <div
-                  class='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'
-                >
-                  <svg
-                    class='h-5 w-5 text-gray-400'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      stroke-width='2'
-                      d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <!-- Conversations list -->
-            <div class='flex-1 overflow-y-auto'>
-              <div id='conversations-list' class='divide-y divide-gray-200'>
-                <!-- Loading state -->
-                <div
-                  id='conversations-loading'
-                  class='p-4 text-center text-gray-500'
-                >
-                  <div
-                    class='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2'
-                  >
-                  </div>
-                  Loading conversations...
-                </div>
-
-                <!-- Empty state -->
-                <div
-                  id='conversations-empty'
-                  class='hidden p-8 text-center text-gray-500'
-                >
-                  <svg
-                    class='mx-auto h-12 w-12 text-gray-400 mb-4'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      stroke-width='2'
-                      d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-4.126-.98L3 20l1.98-5.874A8.955 8.955 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z'
-                    ></path>
-                  </svg>
-                  <h3 class='text-lg font-medium text-gray-900 mb-2'>
-                    No conversations yet
-                  </h3>
-                  <p class='text-gray-500'>
-                    Start a conversation with a trainer or client to get
-                    started.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Chat area -->
-          <div class='flex-1 flex flex-col'>
-            <!-- Welcome state -->
-            <div
-              id='welcome-state'
-              class='flex-1 flex items-center justify-center'
+      <!-- User Selection for Testing -->
+      <div class='mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4'>
+        <h3 class='text-lg font-semibold text-blue-900 mb-3'>🧪 Test User Login</h3>
+        <p class='text-blue-700 mb-4'>Select a test user to simulate different roles and test the messaging system:</p>
+        <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3'>
+          {testUsers.map((user) => (
+            <button
+              id={`user-${user.uid}`}
+              class='flex items-center space-x-3 p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors text-left cursor-pointer'
+              data-uid={user.uid}
+              data-name={user.name}
+              data-avatar={user.avatar}
+              data-role={user.role}
             >
-              <div class='text-center'>
-                <svg
-                  class='mx-auto h-16 w-16 text-gray-400 mb-4'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    stroke-width='2'
-                    d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-4.126-.98L3 20l1.98-5.874A8.955 8.955 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z'
-                  ></path>
-                </svg>
-                <h3 class='text-xl font-medium text-gray-900 mb-2'>
-                  Welcome to Messages
-                </h3>
-                <p class='text-gray-500'>
-                  Select a conversation to start messaging
-                </p>
+              <img src={user.avatar} alt={user.name} class='w-10 h-10 rounded-full object-cover' />
+              <div>
+                <div class='font-medium text-gray-900'>{user.name}</div>
+                <div class='text-sm text-gray-500 capitalize'>{user.role}</div>
               </div>
-            </div>
+            </button>
+          ))}
+        </div>
+        <div class='mt-3 text-sm text-blue-600'>
+          <strong>Current User:</strong> <span id='current-user-display'>Coach Taylor (trainer)</span>
+        </div>
+      </div>
 
-            <!-- Chat interface (hidden by default) -->
-            <div id='chat-interface' class='hidden chat-container'>
-              <!-- Chat header -->
-              <div class='chat-header p-4 border-b border-gray-200 bg-gray-50'>
-                <div class='flex items-center justify-between'>
-                  <div class='flex items-center space-x-3'>
-                    <img
-                      id='chat-avatar'
-                      src=''
-                      alt=''
-                      class='w-10 h-10 rounded-full bg-gray-300'
-                    />
-                    <div>
-                      <h3 id='chat-name' class='font-medium text-gray-900'></h3>
-                      <div class='flex items-center space-x-2'>
-                        <div
-                          id='chat-online-status'
-                          class='w-2 h-2 bg-gray-400 rounded-full'
-                        >
-                        </div>
-                        <span
-                          id='chat-status-text'
-                          class='text-sm text-gray-500'>Offline</span
-                        >
-                        <span
-                          id='typing-indicator'
-                          class='hidden text-sm text-blue-500 italic'
-                          >typing...</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class='flex items-center space-x-2'>
-                    <!-- Chat actions -->
-                    <button
-                      id='chat-info-btn'
-                      class='p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100'
-                    >
-                      <svg
-                        class='w-5 h-5'
-                        fill='none'
-                        stroke='currentColor'
-                        viewBox='0 0 24 24'
-                      >
-                        <path
-                          stroke-linecap='round'
-                          stroke-linejoin='round'
-                          stroke-width='2'
-                          d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-                        ></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Messages area -->
-              <div class='messages-area' id='messages-container'>
-                <!-- Messages will be loaded here -->
-              </div>
-
-              <!-- Message input -->
-              <div
-                class='chat-input-area p-4 border-t border-gray-200 bg-white'
-              >
-                <div class='flex items-end space-x-3'>
-                  <!-- File upload button -->
-                  <button
-                    id='file-upload-btn'
-                    class='p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100'
-                  >
-                    <svg
-                      class='w-5 h-5'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
-                        d='M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13'
-                      ></path>
-                    </svg>
-                  </button>
-
-                  <!-- Message input -->
-                  <div class='flex-1'>
-                    <textarea
-                      id='message-input'
-                      placeholder='Type a message...'
-                      rows='1'
-                      class='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'
-                    ></textarea>
-                  </div>
-
-                  <!-- Send button -->
-                  <button
-                    id='send-btn'
-                    disabled
-                    class='px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed'
-                  >
-                    <svg
-                      class='w-5 h-5'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
-                        d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8'></path>
-                    </svg>
-                  </button>
-                </div>
-
-                <!-- File upload area (hidden) -->
-                <input
-                  type='file'
-                  id='file-input'
-                  multiple
-                  accept='image/*,application/pdf,.doc,.docx,.txt'
-                  class='hidden'
-                />
-
-                <!-- File preview area -->
-                <div
-                  id='file-preview'
-                  class='hidden mt-3 p-3 bg-gray-50 rounded-lg'
-                >
-                  <div class='flex items-center justify-between mb-2'>
-                    <span class='text-sm font-medium text-gray-700'
-                      >Selected files:</span
-                    >
-                    <button
-                      id='clear-files-btn'
-                      class='text-sm text-red-600 hover:text-red-800'
-                      >Clear all</button
-                    >
-                  </div>
-                  <div id='file-list' class='space-y-2'></div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <!-- Chat Interface -->
+      <div
+        class='bg-white rounded-lg shadow-sm border border-gray-200 h-[calc(100vh-280px)]'
+      >
+        <div id="chat-container">
+          <TrainerClientChat
+            client:only="react"
+            appId={APP_ID}
+            region={REGION}
+            uid={currentUser.uid}
+            name={currentUser.name}
+            avatar={currentUser.avatar}
+          />
         </div>
       </div>
     </div>
+
+    <!-- User Selection Script -->
+    <script>
+      let selectedUser = {
+        uid: 'trainer_123',
+        name: 'Coach Taylor',
+        avatar: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&h=100&fit=crop&crop=face',
+        role: 'trainer'
+      };
+
+      function selectUser(uid, name, avatar, role) {
+        console.log('selectUser called with:', { uid, name, avatar, role });
+        selectedUser = { uid, name, avatar, role };
+
+        // Update display
+        document.getElementById('current-user-display').textContent = `${name} (${role})`;
+
+        // Update button styles
+        document.querySelectorAll('[id^="user-"]').forEach(btn => {
+          btn.classList.remove('bg-blue-100', 'border-blue-400');
+          btn.classList.add('bg-white', 'border-blue-200');
+        });
+
+        // Highlight selected user
+        const selectedBtn = document.getElementById(`user-${uid}`);
+        if (selectedBtn) {
+          selectedBtn.classList.remove('bg-white', 'border-blue-200');
+          selectedBtn.classList.add('bg-blue-100', 'border-blue-400');
+        }
+
+        // Show notification
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+        notification.textContent = `Switched to ${name} (${role})`;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.remove();
+        }, 3000);
+
+        // Update the React component props by updating the data attributes
+        const chatComponent = document.querySelector('trainer-client-chat');
+        if (chatComponent) {
+          chatComponent.setAttribute('uid', uid);
+          chatComponent.setAttribute('name', name);
+          chatComponent.setAttribute('avatar', avatar);
+        }
+
+        console.log('Selected user:', selectedUser);
+      }
+
+
+      // Initialize with first user selected
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM loaded, initializing...');
+
+        // Add event listeners to all user buttons
+        document.querySelectorAll('[id^="user-"]').forEach(button => {
+          button.addEventListener('click', function() {
+            const uid = this.getAttribute('data-uid');
+            const name = this.getAttribute('data-name');
+            const avatar = this.getAttribute('data-avatar');
+            const role = this.getAttribute('data-role');
+
+            console.log('Button clicked:', { uid, name, avatar, role });
+            selectUser(uid, name, avatar, role);
+          });
+        });
+
+        // Initialize with first user selected (highlight the button)
+        const firstButton = document.getElementById('user-trainer_123');
+        if (firstButton) {
+          firstButton.classList.remove('bg-white', 'border-blue-200');
+          firstButton.classList.add('bg-blue-100', 'border-blue-400');
+        }
+      });
+    </script>
   </div>
 
-  <!-- Include the messaging JavaScript -->
-  <script>
-    // Client-side authentication check
-    document.addEventListener("DOMContentLoaded", () => {
-      // Check for access token
-      const token = localStorage.getItem("fitpro_access_token");
-
-      if (!token) {
-        // No token found, redirect to login
-        window.location.href =
-          "/auth/login?redirect=" +
-          encodeURIComponent(window.location.pathname);
-        return;
-      }
-
-      // Get user role from token
-      let userRole = null;
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        userRole = payload.role || null;
-      } catch (error) {
-        console.error("Invalid token format:", error);
-        window.location.href =
-          "/auth/login?redirect=" +
-          encodeURIComponent(window.location.pathname);
-        return;
-      }
-
-      console.log("User authenticated with role:", userRole);
-    });
-  </script>
-  <script src='/src/scripts/messaging.ts' type='module'></script>
 </BaseLayout>

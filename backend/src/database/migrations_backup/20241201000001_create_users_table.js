@@ -2,11 +2,11 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
-  return knex.schema.createTable('users', (table) => {
+exports.up = function (knex) {
+  return knex.schema.createTable('users', table => {
     // Primary key - use string for SQLite compatibility
     table.string('id', 36).primary();
-    
+
     // Basic user info
     table.string('email', 255).notNullable().unique();
     table.string('password_hash', 255).notNullable();
@@ -15,24 +15,24 @@ exports.up = function(knex) {
     table.string('role', 20).notNullable().defaultTo('client');
     table.string('phone_number', 20);
     table.text('profile_image_url');
-    
+
     // Verification & status
     table.boolean('is_verified').defaultTo(false);
     table.boolean('is_active').defaultTo(true);
     table.timestamp('email_verified_at');
-    
+
     // Authentication tokens
     table.string('email_verification_token');
     table.string('password_reset_token');
     table.timestamp('password_reset_expires');
-    
+
     // Last login tracking
     table.timestamp('last_login_at');
     table.string('last_login_ip', 45);
-    
+
     // Timestamps
     table.timestamps(true, true);
-    
+
     // Indexes
     table.index(['email']);
     table.index(['role']);
@@ -45,6 +45,6 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('users');
-}; 
+};

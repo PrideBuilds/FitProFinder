@@ -5,7 +5,7 @@ import ApiError from '../utils/ApiError.js';
 
 // Initialize Stripe with your secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_...', {
-  apiVersion: '2023-10-16'
+  apiVersion: '2023-10-16',
 });
 
 class PaymentService {
@@ -20,14 +20,18 @@ class PaymentService {
    */
   calculatePaymentBredown(amount) {
     const totalAmountCents = Math.round(amount * 100);
-    
+
     // Calculate Stripe fees
-    const stripeFee = Math.round(totalAmountCents * this.stripeFeePercentage) + this.stripeFeeFixed;
-    
+    const stripeFee =
+      Math.round(totalAmountCents * this.stripeFeePercentage) +
+      this.stripeFeeFixed;
+
     // Calculate platform fee on the remaining amount after Stripe fees
     const amountAfterStripe = totalAmountCents - stripeFee;
-    const platformFee = Math.round(amountAfterStripe * this.platformFeePercentage);
-    
+    const platformFee = Math.round(
+      amountAfterStripe * this.platformFeePercentage
+    );
+
     // Trainer receives the rest
     const trainerAmount = amountAfterStripe - platformFee;
 
@@ -35,7 +39,7 @@ class PaymentService {
       totalAmount: totalAmountCents / 100,
       platformFee: platformFee / 100,
       trainerAmount: trainerAmount / 100,
-      stripeFee: stripeFee / 100
+      stripeFee: stripeFee / 100,
     };
   }
 
@@ -60,8 +64,8 @@ class PaymentService {
         name: `${user.firstName} ${user.lastName}`,
         metadata: {
           user_id: user.id,
-          platform: 'fitprofinder'
-        }
+          platform: 'fitprofinder',
+        },
       });
 
       // Save customer ID to database
@@ -81,7 +85,7 @@ class PaymentService {
    */
   async createPaymentIntent(bookingData, user) {
     const trx = await knex.transaction();
-    
+
     try {
       // Get session type details
       const sessionType = await trx('session_types')
@@ -108,11 +112,11 @@ class PaymentService {
           session_type_id: bookingData.sessionTypeId,
           trainer_id: bookingData.trainerId,
           client_id: user.id,
-          platform: 'fitprofinder'
+          platform: 'fitprofinder',
         },
         automatic_payment_methods: {
-          enabled: true
-        }
+          enabled: true,
+        },
       });
 
       // Create payment record
@@ -126,7 +130,7 @@ class PaymentService {
         amount: breakdown.totalAmount,
         platform_fee: breakdown.platformFee,
         trainer_amount: breakdown.trainerAmount,
-        status: 'pending'
+        status: 'pending',
       });
 
       await trx.commit();
@@ -135,20 +139,19 @@ class PaymentService {
         paymentIntent: {
           id: paymentIntent.id,
           client_secret: paymentIntent.client_secret,
-          amount: breakdown.totalAmount
+          amount: breakdown.totalAmount,
         },
         breakdown,
-        paymentId
+        paymentId,
       };
-
     } catch (error) {
       await trx.rollback();
       console.error('Error creating payment intent:', error);
-      
+
       if (error instanceof ApiError) {
         throw error;
       }
-      
+
       throw new ApiError('Failed to create payment intent', 500);
     }
   }
@@ -158,10 +161,11 @@ class PaymentService {
    */
   async confirmPayment(paymentIntentId, bookingId) {
     const trx = await knex.transaction();
-    
+
     try {
       // Retrieve payment intent from Stripe
-      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      const paymentIntent =
+        await stripe.paymentIntents.retrieve(paymentIntentId);
 
       if (paymentIntent.status !== 'succeeded') {
         throw new ApiError('Payment not successful', 400);
@@ -175,34 +179,31 @@ class PaymentService {
           status: 'succeeded',
           payment_method_details: JSON.stringify({
             payment_method: paymentIntent.payment_method,
-            charges: paymentIntent.charges?.data?.[0]
+            charges: paymentIntent.charges?.data?.[0],
           }),
-          receipt_url: paymentIntent.charges?.data?.[0]?.receipt_url
+          receipt_url: paymentIntent.charges?.data?.[0]?.receipt_url,
         });
 
       // Update booking status to confirmed
-      await trx('bookings')
-        .where('id', bookingId)
-        .update({
-          status: 'confirmed',
-          payment_status: 'paid'
-        });
+      await trx('bookings').where('id', bookingId).update({
+        status: 'confirmed',
+        payment_status: 'paid',
+      });
 
       await trx.commit();
 
       return {
         success: true,
-        receipt_url: paymentIntent.charges?.data?.[0]?.receipt_url
+        receipt_url: paymentIntent.charges?.data?.[0]?.receipt_url,
       };
-
     } catch (error) {
       await trx.rollback();
       console.error('Error confirming payment:', error);
-      
+
       if (error instanceof ApiError) {
         throw error;
       }
-      
+
       throw new ApiError('Failed to confirm payment', 500);
     }
   }
@@ -210,14 +211,16 @@ class PaymentService {
   /**
    * Process a refund
    */
-  async processRefund(paymentId, amount = null, reason = 'requested_by_customer') {
+  async processRefund(
+    paymentId,
+    amount = null,
+    reason = 'requested_by_customer'
+  ) {
     const trx = await knex.transaction();
-    
+
     try {
       // Get payment record
-      const payment = await trx('payments')
-        .where('id', paymentId)
-        .first();
+      const payment = await trx('payments').where('id', paymentId).first();
 
       if (!payment) {
         throw new ApiError('Payment not found', 404);
@@ -229,7 +232,7 @@ class PaymentService {
 
       // Calculate refund amount (full refund if not specified)
       const refundAmount = amount || payment.amount;
-      
+
       if (refundAmount > payment.amount - payment.refunded_amount) {
         throw new ApiError('Refund amount exceeds available amount', 400);
       }
@@ -241,31 +244,29 @@ class PaymentService {
         reason: reason,
         metadata: {
           payment_id: paymentId,
-          platform: 'fitprofinder'
-        }
+          platform: 'fitprofinder',
+        },
       });
 
       // Update payment record
-      const newRefundedAmount = parseFloat(payment.refunded_amount) + refundAmount;
-      const newStatus = newRefundedAmount >= payment.amount ? 'refunded' : 'partially_refunded';
+      const newRefundedAmount =
+        parseFloat(payment.refunded_amount) + refundAmount;
+      const newStatus =
+        newRefundedAmount >= payment.amount ? 'refunded' : 'partially_refunded';
 
-      await trx('payments')
-        .where('id', paymentId)
-        .update({
-          status: newStatus,
-          refunded_amount: newRefundedAmount,
-          refund_reason: reason,
-          refunded_at: new Date()
-        });
+      await trx('payments').where('id', paymentId).update({
+        status: newStatus,
+        refunded_amount: newRefundedAmount,
+        refund_reason: reason,
+        refunded_at: new Date(),
+      });
 
       // Update booking status if fully refunded
       if (newStatus === 'refunded') {
-        await trx('bookings')
-          .where('id', payment.booking_id)
-          .update({
-            status: 'cancelled',
-            payment_status: 'refunded'
-          });
+        await trx('bookings').where('id', payment.booking_id).update({
+          status: 'cancelled',
+          payment_status: 'refunded',
+        });
       }
 
       await trx.commit();
@@ -274,17 +275,16 @@ class PaymentService {
         success: true,
         refund_id: refund.id,
         refunded_amount: refundAmount,
-        total_refunded: newRefundedAmount
+        total_refunded: newRefundedAmount,
       };
-
     } catch (error) {
       await trx.rollback();
       console.error('Error processing refund:', error);
-      
+
       if (error instanceof ApiError) {
         throw error;
       }
-      
+
       throw new ApiError('Failed to process refund', 500);
     }
   }
@@ -292,7 +292,10 @@ class PaymentService {
   /**
    * Get payment history for a user
    */
-  async getPaymentHistory(userId, { page = 1, limit = 10, status = null } = {}) {
+  async getPaymentHistory(
+    userId,
+    { page = 1, limit = 10, status = null } = {}
+  ) {
     try {
       let query = knex('payments')
         .select([
@@ -301,12 +304,24 @@ class PaymentService {
           'session_types.name as session_name',
           'trainer_profiles.business_name',
           'trainer_users.first_name as trainer_first_name',
-          'trainer_users.last_name as trainer_last_name'
+          'trainer_users.last_name as trainer_last_name',
         ])
         .leftJoin('bookings', 'payments.booking_id', 'bookings.id')
-        .leftJoin('session_types', 'bookings.session_type_id', 'session_types.id')
-        .leftJoin('trainer_profiles', 'payments.trainer_id', 'trainer_profiles.user_id')
-        .leftJoin('users as trainer_users', 'payments.trainer_id', 'trainer_users.id')
+        .leftJoin(
+          'session_types',
+          'bookings.session_type_id',
+          'session_types.id'
+        )
+        .leftJoin(
+          'trainer_profiles',
+          'payments.trainer_id',
+          'trainer_profiles.user_id'
+        )
+        .leftJoin(
+          'users as trainer_users',
+          'payments.trainer_id',
+          'trainer_users.id'
+        )
         .where('payments.client_id', userId)
         .orderBy('payments.created_at', 'desc');
 
@@ -319,7 +334,7 @@ class PaymentService {
 
       const totalCount = await knex('payments')
         .where('client_id', userId)
-        .modify((builder) => {
+        .modify(builder => {
           if (status) {
             builder.where('status', status);
           }
@@ -333,10 +348,9 @@ class PaymentService {
           page,
           limit,
           total: parseInt(totalCount.count),
-          pages: Math.ceil(parseInt(totalCount.count) / limit)
-        }
+          pages: Math.ceil(parseInt(totalCount.count) / limit),
+        },
       };
-
     } catch (error) {
       console.error('Error getting payment history:', error);
       throw new ApiError('Failed to retrieve payment history', 500);
@@ -346,15 +360,22 @@ class PaymentService {
   /**
    * Get earnings for a trainer
    */
-  async getTrainerEarnings(trainerId, { startDate = null, endDate = null } = {}) {
+  async getTrainerEarnings(
+    trainerId,
+    { startDate = null, endDate = null } = {}
+  ) {
     try {
       let query = knex('payments')
         .select([
           knex.raw('SUM(trainer_amount) as total_earnings'),
           knex.raw('SUM(platform_fee) as total_fees'),
           knex.raw('COUNT(*) as total_sessions'),
-          knex.raw('SUM(CASE WHEN trainer_paid = 1 THEN trainer_amount ELSE 0 END) as paid_amount'),
-          knex.raw('SUM(CASE WHEN trainer_paid = 0 THEN trainer_amount ELSE 0 END) as pending_amount')
+          knex.raw(
+            'SUM(CASE WHEN trainer_paid = 1 THEN trainer_amount ELSE 0 END) as paid_amount'
+          ),
+          knex.raw(
+            'SUM(CASE WHEN trainer_paid = 0 THEN trainer_amount ELSE 0 END) as pending_amount'
+          ),
         ])
         .where('trainer_id', trainerId)
         .where('status', 'succeeded');
@@ -362,7 +383,7 @@ class PaymentService {
       if (startDate) {
         query = query.where('created_at', '>=', startDate);
       }
-      
+
       if (endDate) {
         query = query.where('created_at', '<=', endDate);
       }
@@ -374,9 +395,8 @@ class PaymentService {
         total_fees: parseFloat(earnings.total_fees) || 0,
         total_sessions: parseInt(earnings.total_sessions) || 0,
         paid_amount: parseFloat(earnings.paid_amount) || 0,
-        pending_amount: parseFloat(earnings.pending_amount) || 0
+        pending_amount: parseFloat(earnings.pending_amount) || 0,
       };
-
     } catch (error) {
       console.error('Error getting trainer earnings:', error);
       throw new ApiError('Failed to retrieve trainer earnings', 500);
@@ -388,11 +408,12 @@ class PaymentService {
    */
   async savePaymentMethod(userId, paymentMethodId, isDefault = false) {
     const trx = await knex.transaction();
-    
+
     try {
       // Get payment method details from Stripe
-      const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
-      
+      const paymentMethod =
+        await stripe.paymentMethods.retrieve(paymentMethodId);
+
       if (paymentMethod.type !== 'card') {
         throw new ApiError('Only card payment methods are supported', 400);
       }
@@ -401,7 +422,7 @@ class PaymentService {
 
       // Attach payment method to customer
       await stripe.paymentMethods.attach(paymentMethodId, {
-        customer: customerId
+        customer: customerId,
       });
 
       // If this is the default, unset other defaults
@@ -430,8 +451,9 @@ class PaymentService {
         billing_line2: paymentMethod.billing_details?.address?.line2,
         billing_city: paymentMethod.billing_details?.address?.city,
         billing_state: paymentMethod.billing_details?.address?.state,
-        billing_postal_code: paymentMethod.billing_details?.address?.postal_code,
-        billing_country: paymentMethod.billing_details?.address?.country
+        billing_postal_code:
+          paymentMethod.billing_details?.address?.postal_code,
+        billing_country: paymentMethod.billing_details?.address?.country,
       };
 
       await trx('payment_methods').insert(paymentMethodRecord);
@@ -439,18 +461,17 @@ class PaymentService {
       await trx.commit();
 
       return paymentMethodRecord;
-
     } catch (error) {
       await trx.rollback();
       console.error('Error saving payment method:', error);
-      
+
       if (error instanceof ApiError) {
         throw error;
       }
-      
+
       throw new ApiError('Failed to save payment method', 500);
     }
   }
 }
 
-export default new PaymentService(); 
+export default new PaymentService();

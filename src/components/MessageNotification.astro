@@ -33,11 +33,9 @@
 </div>
 
 <script>
-  import { messagingApi } from "../utils/api";
-  import socketService from "../utils/socket";
-
+  // Simplified message notification for CometChat integration
+  // CometChat handles unread counts internally, so we just show a basic notification
   class MessageNotificationManager {
-    private unreadCount = 0;
     private badgeElement: HTMLElement | null = null;
     private countElement: HTMLElement | null = null;
 
@@ -48,76 +46,13 @@
     }
 
     private async init() {
-      // Check if user is authenticated
-      const userData = localStorage.getItem("fitpro_user");
-      if (!userData) return;
-
-      try {
-        const user = JSON.parse(userData);
-        if (!user.isAuthenticated) return;
-
-        // Load initial unread count
-        await this.loadUnreadCount();
-
-        // Set up socket listeners for real-time updates
-        this.setupSocketListeners();
-      } catch (error) {
-        console.error("Failed to initialize message notifications:", error);
-      }
+      // For now, hide the unread badge since CometChat handles this internally
+      // In the future, you could integrate with CometChat's unread count API
+      this.hideBadge();
     }
 
-    private async loadUnreadCount() {
-      try {
-        const response = await messagingApi.getConversations(1, 50);
-        const conversations = response.conversations;
-
-        // Calculate total unread count
-        const userData = localStorage.getItem("fitpro_user");
-        if (!userData) return;
-
-        const user = JSON.parse(userData);
-        this.unreadCount = conversations.reduce((total, conversation) => {
-          return (
-            total +
-            (user.role === "client"
-              ? conversation.clientUnreadCount
-              : conversation.trainerUnreadCount)
-          );
-        }, 0);
-
-        this.updateBadge();
-      } catch (error) {
-        console.error("Failed to load unread count:", error);
-      }
-    }
-
-    private setupSocketListeners() {
-      socketService.on("new_message", (message) => {
-        // Only increment if message is not from current user
-        const userData = localStorage.getItem("fitpro_user");
-        if (userData) {
-          const user = JSON.parse(userData);
-          if (message.senderId !== user.id) {
-            this.unreadCount++;
-            this.updateBadge();
-          }
-        }
-      });
-
-      socketService.on("messages_read", (data) => {
-        // Decrease unread count when messages are read
-        this.loadUnreadCount(); // Reload to get accurate count
-      });
-    }
-
-    private updateBadge() {
-      if (!this.badgeElement || !this.countElement) return;
-
-      if (this.unreadCount > 0) {
-        this.badgeElement.classList.remove("hidden");
-        this.countElement.textContent =
-          this.unreadCount > 99 ? "99+" : this.unreadCount.toString();
-      } else {
+    private hideBadge() {
+      if (this.badgeElement) {
         this.badgeElement.classList.add("hidden");
       }
     }

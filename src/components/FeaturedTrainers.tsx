@@ -16,17 +16,18 @@ export default function FeaturedTrainers() {
         address: '123 Fitness Ave',
         city: 'Los Angeles',
         state: 'CA',
-        zipCode: '90210'
+        zipCode: '90210',
       },
       rating: 4.8,
       reviewCount: 42,
       isVerified: true,
-      profileImageUrl: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=150&h=150&fit=crop&crop=face',
+      profileImageUrl:
+        'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=150&h=150&fit=crop&crop=face',
       specialties: ['Personal Training', 'Weight Loss', 'Strength Training'],
       subscriptionTier: 'premium',
       isAcceptingClients: true,
       offersOnline: true,
-      offersInPerson: true
+      offersInPerson: true,
     },
     {
       id: '2',
@@ -39,17 +40,18 @@ export default function FeaturedTrainers() {
         address: '456 Wellness St',
         city: 'San Francisco',
         state: 'CA',
-        zipCode: '94102'
+        zipCode: '94102',
       },
       rating: 4.9,
       reviewCount: 38,
       isVerified: true,
-      profileImageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+      profileImageUrl:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       specialties: ['Yoga', 'Meditation', 'Pilates'],
       subscriptionTier: 'basic',
       isAcceptingClients: true,
       offersOnline: false,
-      offersInPerson: true
+      offersInPerson: true,
     },
     {
       id: '3',
@@ -62,17 +64,18 @@ export default function FeaturedTrainers() {
         address: '789 Health Blvd',
         city: 'Austin',
         state: 'TX',
-        zipCode: '73301'
+        zipCode: '73301',
       },
       rating: 4.7,
       reviewCount: 29,
       isVerified: true,
-      profileImageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face',
+      profileImageUrl:
+        'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face',
       specialties: ['Nutrition Coaching', 'Weight Loss', 'Sports Nutrition'],
       subscriptionTier: 'premium',
       isAcceptingClients: true,
       offersOnline: true,
-      offersInPerson: true
+      offersInPerson: true,
     },
     {
       id: '4',
@@ -85,17 +88,18 @@ export default function FeaturedTrainers() {
         address: '321 Ocean Dr',
         city: 'Miami',
         state: 'FL',
-        zipCode: '33139'
+        zipCode: '33139',
       },
       rating: 4.6,
       reviewCount: 56,
       isVerified: true,
-      profileImageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face',
+      profileImageUrl:
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face',
       specialties: ['HIIT', 'Cardio', 'Military Fitness'],
       subscriptionTier: 'basic',
       isAcceptingClients: true,
       offersOnline: true,
-      offersInPerson: true
+      offersInPerson: true,
     },
     {
       id: '5',
@@ -108,17 +112,22 @@ export default function FeaturedTrainers() {
         address: '654 Mountain View',
         city: 'Denver',
         state: 'CO',
-        zipCode: '80202'
+        zipCode: '80202',
       },
       rating: 4.9,
       reviewCount: 73,
       isVerified: true,
-      profileImageUrl: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=150&h=150&fit=crop&crop=face',
-      specialties: ['Sports Performance', 'Strength Training', 'Injury Prevention'],
+      profileImageUrl:
+        'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=150&h=150&fit=crop&crop=face',
+      specialties: [
+        'Sports Performance',
+        'Strength Training',
+        'Injury Prevention',
+      ],
       subscriptionTier: 'premium',
       isAcceptingClients: true,
       offersOnline: false,
-      offersInPerson: true
+      offersInPerson: true,
     },
     {
       id: '6',
@@ -131,18 +140,23 @@ export default function FeaturedTrainers() {
         address: '987 Pine St',
         city: 'Seattle',
         state: 'WA',
-        zipCode: '98101'
+        zipCode: '98101',
       },
       rating: 4.8,
       reviewCount: 34,
       isVerified: true,
-      profileImageUrl: 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=150&h=150&fit=crop&crop=face',
-      specialties: ['Injury Recovery', 'Corrective Exercise', 'Physical Therapy'],
+      profileImageUrl:
+        'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=150&h=150&fit=crop&crop=face',
+      specialties: [
+        'Injury Recovery',
+        'Corrective Exercise',
+        'Physical Therapy',
+      ],
       subscriptionTier: 'premium',
       isAcceptingClients: true,
       offersOnline: true,
-      offersInPerson: true
-    }
+      offersInPerson: true,
+    },
   ];
 
   const [trainers, setTrainers] = useState<Trainer[]>(testTrainers as any);
@@ -158,9 +172,11 @@ export default function FeaturedTrainers() {
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-        <h3 className="text-lg font-medium text-red-800 mb-2">Unable to Load Trainers</h3>
+        <h3 className="text-lg font-medium text-red-800 mb-2">
+          Unable to Load Trainers
+        </h3>
         <p className="text-red-600 mb-4">{error}</p>
-        <button 
+        <button
           onClick={() => window.location.reload()}
           className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
         >
@@ -174,7 +190,10 @@ export default function FeaturedTrainers() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 animate-pulse">
+          <div
+            key={i}
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 animate-pulse"
+          >
             <div className="flex items-center space-x-4 mb-4">
               <div className="w-16 h-16 bg-gray-200 rounded-full"></div>
               <div className="flex-1">
@@ -195,16 +214,19 @@ export default function FeaturedTrainers() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {trainers.map((trainer) => (
-        <div 
-          key={trainer.id} 
+      {trainers.map(trainer => (
+        <div
+          key={trainer.id}
           className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-          onClick={() => window.location.href = `/trainers/${trainer.id}`}
+          onClick={() => (window.location.href = `/trainers/${trainer.id}`)}
         >
           <div className="p-6">
             <div className="flex items-center space-x-4 mb-4">
               <img
-                src={trainer.profileImageUrl || `https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=150&h=150&fit=crop&crop=face`}
+                src={
+                  trainer.profileImageUrl ||
+                  `https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=150&h=150&fit=crop&crop=face`
+                }
                 alt={`${trainer.firstName} ${trainer.lastName}`}
                 className="w-16 h-16 rounded-full object-cover"
               />
@@ -224,17 +246,18 @@ export default function FeaturedTrainers() {
                   <div className="flex items-center">
                     <span className="text-yellow-400">★</span>
                     <span className="text-sm text-gray-600 ml-1">
-                      {trainer.rating.toFixed(1)} ({trainer.reviewCount} reviews)
+                      {trainer.rating.toFixed(1)} ({trainer.reviewCount}{' '}
+                      reviews)
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <p className="text-gray-600 text-sm mb-4 line-clamp-3">
               {trainer.bio}
             </p>
-            
+
             <div className="mb-4">
               <div className="flex flex-wrap gap-1">
                 {trainer.specialties.slice(0, 3).map((specialty, index) => (
@@ -252,7 +275,7 @@ export default function FeaturedTrainers() {
                 )}
               </div>
             </div>
-            
+
             <div className="flex items-center justify-between mb-4">
               <div className="text-sm text-gray-600">
                 📍 {trainer.location.city}, {trainer.location.state}
@@ -261,10 +284,10 @@ export default function FeaturedTrainers() {
                 {trainer.experienceYears} years exp.
               </div>
             </div>
-            
+
             <div className="flex space-x-2">
-              <button 
-                onClick={(e) => {
+              <button
+                onClick={e => {
                   e.stopPropagation();
                   window.location.href = `/trainers/${trainer.id}`;
                 }}
@@ -272,8 +295,8 @@ export default function FeaturedTrainers() {
               >
                 View Profile
               </button>
-              <button 
-                onClick={(e) => {
+              <button
+                onClick={e => {
                   e.stopPropagation();
                   window.location.href = `/messages?trainer=${trainer.id}`;
                 }}
@@ -285,18 +308,26 @@ export default function FeaturedTrainers() {
           </div>
         </div>
       ))}
-      
+
       <div className="col-span-full text-center mt-8">
-        <a 
-          href="/search" 
+        <a
+          href="/search"
           className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
         >
           View All Trainers
-          <svg className="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+          <svg
+            className="ml-2 -mr-1 w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
           </svg>
         </a>
       </div>
     </div>
   );
-} 
+}

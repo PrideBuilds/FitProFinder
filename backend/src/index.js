@@ -17,7 +17,6 @@ import trainerRoutes from './routes/trainers.js';
 import bookingRoutes from './routes/bookings.js';
 import calendarRoutes from './routes/calendar.js';
 import paymentRoutes from './routes/payments.js';
-import messageRoutes from './routes/messages.js';
 import adminRoutes from './routes/admin.js';
 // import reviewRoutes from './routes/reviews.js';
 // import searchRoutes from './routes/search.js';
@@ -27,9 +26,6 @@ import adminRoutes from './routes/admin.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './utils/logger.js';
 // import { setupSwagger } from './utils/swagger.js';
-
-// Import services
-import socketService from './services/socketService.js';
 
 const app = express();
 const server = createServer(app);
@@ -46,28 +42,32 @@ const limiter = rateLimit({
 });
 
 // Middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      fontSrc: ["'self'", "fonts.gstatic.com"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        fontSrc: ["'self'", 'fonts.gstatic.com'],
+      },
     },
-  },
-}));
+  })
+);
 
-app.use(cors({
-  origin: [
-    "http://localhost:4321",
-    "http://localhost:4322", 
-    "http://localhost:4323",
-    "http://localhost:4324",
-    process.env.FRONTEND_URL
-  ].filter(Boolean),
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:4321',
+      'http://localhost:4322',
+      'http://localhost:4323',
+      'http://localhost:4324',
+      process.env.FRONTEND_URL,
+    ].filter(Boolean),
+    credentials: true,
+  })
+);
 
 app.use(compression());
 app.use(limiter);
@@ -89,7 +89,7 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
   });
 });
 
@@ -100,16 +100,12 @@ app.use('/api/trainers', trainerRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/payments', paymentRoutes);
-app.use('/api/messages', messageRoutes);
 // app.use('/api/reviews', reviewRoutes);
 // app.use('/api/search', searchRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Setup Swagger documentation
 // setupSwagger(app);
-
-// Initialize Socket.IO messaging service
-socketService.initialize(server);
 
 // Error handling middleware (must be last)
 app.use(errorHandler);
@@ -120,8 +116,8 @@ app.use('*', (req, res) => {
     success: false,
     error: {
       message: `Route ${req.originalUrl} not found`,
-      code: 'NOT_FOUND'
-    }
+      code: 'NOT_FOUND',
+    },
   });
 });
 
@@ -143,7 +139,7 @@ process.on('SIGINT', () => {
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', err => {
   logger.error('Unhandled Promise Rejection:', err);
   server.close(() => {
     process.exit(1);
@@ -151,7 +147,7 @@ process.on('unhandledRejection', (err) => {
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   logger.error('Uncaught Exception:', err);
   process.exit(1);
 });
@@ -165,4 +161,4 @@ server.listen(PORT, () => {
 💾 Database: PostgreSQL
 🔗 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:4321'}
   `);
-}); 
+});

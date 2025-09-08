@@ -2,7 +2,10 @@ import db from '../database/connection.js';
 import { ApiError } from '../middleware/errorHandler.js';
 import { logger } from '../utils/logger.js';
 import bcrypt from 'bcrypt';
-import { logAdminActivity, DEFAULT_PERMISSIONS } from '../middleware/adminAuth.js';
+import {
+  logAdminActivity,
+  DEFAULT_PERMISSIONS,
+} from '../middleware/adminAuth.js';
 
 class AdminService {
   // Dashboard Analytics
@@ -14,14 +17,14 @@ class AdminService {
         conversationStats,
         messageStats,
         recentUsers,
-        recentActivity
+        recentActivity,
       ] = await Promise.all([
         this.getUserStats(),
         this.getTrainerStats(),
         this.getConversationStats(),
         this.getMessageStats(),
         this.getRecentUsers(10),
-        this.getRecentActivity(20)
+        this.getRecentActivity(20),
       ]);
 
       return {
@@ -33,12 +36,12 @@ class AdminService {
           totalConversations: conversationStats.total,
           activeConversations: conversationStats.active,
           totalMessages: messageStats.total,
-          messagesLast24h: messageStats.last24h
+          messagesLast24h: messageStats.last24h,
         },
         userGrowth: await this.getUserGrowthStats(),
         recentUsers,
         recentActivity,
-        systemHealth: await this.getSystemHealth()
+        systemHealth: await this.getSystemHealth(),
       };
     } catch (error) {
       logger.error('Error getting dashboard stats:', error);
@@ -50,7 +53,7 @@ class AdminService {
     const [total, active, byRole] = await Promise.all([
       db('users').count('* as count').first(),
       db('users').where('is_active', true).count('* as count').first(),
-      db('users').select('role').count('* as count').groupBy('role')
+      db('users').select('role').count('* as count').groupBy('role'),
     ]);
 
     return {
@@ -59,31 +62,34 @@ class AdminService {
       byRole: byRole.reduce((acc, item) => {
         acc[item.role] = item.count;
         return acc;
-      }, {})
+      }, {}),
     };
   }
 
   async getTrainerStats() {
     const [total, active] = await Promise.all([
       db('users').where('role', 'trainer').count('* as count').first(),
-      db('users').where({ role: 'trainer', is_active: true }).count('* as count').first()
+      db('users')
+        .where({ role: 'trainer', is_active: true })
+        .count('* as count')
+        .first(),
     ]);
 
     return {
       total: total.count,
-      active: active.count
+      active: active.count,
     };
   }
 
   async getConversationStats() {
     const [total, active] = await Promise.all([
       db('conversations').count('* as count').first(),
-      db('conversations').where('status', 'active').count('* as count').first()
+      db('conversations').where('status', 'active').count('* as count').first(),
     ]);
 
     return {
       total: total.count,
-      active: active.count
+      active: active.count,
     };
   }
 
@@ -93,12 +99,12 @@ class AdminService {
       db('messages')
         .where('created_at', '>', db.raw("datetime('now', '-1 day')"))
         .count('* as count')
-        .first()
+        .first(),
     ]);
 
     return {
       total: total.count,
-      last24h: last24h.count
+      last24h: last24h.count,
     };
   }
 
@@ -107,10 +113,10 @@ class AdminService {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const growth = await db('users')
-      .select(db.raw("DATE(created_at) as date"))
+      .select(db.raw('DATE(created_at) as date'))
       .count('* as count')
       .where('created_at', '>', thirtyDaysAgo)
-      .groupBy(db.raw("DATE(created_at)"))
+      .groupBy(db.raw('DATE(created_at)'))
       .orderBy('date');
 
     return growth;
@@ -118,7 +124,15 @@ class AdminService {
 
   async getRecentUsers(limit = 10) {
     return await db('users')
-      .select('id', 'first_name', 'last_name', 'email', 'role', 'created_at', 'is_active')
+      .select(
+        'id',
+        'first_name',
+        'last_name',
+        'email',
+        'role',
+        'created_at',
+        'is_active'
+      )
       .orderBy('created_at', 'desc')
       .limit(limit);
   }
@@ -135,7 +149,7 @@ class AdminService {
     try {
       const [dbHealth, recentErrors] = await Promise.all([
         this.checkDatabaseHealth(),
-        this.getRecentErrors()
+        this.getRecentErrors(),
       ]);
 
       return {
@@ -143,7 +157,7 @@ class AdminService {
         errors: recentErrors,
         uptime: process.uptime(),
         memory: process.memoryUsage(),
-        timestamp: new Date()
+        timestamp: new Date(),
       };
     } catch (error) {
       return {
@@ -151,7 +165,7 @@ class AdminService {
         errors: [],
         uptime: process.uptime(),
         memory: process.memoryUsage(),
-        timestamp: new Date()
+        timestamp: new Date(),
       };
     }
   }
@@ -174,9 +188,17 @@ class AdminService {
   // User Management
   async getUsers(page = 1, limit = 50, filters = {}) {
     let query = db('users').select(
-      'id', 'email', 'first_name', 'last_name', 'role', 
-      'is_active', 'is_verified', 'created_at', 'last_login_at',
-      'admin_level', 'admin_since'
+      'id',
+      'email',
+      'first_name',
+      'last_name',
+      'role',
+      'is_active',
+      'is_verified',
+      'created_at',
+      'last_login_at',
+      'admin_level',
+      'admin_since'
     );
 
     // Apply filters
@@ -187,7 +209,7 @@ class AdminService {
       query = query.where('is_active', filters.isActive);
     }
     if (filters.search) {
-      query = query.where(function() {
+      query = query.where(function () {
         this.where('email', 'like', `%${filters.search}%`)
           .orWhere('first_name', 'like', `%${filters.search}%`)
           .orWhere('last_name', 'like', `%${filters.search}%`);
@@ -197,7 +219,7 @@ class AdminService {
     const offset = (page - 1) * limit;
     const [users, totalCount] = await Promise.all([
       query.orderBy('created_at', 'desc').limit(limit).offset(offset),
-      db('users').count('* as count').first()
+      db('users').count('* as count').first(),
     ]);
 
     return {
@@ -206,15 +228,13 @@ class AdminService {
         page,
         limit,
         total: totalCount.count,
-        pages: Math.ceil(totalCount.count / limit)
-      }
+        pages: Math.ceil(totalCount.count / limit),
+      },
     };
   }
 
   async getUserById(userId) {
-    const user = await db('users')
-      .where('id', userId)
-      .first();
+    const user = await db('users').where('id', userId).first();
 
     if (!user) {
       throw new ApiError('User not found', 404, 'USER_NOT_FOUND');
@@ -230,7 +250,7 @@ class AdminService {
 
     return {
       ...user,
-      adminPermissions
+      adminPermissions,
     };
   }
 
@@ -248,7 +268,7 @@ class AdminService {
         role: userData.role || 'client',
         phone_number: userData.phoneNumber,
         is_verified: userData.isVerified || false,
-        is_active: true
+        is_active: true,
       };
 
       await db('users').insert(newUser);
@@ -256,7 +276,7 @@ class AdminService {
       // Log activity
       await logAdminActivity(adminId, 'user_created', 'user', userId, {
         email: userData.email,
-        role: userData.role
+        role: userData.role,
       });
 
       return await this.getUserById(userId);
@@ -276,8 +296,10 @@ class AdminService {
     if (updateData.lastName) updates.last_name = updateData.lastName;
     if (updateData.email) updates.email = updateData.email;
     if (updateData.phoneNumber) updates.phone_number = updateData.phoneNumber;
-    if (updateData.isActive !== undefined) updates.is_active = updateData.isActive;
-    if (updateData.isVerified !== undefined) updates.is_verified = updateData.isVerified;
+    if (updateData.isActive !== undefined)
+      updates.is_active = updateData.isActive;
+    if (updateData.isVerified !== undefined)
+      updates.is_verified = updateData.isVerified;
     if (updateData.role) updates.role = updateData.role;
 
     if (Object.keys(updates).length === 0) {
@@ -289,7 +311,7 @@ class AdminService {
     // Log activity
     await logAdminActivity(adminId, 'user_updated', 'user', userId, {
       updates,
-      previousData: { email: user.email, role: user.role }
+      previousData: { email: user.email, role: user.role },
     });
 
     return await this.getUserById(userId);
@@ -303,7 +325,7 @@ class AdminService {
     // Log activity
     await logAdminActivity(adminId, 'user_deleted', 'user', userId, {
       email: user.email,
-      role: user.role
+      role: user.role,
     });
 
     return { message: 'User deleted successfully' };
@@ -312,7 +334,16 @@ class AdminService {
   // Admin Management
   async getAdmins() {
     return await db('users')
-      .select('id', 'email', 'first_name', 'last_name', 'admin_level', 'admin_since', 'created_at', 'last_login_at')
+      .select(
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'admin_level',
+        'admin_since',
+        'created_at',
+        'last_login_at'
+      )
       .where('role', 'admin')
       .orWhereNotNull('admin_level')
       .orderBy('admin_since', 'desc');
@@ -328,7 +359,7 @@ class AdminService {
     const updates = {
       role: 'admin',
       admin_level: level,
-      admin_since: new Date()
+      admin_since: new Date(),
     };
 
     await db('users').where('id', userId).update(updates);
@@ -341,13 +372,13 @@ class AdminService {
       permission_level: level,
       permissions: JSON.stringify(DEFAULT_PERMISSIONS[level]),
       granted_by: adminId,
-      is_active: true
+      is_active: true,
     });
 
     // Log activity
     await logAdminActivity(adminId, 'admin_promoted', 'admin', userId, {
       level,
-      email: user.email
+      email: user.email,
     });
 
     return await this.getUserById(userId);
@@ -367,14 +398,14 @@ class AdminService {
       .where({ user_id: userId, is_active: true })
       .update({
         permission_level: newLevel,
-        permissions: JSON.stringify(DEFAULT_PERMISSIONS[newLevel])
+        permissions: JSON.stringify(DEFAULT_PERMISSIONS[newLevel]),
       });
 
     // Log activity
     await logAdminActivity(adminId, 'admin_level_updated', 'admin', userId, {
       newLevel,
       previousLevel: user.admin_level,
-      email: user.email
+      email: user.email,
     });
 
     return await this.getUserById(userId);
@@ -390,7 +421,7 @@ class AdminService {
     await db('users').where('id', userId).update({
       role: 'client',
       admin_level: null,
-      admin_since: null
+      admin_since: null,
     });
 
     // Deactivate admin permissions
@@ -401,7 +432,7 @@ class AdminService {
     // Log activity
     await logAdminActivity(adminId, 'admin_revoked', 'admin', userId, {
       email: user.email,
-      previousLevel: user.admin_level
+      previousLevel: user.admin_level,
     });
 
     return await this.getUserById(userId);
@@ -410,7 +441,12 @@ class AdminService {
   // Activity Logs
   async getActivityLogs(page = 1, limit = 50, filters = {}) {
     let query = db('admin_activity_log')
-      .select('admin_activity_log.*', 'users.first_name', 'users.last_name', 'users.email')
+      .select(
+        'admin_activity_log.*',
+        'users.first_name',
+        'users.last_name',
+        'users.email'
+      )
       .leftJoin('users', 'admin_activity_log.admin_id', 'users.id');
 
     if (filters.adminId) {
@@ -423,31 +459,42 @@ class AdminService {
       query = query.where('admin_activity_log.target_type', filters.targetType);
     }
     if (filters.dateFrom) {
-      query = query.where('admin_activity_log.created_at', '>=', filters.dateFrom);
+      query = query.where(
+        'admin_activity_log.created_at',
+        '>=',
+        filters.dateFrom
+      );
     }
     if (filters.dateTo) {
-      query = query.where('admin_activity_log.created_at', '<=', filters.dateTo);
+      query = query.where(
+        'admin_activity_log.created_at',
+        '<=',
+        filters.dateTo
+      );
     }
 
     const offset = (page - 1) * limit;
     const [logs, totalCount] = await Promise.all([
-      query.orderBy('admin_activity_log.created_at', 'desc').limit(limit).offset(offset),
-      db('admin_activity_log').count('* as count').first()
+      query
+        .orderBy('admin_activity_log.created_at', 'desc')
+        .limit(limit)
+        .offset(offset),
+      db('admin_activity_log').count('* as count').first(),
     ]);
 
     return {
       logs: logs.map(log => ({
         ...log,
-        details: log.details ? JSON.parse(log.details) : null
+        details: log.details ? JSON.parse(log.details) : null,
       })),
       pagination: {
         page,
         limit,
         total: totalCount.count,
-        pages: Math.ceil(totalCount.count / limit)
-      }
+        pages: Math.ceil(totalCount.count / limit),
+      },
     };
   }
 }
 
-export default new AdminService(); 
+export default new AdminService();

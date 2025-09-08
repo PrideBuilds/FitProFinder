@@ -91,43 +91,50 @@ export const adminAPI = {
   },
 
   // Users
-  async getUsers(page = 1, limit = 50, filters: any = {}): Promise<PaginatedResponse<AdminUser[]>> {
+  async getUsers(
+    page = 1,
+    limit = 50,
+    filters: any = {}
+  ): Promise<PaginatedResponse<AdminUser[]>> {
     const params = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
-      ...filters
+      ...filters,
     });
-    const response = await apiRequest(`/admin/users?${params}`) as any;
+    const response = (await apiRequest(`/admin/users?${params}`)) as any;
     return {
       data: response.users,
-      pagination: response.pagination
+      pagination: response.pagination,
     };
   },
 
   async getUser(id: string): Promise<AdminUser> {
-    const response = await apiRequest(`/admin/users/${id}`) as any;
+    const response = (await apiRequest(`/admin/users/${id}`)) as any;
     return response.user;
   },
 
   async createUser(userData: Partial<AdminUser>): Promise<AdminUser> {
-    const response = await apiRequest('/admin/users', {
+    const response = (await apiRequest('/admin/users', {
       method: 'POST',
-      body: JSON.stringify(userData)
-    }) as any;
+      body: JSON.stringify(userData),
+    })) as any;
     return response.user;
   },
 
-  async updateUser(id: string, userData: Partial<AdminUser>): Promise<AdminUser> {
-    const response = await apiRequest(`/admin/users/${id}`, {
+  async updateUser(
+    id: string,
+    userData: Partial<AdminUser>
+  ): Promise<AdminUser> {
+    const response = (await apiRequest(`/admin/users/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(userData)
-    }) as any;
+      body: JSON.stringify(userData),
+    })) as any;
     return response.user;
   },
 
   async deleteUser(id: string): Promise<void> {
     await apiRequest(`/admin/users/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
   },
 
@@ -140,45 +147,51 @@ export const adminAPI = {
   async promoteToAdmin(userId: string, level: string = 'admin'): Promise<void> {
     await apiRequest(`/admin/admins/${userId}/promote`, {
       method: 'POST',
-      body: JSON.stringify({ level })
+      body: JSON.stringify({ level }),
     });
   },
 
   async updateAdminLevel(userId: string, level: string): Promise<void> {
     await apiRequest(`/admin/admins/${userId}/level`, {
       method: 'PUT',
-      body: JSON.stringify({ level })
+      body: JSON.stringify({ level }),
     });
   },
 
   async revokeAdmin(userId: string): Promise<void> {
     await apiRequest(`/admin/admins/${userId}/revoke`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
   },
 
   // Activity Logs
-  async getLogs(page = 1, limit = 50, filters: any = {}): Promise<PaginatedResponse<AdminLog[]>> {
+  async getLogs(
+    page = 1,
+    limit = 50,
+    filters: any = {}
+  ): Promise<PaginatedResponse<AdminLog[]>> {
     const params = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
-      ...filters
+      ...filters,
     });
-    const response = await apiRequest(`/admin/logs?${params}`) as any;
+    const response = (await apiRequest(`/admin/logs?${params}`)) as any;
     return {
       data: response.logs,
-      pagination: response.pagination
+      pagination: response.pagination,
     };
   },
 
   async getActivityLogs(page = 1, limit = 50): Promise<{ logs: AdminLog[] }> {
-    const response = await apiRequest(`/admin/logs?page=${page}&limit=${limit}`) as any;
+    const response = (await apiRequest(
+      `/admin/logs?page=${page}&limit=${limit}`
+    )) as any;
     return response;
   },
 
   // Profile
   async getProfile(): Promise<AdminUser> {
-    const response = await apiRequest('/auth/me') as any;
+    const response = (await apiRequest('/auth/me')) as any;
     return response.user;
   },
 
@@ -200,7 +213,7 @@ export const adminAPI = {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    
+
     if (days > 0) {
       return `${days}d ${hours}h ${minutes}m`;
     } else if (hours > 0) {
@@ -211,7 +224,9 @@ export const adminAPI = {
   },
 
   formatDate(timestamp: number | string): string {
-    const date = new Date(typeof timestamp === 'string' ? timestamp : timestamp);
+    const date = new Date(
+      typeof timestamp === 'string' ? timestamp : timestamp
+    );
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   },
 
@@ -239,5 +254,5 @@ export const adminAPI = {
       default:
         return 'bg-gray-100 text-gray-800';
     }
-  }
-}; 
+  },
+};

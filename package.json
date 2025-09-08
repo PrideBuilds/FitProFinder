@@ -7,23 +7,66 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "lint": "eslint . --ext .js,.ts,.tsx,.astro",
+    "lint:fix": "eslint . --ext .js,.ts,.tsx,.astro --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "seed": "tsx scripts/seed.ts",
+    "start:docker": "docker compose up --build",
     "audit": "node scripts/pre-deployment-audit.js",
     "fix-warnings": "node scripts/fix-warnings.js",
-    "production-setup": "./scripts/production-setup.sh"
+    "production-setup": "./scripts/production-setup.sh",
+    "ci-check": "./ci-check.sh",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/node": "^9.2.2",
     "@astrojs/react": "^4.3.0",
     "@astrojs/tailwind": "^6.0.2",
+    "@cometchat/chat-sdk-javascript": "^4.1.1",
+    "@cometchat/chat-uikit-react": "^6.1.2",
+    "@supabase/supabase-js": "^2.57.2",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
     "astro": "^5.8.0",
+    "dotenv": "^17.2.2",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "socket.io-client": "^4.8.1",
-    "tailwindcss": "^3.4.0",
-    "typescript": "^5.8.3"
+    "tailwindcss": "^3.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^24.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "cypress": "^15.1.0",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "lint-staged": "^16.1.6",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "zod": "^3.25.76"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,astro}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }

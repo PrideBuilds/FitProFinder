@@ -5,7 +5,9 @@ const environment = process.env.NODE_ENV || 'development';
 const knexConfig = config[environment];
 
 if (!knexConfig) {
-  throw new Error(`No database configuration found for environment: ${environment}`);
+  throw new Error(
+    `No database configuration found for environment: ${environment}`
+  );
 }
 
 const db = knex(knexConfig);
@@ -22,4 +24,4 @@ export const testConnection = async () => {
   }
 };
 
-export default db; 
+export default db;

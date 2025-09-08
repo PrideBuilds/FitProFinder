@@ -9,6 +9,8 @@ export interface User {
   profileImage?: string;
   phoneNumber?: string;
   isVerified: boolean;
+  isActive: boolean;
+  lastLoginAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -214,30 +216,49 @@ export interface OnlineStatus {
 // Socket event types
 export interface SocketEvents {
   // Message events
-  send_message: (data: { conversationId: string; content: string; messageType?: string; replyToMessageId?: string }) => void;
+  send_message: (data: {
+    conversationId: string;
+    content: string;
+    messageType?: string;
+    replyToMessageId?: string;
+  }) => void;
   message_sent: (message: Message) => void;
   new_message: (message: Message) => void;
-  
+
   // Typing events
   typing_start: (data: { conversationId: string }) => void;
   typing_stop: (data: { conversationId: string }) => void;
-  user_typing: (data: { userId: string; conversationId: string; isTyping: boolean }) => void;
-  
+  user_typing: (data: {
+    userId: string;
+    conversationId: string;
+    isTyping: boolean;
+  }) => void;
+
   // Read status events
-  mark_messages_read: (data: { conversationId: string; messageIds?: string[] }) => void;
-  messages_read: (data: { conversationId: string; messageIds: string[]; readBy: string }) => void;
-  
+  mark_messages_read: (data: {
+    conversationId: string;
+    messageIds?: string[];
+  }) => void;
+  messages_read: (data: {
+    conversationId: string;
+    messageIds: string[];
+    readBy: string;
+  }) => void;
+
   // Conversation events
   join_conversation: (conversationId: string) => void;
   leave_conversation: (conversationId: string) => void;
   conversation_joined: (conversationId: string) => void;
   conversation_left: (conversationId: string) => void;
-  
+
   // Online status events
   user_online: (data: { userId: string; isOnline: boolean }) => void;
   get_conversation_online_users: (conversationId: string) => void;
-  conversation_online_users: (data: { conversationId: string; onlineUsers: string[] }) => void;
-  
+  conversation_online_users: (data: {
+    conversationId: string;
+    onlineUsers: string[];
+  }) => void;
+
   // Connection events
   connect: () => void;
   disconnect: () => void;
@@ -394,4 +415,11 @@ export interface BookingForm {
   date: string;
   time: string;
   notes?: string;
-} 
+}
+
+// Re-export all types from other files
+export * from './api';
+export * from './components';
+export * from './forms';
+export * from './hooks';
+export * from './utils';

@@ -29,8 +29,8 @@ export const errorHandler = (err, req, res, next) => {
       method: req.method,
       url: req.url,
       ip: req.ip,
-      userAgent: req.get('User-Agent')
-    }
+      userAgent: req.get('User-Agent'),
+    },
   });
 
   // Mongoose bad ObjectId
@@ -47,7 +47,9 @@ export const errorHandler = (err, req, res, next) => {
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map(val => val.message).join(', ');
+    const message = Object.values(err.errors)
+      .map(val => val.message)
+      .join(', ');
     error = new ApiError(message, 400, 'VALIDATION_ERROR');
   }
 
@@ -63,24 +65,28 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   // PostgreSQL errors
-  if (err.code === '23505') { // Unique violation
+  if (err.code === '23505') {
+    // Unique violation
     const message = 'Resource already exists';
     error = new ApiError(message, 409, 'RESOURCE_EXISTS');
   }
 
-  if (err.code === '23503') { // Foreign key violation
+  if (err.code === '23503') {
+    // Foreign key violation
     const message = 'Referenced resource not found';
     error = new ApiError(message, 400, 'INVALID_REFERENCE');
   }
 
-  if (err.code === '23502') { // Not null violation
+  if (err.code === '23502') {
+    // Not null violation
     const message = 'Required field missing';
     error = new ApiError(message, 400, 'REQUIRED_FIELD_MISSING');
   }
 
   // Validation errors from express-validator
   if (err.type === 'validation') {
-    const message = err.errors?.map(e => e.msg).join(', ') || 'Validation failed';
+    const message =
+      err.errors?.map(e => e.msg).join(', ') || 'Validation failed';
     error = new ApiError(message, 400, 'VALIDATION_ERROR');
   }
 
@@ -93,15 +99,15 @@ export const errorHandler = (err, req, res, next) => {
     error: {
       message: error.message || 'Internal server error',
       code,
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-    }
+      ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    },
   });
 };
 
 /**
  * Handle async errors in route handlers
  */
-export const asyncHandler = (fn) => (req, res, next) => {
+export const asyncHandler = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
@@ -109,6 +115,10 @@ export const asyncHandler = (fn) => (req, res, next) => {
  * Handle 404 errors
  */
 export const notFound = (req, res, next) => {
-  const error = new ApiError(`Route ${req.originalUrl} not found`, 404, 'ROUTE_NOT_FOUND');
+  const error = new ApiError(
+    `Route ${req.originalUrl} not found`,
+    404,
+    'ROUTE_NOT_FOUND'
+  );
   next(error);
-}; 
+};

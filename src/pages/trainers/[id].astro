@@ -6,6 +6,13 @@ const { id } = Astro.params;
 
 const title = `Trainer Profile - FitProFinder`;
 const description = "View detailed trainer profile and book sessions.";
+
+// For static generation, we need to provide getStaticPaths
+export async function getStaticPaths() {
+  // Return empty array for now - this will be populated with actual trainer IDs
+  // when you have a real data source
+  return [];
+}
 ---
 
 <BaseLayout title={title} description={description}>
@@ -586,12 +593,12 @@ const description = "View detailed trainer profile and book sessions.";
     async loadTrainer() {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/trainers/${this.trainerId}`
+          `http://localhost:3000/api/trainers/${this.trainerId}`
         );
         const data = await response.json();
 
         if (data.success) {
-          this.trainer = data.data.trainer;
+          this.trainer = data.data;
           this.renderProfile();
         } else {
           throw new Error(data.error?.message || "Trainer not found");
@@ -610,23 +617,19 @@ const description = "View detailed trainer profile and book sessions.";
       document.getElementById("profileContent").classList.remove("hidden");
 
       // Update page title
-      document.title = `${trainer.firstName} ${trainer.lastName} - Personal Trainer | FitProFinder`;
+      document.title = `${trainer.name} - Personal Trainer | FitProFinder`;
 
       // Basic info
-      document.getElementById("trainerImage").src = trainer.profileImageUrl;
-      document.getElementById("trainerImage").alt =
-        `${trainer.firstName} ${trainer.lastName}`;
-      document.getElementById("trainerName").textContent =
-        `${trainer.firstName} ${trainer.lastName}`;
-      document.getElementById("businessName").textContent =
-        trainer.businessName;
+      document.getElementById("trainerImage").src = trainer.profileImage || '/default-avatar.svg';
+      document.getElementById("trainerImage").alt = trainer.name;
+      document.getElementById("trainerName").textContent = trainer.name;
+      document.getElementById("businessName").textContent = trainer.name; // Using name as business name for now
       document.getElementById("rating").textContent = trainer.rating.toFixed(1);
       document.getElementById("reviewCount").textContent =
         `(${trainer.reviewCount} reviews)`;
       document.getElementById("location").textContent =
         `📍 ${trainer.location.city}, ${trainer.location.state}`;
-      document.getElementById("experience").textContent =
-        `${trainer.experienceYears} years experience`;
+      document.getElementById("experience").textContent = trainer.experience;
       document.getElementById("trainerBio").textContent = trainer.bio;
 
       // Verified badge
@@ -638,16 +641,16 @@ const description = "View detailed trainer profile and book sessions.";
       this.renderSpecialties(trainer.specialties);
 
       // Session types
-      this.renderSessionTypes(trainer.offers);
+      this.renderSessionTypes({}); // Empty object since we're showing both types
 
       // Availability status
-      this.renderAvailability(trainer.isAcceptingClients);
+      this.renderAvailability(trainer.isAvailable);
 
       // Contact info
       this.renderContactInfo(trainer);
 
-      // Social links
-      this.renderSocialLinks(trainer.socialLinks);
+      // Social links (skip for now since we don't have this data)
+      // this.renderSocialLinks(trainer.socialLinks);
 
       // Update "more trainers" link
       const moreLink = document.getElementById("moreTrainersLink");
@@ -668,7 +671,7 @@ const description = "View detailed trainer profile and book sessions.";
           const tag = document.createElement("span");
           tag.className =
             "inline-flex items-center px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full";
-          tag.textContent = specialty.name;
+          tag.textContent = specialty; // specialties is an array of strings in our mock data
           container.appendChild(tag);
         });
 
@@ -676,19 +679,19 @@ const description = "View detailed trainer profile and book sessions.";
         document
           .getElementById("specialtiesDetails")
           .classList.remove("hidden");
-        specialties.forEach((specialty) => {
+        specialties.forEach((specialty, index) => {
           const item = document.createElement("div");
           item.className = "flex items-start gap-3 p-3 rounded-lg bg-gray-50";
           item.innerHTML = `
-            <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: ${specialty.color}20; color: ${specialty.color}">
-              <span class="text-sm font-semibold">${specialty.name.charAt(0)}</span>
+            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-blue-100 text-blue-600">
+              <span class="text-sm font-semibold">${specialty.charAt(0)}</span>
             </div>
             <div class="flex-1">
-              <h4 class="font-medium text-gray-900">${specialty.name}</h4>
-              <p class="text-sm text-gray-600">${specialty.description}</p>
-              <p class="text-xs text-gray-500 mt-1">${specialty.experienceYears} years experience</p>
+              <h4 class="font-medium text-gray-900">${specialty}</h4>
+              <p class="text-sm text-gray-600">Specialized training in ${specialty.toLowerCase()}</p>
+              <p class="text-xs text-gray-500 mt-1">Professional expertise</p>
             </div>
-            ${specialty.isPrimary ? '<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Primary</span>' : ""}
+            ${index === 0 ? '<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Primary</span>' : ""}
           `;
           detailsContainer.appendChild(item);
         });
@@ -699,21 +702,18 @@ const description = "View detailed trainer profile and book sessions.";
       const container = document.getElementById("sessionTypes");
       container.innerHTML = "";
 
-      if (offers.onlineSessions) {
-        const tag = document.createElement("span");
-        tag.className =
-          "inline-flex items-center px-3 py-1 text-sm bg-green-100 text-green-800 rounded-full";
-        tag.textContent = "💻 Online Sessions";
-        container.appendChild(tag);
-      }
+      // For our mock data, we'll show both session types as available
+      const onlineTag = document.createElement("span");
+      onlineTag.className =
+        "inline-flex items-center px-3 py-1 text-sm bg-green-100 text-green-800 rounded-full";
+      onlineTag.textContent = "💻 Online Sessions";
+      container.appendChild(onlineTag);
 
-      if (offers.inPersonSessions) {
-        const tag = document.createElement("span");
-        tag.className =
-          "inline-flex items-center px-3 py-1 text-sm bg-purple-100 text-purple-800 rounded-full";
-        tag.textContent = "🏋️ In-Person Sessions";
-        container.appendChild(tag);
-      }
+      const inPersonTag = document.createElement("span");
+      inPersonTag.className =
+        "inline-flex items-center px-3 py-1 text-sm bg-purple-100 text-purple-800 rounded-full";
+      inPersonTag.textContent = "🏋️ In-Person Sessions";
+      container.appendChild(inPersonTag);
     }
 
     renderAvailability(isAccepting) {
@@ -742,20 +742,20 @@ const description = "View detailed trainer profile and book sessions.";
           <span class="text-gray-400">📍</span>
           <div>
             <p class="text-gray-900">${trainer.location.city}, ${trainer.location.state}</p>
-            <p class="text-sm text-gray-600">${trainer.location.address}</p>
+            <p class="text-sm text-gray-600">${trainer.location.zipCode}</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
           <span class="text-gray-400">📞</span>
-          <p class="text-gray-900">${trainer.phoneNumber || "Contact via message"}</p>
+          <p class="text-gray-900">Contact via message</p>
         </div>
         <div class="flex items-center gap-3">
           <span class="text-gray-400">✉️</span>
-          <p class="text-gray-900">${trainer.email || "Contact via platform"}</p>
+          <p class="text-gray-900">${trainer.email}</p>
         </div>
         <div class="flex items-center gap-3">
-          <span class="text-gray-400">📅</span>
-          <p class="text-gray-900">Member since ${new Date(trainer.memberSince).getFullYear()}</p>
+          <span class="text-gray-400">💰</span>
+          <p class="text-gray-900">$${trainer.hourlyRate}/hour</p>
         </div>
       `;
     }

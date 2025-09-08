@@ -14,26 +14,30 @@ router.use(authenticate);
  * Create a payment intent for a booking
  * POST /api/payments/create-intent
  */
-router.post('/create-intent', 
+router.post(
+  '/create-intent',
   validateRequest([
     { field: 'sessionTypeId', type: 'string', required: true },
     { field: 'trainerId', type: 'string', required: true },
-    { field: 'bookingId', type: 'string', required: false }
+    { field: 'bookingId', type: 'string', required: false },
   ]),
   async (req, res, next) => {
     try {
       const { sessionTypeId, trainerId, bookingId } = req.body;
       const user = req.user;
 
-      const result = await paymentService.createPaymentIntent({
-        sessionTypeId,
-        trainerId,
-        bookingId
-      }, user);
+      const result = await paymentService.createPaymentIntent(
+        {
+          sessionTypeId,
+          trainerId,
+          bookingId,
+        },
+        user
+      );
 
       res.json({
         success: true,
-        data: result
+        data: result,
       });
     } catch (error) {
       next(error);
@@ -45,20 +49,24 @@ router.post('/create-intent',
  * Confirm a payment after successful charge
  * POST /api/payments/confirm
  */
-router.post('/confirm',
+router.post(
+  '/confirm',
   validateRequest([
     { field: 'paymentIntentId', type: 'string', required: true },
-    { field: 'bookingId', type: 'string', required: true }
+    { field: 'bookingId', type: 'string', required: true },
   ]),
   async (req, res, next) => {
     try {
       const { paymentIntentId, bookingId } = req.body;
 
-      const result = await paymentService.confirmPayment(paymentIntentId, bookingId);
+      const result = await paymentService.confirmPayment(
+        paymentIntentId,
+        bookingId
+      );
 
       res.json({
         success: true,
-        data: result
+        data: result,
       });
     } catch (error) {
       next(error);
@@ -91,10 +99,10 @@ router.get('/breakdown/:sessionTypeId', async (req, res, next) => {
         sessionType: {
           id: sessionType.id,
           name: sessionType.name,
-          price: sessionType.price
+          price: sessionType.price,
         },
-        breakdown
-      }
+        breakdown,
+      },
     });
   } catch (error) {
     next(error);
@@ -113,12 +121,12 @@ router.get('/history', async (req, res, next) => {
     const result = await paymentService.getPaymentHistory(userId, {
       page: parseInt(page),
       limit: parseInt(limit),
-      status
+      status,
     });
 
     res.json({
       success: true,
-      data: result
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -129,10 +137,11 @@ router.get('/history', async (req, res, next) => {
  * Process a refund (admin/trainer only)
  * POST /api/payments/:paymentId/refund
  */
-router.post('/:paymentId/refund',
+router.post(
+  '/:paymentId/refund',
   validateRequest([
     { field: 'amount', type: 'number', required: false },
-    { field: 'reason', type: 'string', required: false }
+    { field: 'reason', type: 'string', required: false },
   ]),
   async (req, res, next) => {
     try {
@@ -142,9 +151,7 @@ router.post('/:paymentId/refund',
 
       // Check if user is authorized to refund this payment
       // (For now, only allow the client or admin to request refunds)
-      const payment = await knex('payments')
-        .where('id', paymentId)
-        .first();
+      const payment = await knex('payments').where('id', paymentId).first();
 
       if (!payment) {
         throw new ApiError('Payment not found', 404);
@@ -154,11 +161,15 @@ router.post('/:paymentId/refund',
         throw new ApiError('Not authorized to refund this payment', 403);
       }
 
-      const result = await paymentService.processRefund(paymentId, amount, reason);
+      const result = await paymentService.processRefund(
+        paymentId,
+        amount,
+        reason
+      );
 
       res.json({
         success: true,
-        data: result
+        data: result,
       });
     } catch (error) {
       next(error);
@@ -182,12 +193,12 @@ router.get('/earnings', async (req, res, next) => {
 
     const earnings = await paymentService.getTrainerEarnings(user.id, {
       startDate,
-      endDate
+      endDate,
     });
 
     res.json({
       success: true,
-      data: earnings
+      data: earnings,
     });
   } catch (error) {
     next(error);
@@ -198,21 +209,26 @@ router.get('/earnings', async (req, res, next) => {
  * Save a payment method for future use
  * POST /api/payments/payment-methods
  */
-router.post('/payment-methods',
+router.post(
+  '/payment-methods',
   validateRequest([
     { field: 'paymentMethodId', type: 'string', required: true },
-    { field: 'isDefault', type: 'boolean', required: false }
+    { field: 'isDefault', type: 'boolean', required: false },
   ]),
   async (req, res, next) => {
     try {
       const { paymentMethodId, isDefault = false } = req.body;
       const user = req.user;
 
-      const result = await paymentService.savePaymentMethod(user.id, paymentMethodId, isDefault);
+      const result = await paymentService.savePaymentMethod(
+        user.id,
+        paymentMethodId,
+        isDefault
+      );
 
       res.json({
         success: true,
-        data: result
+        data: result,
       });
     } catch (error) {
       next(error);
@@ -236,7 +252,7 @@ router.get('/payment-methods', async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { paymentMethods }
+      data: { paymentMethods },
     });
   } catch (error) {
     next(error);
@@ -264,11 +280,11 @@ router.delete('/payment-methods/:paymentMethodId', async (req, res, next) => {
 
     res.json({
       success: true,
-      message: 'Payment method removed successfully'
+      message: 'Payment method removed successfully',
     });
   } catch (error) {
     next(error);
   }
 });
 
-export default router; 
+export default router;

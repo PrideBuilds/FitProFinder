@@ -1,6 +1,6 @@
 import { hashPassword } from '../../utils/auth.js';
 
-export const seed = async (knex) => {
+export const seed = async knex => {
   // Delete existing entries
   await knex('session_types').del();
   await knex('trainer_specialties').del();
@@ -27,10 +27,26 @@ export const seed = async (knex) => {
       specialties: [1, 4, 7], // Personal Training, Strength Training, Weight Loss
       isVerified: true,
       sessionTypes: [
-        { name: '1-on-1 Personal Training', duration: 60, price: 120, type: 'individual' },
-        { name: 'Strength Training Session', duration: 45, price: 100, type: 'individual' },
-        { name: 'Group Fitness Class', duration: 60, price: 35, type: 'group', maxParticipants: 8 }
-      ]
+        {
+          name: '1-on-1 Personal Training',
+          duration: 60,
+          price: 120,
+          type: 'individual',
+        },
+        {
+          name: 'Strength Training Session',
+          duration: 45,
+          price: 100,
+          type: 'individual',
+        },
+        {
+          name: 'Group Fitness Class',
+          duration: 60,
+          price: 35,
+          type: 'group',
+          maxParticipants: 8,
+        },
+      ],
     },
     {
       email: 'mike.yoga@example.com',
@@ -50,10 +66,21 @@ export const seed = async (knex) => {
       specialties: [2, 5], // Yoga, Pilates
       isVerified: true,
       sessionTypes: [
-        { name: 'Private Yoga Session', duration: 90, price: 140, type: 'individual' },
-        { name: 'Couples Yoga', duration: 75, price: 180, type: 'group', maxParticipants: 2 },
-        { name: 'Pilates Class', duration: 60, price: 80, type: 'individual' }
-      ]
+        {
+          name: 'Private Yoga Session',
+          duration: 90,
+          price: 140,
+          type: 'individual',
+        },
+        {
+          name: 'Couples Yoga',
+          duration: 75,
+          price: 180,
+          type: 'group',
+          maxParticipants: 2,
+        },
+        { name: 'Pilates Class', duration: 60, price: 80, type: 'individual' },
+      ],
     },
     {
       email: 'jessica.nutrition@example.com',
@@ -73,10 +100,26 @@ export const seed = async (knex) => {
       specialties: [3, 7], // Nutrition, Weight Loss
       isVerified: true,
       sessionTypes: [
-        { name: 'Nutrition Consultation', duration: 60, price: 95, type: 'individual' },
-        { name: 'Meal Planning Session', duration: 45, price: 75, type: 'individual' },
-        { name: 'Nutrition Workshop', duration: 120, price: 45, type: 'group', maxParticipants: 12 }
-      ]
+        {
+          name: 'Nutrition Consultation',
+          duration: 60,
+          price: 95,
+          type: 'individual',
+        },
+        {
+          name: 'Meal Planning Session',
+          duration: 45,
+          price: 75,
+          type: 'individual',
+        },
+        {
+          name: 'Nutrition Workshop',
+          duration: 120,
+          price: 45,
+          type: 'group',
+          maxParticipants: 12,
+        },
+      ],
     },
     {
       email: 'alex.hiit@example.com',
@@ -96,10 +139,21 @@ export const seed = async (knex) => {
       specialties: [9, 6, 1], // HIIT, Cardio, Personal Training
       isVerified: true,
       sessionTypes: [
-        { name: 'HIIT Training Session', duration: 30, price: 85, type: 'individual' },
+        {
+          name: 'HIIT Training Session',
+          duration: 30,
+          price: 85,
+          type: 'individual',
+        },
         { name: 'Cardio Blast', duration: 45, price: 70, type: 'individual' },
-        { name: 'Group HIIT Class', duration: 45, price: 25, type: 'group', maxParticipants: 10 }
-      ]
+        {
+          name: 'Group HIIT Class',
+          duration: 45,
+          price: 25,
+          type: 'group',
+          maxParticipants: 10,
+        },
+      ],
     },
     {
       email: 'david.sports@example.com',
@@ -119,10 +173,26 @@ export const seed = async (knex) => {
       specialties: [8, 4, 1], // Sports Performance, Strength Training, Personal Training
       isVerified: true,
       sessionTypes: [
-        { name: 'Sports Performance Training', duration: 75, price: 130, type: 'individual' },
-        { name: 'Speed & Agility Session', duration: 60, price: 110, type: 'individual' },
-        { name: 'Team Training', duration: 90, price: 60, type: 'group', maxParticipants: 6 }
-      ]
+        {
+          name: 'Sports Performance Training',
+          duration: 75,
+          price: 130,
+          type: 'individual',
+        },
+        {
+          name: 'Speed & Agility Session',
+          duration: 60,
+          price: 110,
+          type: 'individual',
+        },
+        {
+          name: 'Team Training',
+          duration: 90,
+          price: 60,
+          type: 'group',
+          maxParticipants: 6,
+        },
+      ],
     },
     {
       email: 'lisa.rehab@example.com',
@@ -142,29 +212,47 @@ export const seed = async (knex) => {
       specialties: [10, 1], // Injury Recovery, Personal Training
       isVerified: true,
       sessionTypes: [
-        { name: 'Corrective Exercise Session', duration: 60, price: 125, type: 'individual' },
-        { name: 'Injury Prevention Training', duration: 45, price: 100, type: 'individual' },
-        { name: 'Recovery Workshop', duration: 90, price: 40, type: 'group', maxParticipants: 8 }
-      ]
-    }
+        {
+          name: 'Corrective Exercise Session',
+          duration: 60,
+          price: 125,
+          type: 'individual',
+        },
+        {
+          name: 'Injury Prevention Training',
+          duration: 45,
+          price: 100,
+          type: 'individual',
+        },
+        {
+          name: 'Recovery Workshop',
+          duration: 90,
+          price: 40,
+          type: 'group',
+          maxParticipants: 8,
+        },
+      ],
+    },
   ];
 
   // Create users and profiles
   for (const trainer of trainers) {
     // Hash password
     const passwordHash = await hashPassword(trainer.password);
-    
+
     // Insert user
-    const [user] = await knex('users').insert({
-      email: trainer.email,
-      password_hash: passwordHash,
-      first_name: trainer.firstName,
-      last_name: trainer.lastName,
-      role: 'trainer',
-      phone_number: trainer.phoneNumber,
-      is_verified: trainer.isVerified,
-      profile_image_url: `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000000000) + 1500000000000}?w=150&h=150&fit=crop&crop=face`
-    }).returning('*');
+    const [user] = await knex('users')
+      .insert({
+        email: trainer.email,
+        password_hash: passwordHash,
+        first_name: trainer.firstName,
+        last_name: trainer.lastName,
+        role: 'trainer',
+        phone_number: trainer.phoneNumber,
+        is_verified: trainer.isVerified,
+        profile_image_url: `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000000000) + 1500000000000}?w=150&h=150&fit=crop&crop=face`,
+      })
+      .returning('*');
 
     // Insert trainer profile
     await knex('trainer_profiles').insert({
@@ -183,7 +271,7 @@ export const seed = async (knex) => {
       is_verified: trainer.isVerified,
       is_accepting_clients: true,
       offers_online_sessions: Math.random() > 0.5,
-      offers_in_person_sessions: true
+      offers_in_person_sessions: true,
     });
 
     // Insert specialties
@@ -191,8 +279,9 @@ export const seed = async (knex) => {
       await knex('trainer_specialties').insert({
         trainer_id: user.id,
         specialty_id: trainer.specialties[i],
-        experience_years: Math.floor(Math.random() * trainer.experienceYears) + 1,
-        is_primary: i === 0
+        experience_years:
+          Math.floor(Math.random() * trainer.experienceYears) + 1,
+        is_primary: i === 0,
       });
     }
 
@@ -209,10 +298,10 @@ export const seed = async (knex) => {
         min_participants: 1,
         is_active: true,
         allows_online: Math.random() > 0.5,
-        allows_in_person: true
+        allows_in_person: true,
       });
     }
   }
 
   console.log('✅ Sample trainers created successfully');
-}; 
+};
