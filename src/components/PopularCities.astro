@@ -5,14 +5,14 @@ const popularCities = [
     name: 'Los Angeles',
     state: 'CA',
     trainerCount: '200+',
-    image: 'https://images.unsplash.com/photo-1544989164-fb5e5f0a388b?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1515894206793-b450037dc2d0?w=800&h=600&fit=crop',
     slug: 'los-angeles-ca'
   },
   {
     name: 'New York',
-    state: 'NY', 
+    state: 'NY',
     trainerCount: '350+',
-    image: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&h=600&fit=crop',
     slug: 'new-york-ny'
   },
   {
@@ -33,14 +33,14 @@ const popularCities = [
     name: 'Miami',
     state: 'FL',
     trainerCount: '140+',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=800&h=600&fit=crop',
     slug: 'miami-fl'
   },
   {
     name: 'Seattle',
     state: 'WA',
     trainerCount: '110+',
-    image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1485470733090-0aae1788d5af?w=800&h=600&fit=crop',
     slug: 'seattle-wa'
   }
 ];
@@ -56,10 +56,10 @@ const popularCities = [
         Find fitness professionals nearby, or explore trainers in cities around the country
       </p>
     </div>
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {popularCities.map((city) => (
-        <a 
+        <a
           href={`/search?city=${encodeURIComponent(city.name)}&state=${city.state}`}
           class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
@@ -70,7 +70,7 @@ const popularCities = [
               class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            
+
             <div class="absolute bottom-0 left-0 right-0 p-6">
               <h3 class="text-2xl font-bold text-white mb-1">
                 {city.name}
@@ -79,7 +79,7 @@ const popularCities = [
                 {city.trainerCount} fitness professionals
               </p>
             </div>
-            
+
             <!-- Hover overlay with explore button -->
             <div class="absolute inset-0 bg-blue-600/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
               <div class="text-center">
@@ -97,10 +97,10 @@ const popularCities = [
         </a>
       ))}
     </div>
-    
+
     <div class="text-center mt-12">
-      <a 
-        href="/search" 
+      <a
+        href="/search"
         class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
       >
         View All Cities
@@ -110,4 +110,4 @@ const popularCities = [
       </a>
     </div>
   </div>
-</section> 
+</section>
