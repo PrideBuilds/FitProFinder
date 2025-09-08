@@ -452,6 +452,8 @@ const description =
       if (isProduction) {
         console.log("Production environment detected, using mock data");
         const mockData = this.getMockTrainersData();
+        console.log("Mock data structure:", mockData);
+        console.log("Mock trainers count:", mockData.data?.trainers?.length);
         this.displayResults(mockData);
         return;
       }
@@ -470,8 +472,11 @@ const description =
         }
       } catch (error) {
         console.log("API not available, using mock trainers data");
+        console.log("Error:", error);
         // Mock trainers data for production
         const mockData = this.getMockTrainersData();
+        console.log("Fallback mock data structure:", mockData);
+        console.log("Fallback mock trainers count:", mockData.data?.trainers?.length);
         this.displayResults(mockData);
       }
     }
@@ -933,5 +938,10 @@ const description =
     if (verifiedFilter && urlParams.get("verified_only") === "true") {
       verifiedFilter.checked = true;
     }
+
+    // Trigger initial search after form is populated
+    setTimeout(() => {
+      searchInstance.searchTrainers();
+    }, 100);
   });
 </script>
