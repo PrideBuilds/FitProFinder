@@ -447,7 +447,7 @@ const description =
       this.showLoading();
 
       // More robust production detection
-      const isProduction = window.location.hostname !== 'localhost' && 
+      const isProduction = window.location.hostname !== 'localhost' &&
                           window.location.hostname !== '127.0.0.1' &&
                           !window.location.hostname.includes('localhost') &&
                           !window.location.hostname.includes('127.0.0.1');
@@ -463,7 +463,7 @@ const description =
         protocol: window.location.protocol,
         userAgent: navigator.userAgent
       });
-      
+
       if (isProduction || isNetlify) {
         console.log("Production/Netlify environment detected, using mock data");
         const mockData = this.getMockTrainersData();
@@ -975,17 +975,17 @@ const description =
     // Trigger initial search after form is populated
     setTimeout(() => {
       // More robust detection for production environments
-      const isProduction = window.location.hostname !== 'localhost' && 
+      const isProduction = window.location.hostname !== 'localhost' &&
                           window.location.hostname !== '127.0.0.1' &&
                           !window.location.hostname.includes('localhost');
       const isNetlify = window.location.hostname.includes('netlify.app');
-      
+
       console.log("Initialization check:", {
         hostname: window.location.hostname,
         isProduction: isProduction,
         isNetlify: isNetlify
       });
-      
+
       if (isProduction || isNetlify) {
         console.log("Production/Netlify detected, forcing mock data");
         searchInstance.forceMockData();
@@ -993,7 +993,7 @@ const description =
         console.log("Local development, using API");
         searchInstance.searchTrainers();
       }
-      
+
       // Additional fallback to ensure trainers are always shown
       setTimeout(() => {
         searchInstance.ensureTrainersDisplay();

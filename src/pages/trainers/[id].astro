@@ -9,9 +9,13 @@ const description = "View detailed trainer profile and book sessions.";
 
 // For static generation, we need to provide getStaticPaths
 export async function getStaticPaths() {
-  // Return empty array for now - this will be populated with actual trainer IDs
-  // when you have a real data source
-  return [];
+  // Generate static paths for mock trainers
+  const mockTrainerIds = [1, 2, 3, 4, 5, 6];
+  
+  return mockTrainerIds.map((id) => ({
+    params: { id: id.toString() },
+    props: { trainerId: id }
+  }));
 }
 ---
 
@@ -591,6 +595,31 @@ export async function getStaticPaths() {
     }
 
     async loadTrainer() {
+      // Check if we're in production (no localhost backend)
+      const isProduction = window.location.hostname !== 'localhost' && 
+                          window.location.hostname !== '127.0.0.1' &&
+                          !window.location.hostname.includes('localhost');
+      const isNetlify = window.location.hostname.includes('netlify.app');
+
+      console.log("Trainer profile environment check:", {
+        hostname: window.location.hostname,
+        isProduction: isProduction,
+        isNetlify: isNetlify,
+        trainerId: this.trainerId
+      });
+
+      if (isProduction || isNetlify) {
+        console.log("Production/Netlify environment detected, using mock trainer data");
+        const mockTrainer = this.getMockTrainer(this.trainerId);
+        if (mockTrainer) {
+          this.trainer = mockTrainer;
+          this.renderProfile();
+        } else {
+          this.showError();
+        }
+        return;
+      }
+
       try {
         const response = await fetch(
           `http://localhost:3000/api/trainers/${this.trainerId}`
@@ -605,8 +634,119 @@ export async function getStaticPaths() {
         }
       } catch (error) {
         console.error("Failed to load trainer:", error);
-        this.showError();
+        // Fallback to mock data
+        const mockTrainer = this.getMockTrainer(this.trainerId);
+        if (mockTrainer) {
+          this.trainer = mockTrainer;
+          this.renderProfile();
+        } else {
+          this.showError();
+        }
       }
+    }
+
+    getMockTrainer(trainerId) {
+      // Mock trainers data that matches the API response format
+      const mockTrainers = [
+        {
+          id: 1,
+          name: "Sarah Johnson",
+          businessName: "Sarah Johnson Fitness",
+          bio: "Certified personal trainer with 8 years of experience helping clients achieve their fitness goals through personalized strength training and weight loss programs.",
+          profileImage: "https://images.unsplash.com/photo-1594824388852-8a7b3b4b8b8b?w=400&h=400&fit=crop&crop=face",
+          rating: 4.8,
+          reviewCount: 42,
+          specialties: ["Personal Training", "Weight Loss", "Strength Training"],
+          location: { city: "Los Angeles", state: "CA" },
+          experienceYears: 8,
+          verified: true,
+          offersOnline: true,
+          offersInPerson: true,
+          priceRange: { min: 60, max: 120 }
+        },
+        {
+          id: 2,
+          name: "Mike Chen",
+          businessName: "Zen Yoga Studio",
+          bio: "Experienced yoga instructor and wellness coach helping people find balance through mindful movement and meditation practices.",
+          profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+          rating: 4.9,
+          reviewCount: 38,
+          specialties: ["Yoga", "Meditation", "Pilates"],
+          location: { city: "San Francisco", state: "CA" },
+          experienceYears: 6,
+          verified: true,
+          offersOnline: true,
+          offersInPerson: true,
+          priceRange: { min: 45, max: 90 }
+        },
+        {
+          id: 3,
+          name: "Jessica Rodriguez",
+          businessName: "NutriCore Coaching",
+          bio: "Registered dietitian and certified nutrition coach specializing in sustainable weight loss and performance nutrition for athletes.",
+          profileImage: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+          rating: 4.7,
+          reviewCount: 29,
+          specialties: ["Nutrition Coaching", "Weight Loss", "Sports Nutrition"],
+          location: { city: "Austin", state: "TX" },
+          experienceYears: 5,
+          verified: true,
+          offersOnline: true,
+          offersInPerson: false,
+          priceRange: { min: 80, max: 150 }
+        },
+        {
+          id: 4,
+          name: "Alex Thompson",
+          businessName: "HIIT Zone Miami",
+          bio: "High-intensity interval training specialist and former military fitness instructor. Expert in fat burning and cardiovascular conditioning.",
+          profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+          rating: 4.6,
+          reviewCount: 56,
+          specialties: ["HIIT", "Cardio", "Military Fitness"],
+          location: { city: "Miami", state: "FL" },
+          experienceYears: 10,
+          verified: true,
+          offersOnline: true,
+          offersInPerson: true,
+          priceRange: { min: 50, max: 100 }
+        },
+        {
+          id: 5,
+          name: "David Wilson",
+          businessName: "Peak Performance Lab",
+          bio: "Sports performance coach working with professional athletes and weekend warriors. Specializing in functional movement and injury prevention.",
+          profileImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
+          rating: 4.9,
+          reviewCount: 73,
+          specialties: ["Sports Performance", "Strength Training", "Injury Prevention"],
+          location: { city: "Denver", state: "CO" },
+          experienceYears: 12,
+          verified: true,
+          offersOnline: false,
+          offersInPerson: true,
+          priceRange: { min: 100, max: 200 }
+        },
+        {
+          id: 6,
+          name: "Lisa Martinez",
+          businessName: "Recovery & Wellness Center",
+          bio: "Physical therapist and corrective exercise specialist helping clients recover from injuries and improve movement quality.",
+          profileImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+          rating: 4.8,
+          reviewCount: 34,
+          specialties: ["Injury Recovery", "Corrective Exercise", "Physical Therapy"],
+          location: { city: "Seattle", state: "WA" },
+          experienceYears: 7,
+          verified: true,
+          offersOnline: true,
+          offersInPerson: true,
+          priceRange: { min: 90, max: 180 }
+        }
+      ];
+
+      return mockTrainers.find(trainer => trainer.id === parseInt(trainerId));
     }
 
     renderProfile() {
