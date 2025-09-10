@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import MessageNotification from '../components/MessageNotification.astro';
+import BetaFeedback from '../components/BetaFeedback.astro';
 
 export interface Props {
   title: string;
@@ -291,6 +292,9 @@ const {
         </div>
       </footer>
     )}
+
+    <!-- BETA Feedback Component -->
+    <BetaFeedback />
   </body>
 </html>
 
