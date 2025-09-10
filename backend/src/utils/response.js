@@ -30,7 +30,12 @@ export const success = (data = null, message = 'Success', meta = {}) => {
  * @param {Object} details - Additional error details
  * @returns {Object} Standardized error response
  */
-export const error = (message, code = 'UNKNOWN_ERROR', statusCode = HTTP_STATUS.INTERNAL_SERVER_ERROR, details = {}) => {
+export const error = (
+  message,
+  code = 'UNKNOWN_ERROR',
+  statusCode = HTTP_STATUS.INTERNAL_SERVER_ERROR,
+  details = {}
+) => {
   return {
     success: false,
     message,
@@ -49,7 +54,9 @@ export const error = (message, code = 'UNKNOWN_ERROR', statusCode = HTTP_STATUS.
  * @returns {Object} Standardized validation error response
  */
 export const validationError = (errors, message = 'Validation failed') => {
-  return error(message, 'VALIDATION_ERROR', HTTP_STATUS.UNPROCESSABLE_ENTITY, { errors });
+  return error(message, 'VALIDATION_ERROR', HTTP_STATUS.UNPROCESSABLE_ENTITY, {
+    errors,
+  });
 };
 
 /**
@@ -159,7 +166,7 @@ export const send = (res, response, statusCode = null) => {
  * @param {Function} fn - Async route handler
  * @returns {Function} Wrapped route handler
  */
-export const asyncHandler = (fn) => {
+export const asyncHandler = fn => {
   return (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
@@ -176,7 +183,10 @@ export const validateRequired = (data, requiredFields) => {
   let isValid = true;
 
   requiredFields.forEach(field => {
-    if (!data[field] || (typeof data[field] === 'string' && data[field].trim() === '')) {
+    if (
+      !data[field] ||
+      (typeof data[field] === 'string' && data[field].trim() === '')
+    ) {
       errors[field] = `${field} is required`;
       isValid = false;
     }
@@ -190,7 +200,7 @@ export const validateRequired = (data, requiredFields) => {
  * @param {any} data - Data to sanitize
  * @returns {any} Sanitized data
  */
-export const sanitize = (data) => {
+export const sanitize = data => {
   if (Array.isArray(data)) {
     return data.map(item => sanitize(item));
   }
@@ -199,7 +209,12 @@ export const sanitize = (data) => {
     const sanitized = { ...data };
 
     // Remove sensitive fields
-    const sensitiveFields = ['password', 'passwordHash', 'refreshToken', 'apiKey'];
+    const sensitiveFields = [
+      'password',
+      'passwordHash',
+      'refreshToken',
+      'apiKey',
+    ];
     sensitiveFields.forEach(field => {
       delete sanitized[field];
     });

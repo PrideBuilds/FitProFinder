@@ -31,11 +31,19 @@ const envSchema = z.object({
   SYSTEM_FROM_EMAIL: z.string().email().optional(),
 
   // Feature Flags
-  ENABLE_BETA_GATE: z.string().transform(val => val === 'true').optional(),
-  INVITE_CODE_REQUIRED: z.string().transform(val => val === 'true').optional(),
+  ENABLE_BETA_GATE: z
+    .string()
+    .transform(val => val === 'true')
+    .optional(),
+  INVITE_CODE_REQUIRED: z
+    .string()
+    .transform(val => val === 'true')
+    .optional(),
 
   // Application
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  NODE_ENV: z
+    .enum(['development', 'production', 'test'])
+    .default('development'),
   PORT: z.string().transform(Number).default('3000'),
   HOST: z.string().default('localhost'),
 
@@ -65,9 +73,18 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
 
   // Development
-  DEBUG: z.string().transform(val => val === 'true').default('false'),
-  MOCK_PAYMENTS: z.string().transform(val => val === 'true').default('false'),
-  MOCK_EMAILS: z.string().transform(val => val === 'true').default('false'),
+  DEBUG: z
+    .string()
+    .transform(val => val === 'true')
+    .default('false'),
+  MOCK_PAYMENTS: z
+    .string()
+    .transform(val => val === 'true')
+    .default('false'),
+  MOCK_EMAILS: z
+    .string()
+    .transform(val => val === 'true')
+    .default('false'),
 });
 
 // Parse and validate environment variables
@@ -95,7 +112,9 @@ export const isBetaGateEnabled = env.ENABLE_BETA_GATE ?? false;
 export const isInviteCodeRequired = env.INVITE_CODE_REQUIRED ?? false;
 
 // Feature flags helper
-export const getFeatureFlag = (flag: keyof Pick<Env, 'ENABLE_BETA_GATE' | 'INVITE_CODE_REQUIRED'>) => {
+export const getFeatureFlag = (
+  flag: keyof Pick<Env, 'ENABLE_BETA_GATE' | 'INVITE_CODE_REQUIRED'>
+) => {
   return env[flag] ?? false;
 };
 
@@ -110,8 +129,10 @@ if (isProduction) {
   ];
 
   const missingVars = requiredVars.filter(varName => !process.env[varName]);
-  
+
   if (missingVars.length > 0) {
-    throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+    throw new Error(
+      `Missing required environment variables: ${missingVars.join(', ')}`
+    );
   }
 }

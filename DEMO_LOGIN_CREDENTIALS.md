@@ -7,18 +7,21 @@ Visit: **http://localhost:4321/auth/login**
 ## Demo Accounts Available
 
 ### 1. **Sarah Johnson** (Client)
+
 - **Email:** `sarah@fitpro.com`
 - **Password:** `sarah123`
 - **Role:** Client
 - **Access:** Client dashboard, booking system, messaging
 
 ### 2. **Coach Taylor** (Trainer)
+
 - **Email:** `coach@fitpro.com`
 - **Password:** `coach123`
 - **Role:** Trainer
 - **Access:** Trainer dashboard, client management, messaging
 
 ### 3. **Admin User** (Administrator)
+
 - **Email:** `admin@fitpro.com`
 - **Password:** `admin123`
 - **Role:** Admin
@@ -34,6 +37,7 @@ Visit: **http://localhost:4321/auth/login**
 ## Features You Can Test
 
 ### ✅ **Client Features:**
+
 - Browse trainers
 - Book sessions
 - View bookings
@@ -41,6 +45,7 @@ Visit: **http://localhost:4321/auth/login**
 - Update profile
 
 ### ✅ **Trainer Features:**
+
 - Manage clients
 - View bookings
 - Set availability
@@ -48,6 +53,7 @@ Visit: **http://localhost:4321/auth/login**
 - Update profile
 
 ### ✅ **Admin Features:**
+
 - User management
 - System settings
 - Analytics dashboard

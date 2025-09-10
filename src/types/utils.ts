@@ -32,15 +32,44 @@ export type AsyncVoidFunction = () => Promise<void>;
 
 // Event handler types
 export type EventHandler<T = Event> = (event: T) => void;
-export type ChangeEventHandler<T = HTMLInputElement> = (event: React.ChangeEvent<T>) => void;
-export type ClickEventHandler<T = HTMLButtonElement> = (event: React.MouseEvent<T>) => void;
-export type SubmitEventHandler<T = HTMLFormElement> = (event: React.FormEvent<T>) => void;
-export type FocusEventHandler<T = HTMLElement> = (event: React.FocusEvent<T>) => void;
-export type KeyboardEventHandler<T = HTMLElement> = (event: React.KeyboardEvent<T>) => void;
+export type ChangeEventHandler<T = HTMLInputElement> = (
+  event: React.ChangeEvent<T>
+) => void;
+export type ClickEventHandler<T = HTMLButtonElement> = (
+  event: React.MouseEvent<T>
+) => void;
+export type SubmitEventHandler<T = HTMLFormElement> = (
+  event: React.FormEvent<T>
+) => void;
+export type FocusEventHandler<T = HTMLElement> = (
+  event: React.FocusEvent<T>
+) => void;
+export type KeyboardEventHandler<T = HTMLElement> = (
+  event: React.KeyboardEvent<T>
+) => void;
 
 // API utility types
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS';
-export type HttpStatus = 200 | 201 | 204 | 400 | 401 | 403 | 404 | 409 | 422 | 500 | 502 | 503;
+export type HttpMethod =
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'PATCH'
+  | 'DELETE'
+  | 'HEAD'
+  | 'OPTIONS';
+export type HttpStatus =
+  | 200
+  | 201
+  | 204
+  | 400
+  | 401
+  | 403
+  | 404
+  | 409
+  | 422
+  | 500
+  | 502
+  | 503;
 
 export type ApiEndpoint = string;
 export type ApiParams = Record<string, string | number | boolean | undefined>;
@@ -48,7 +77,14 @@ export type ApiHeaders = Record<string, string>;
 
 // Form utility types
 export type FormFieldName = string;
-export type FormFieldValue = string | number | boolean | File | File[] | null | undefined;
+export type FormFieldValue =
+  | string
+  | number
+  | boolean
+  | File
+  | File[]
+  | null
+  | undefined;
 export type FormFieldError = string | null | undefined;
 export type FormFieldTouched = boolean;
 
@@ -70,7 +106,10 @@ export type ValidationRule = {
   message?: string;
 };
 
-export type ValidationSchema = Record<string, ValidationRule | ValidationRule[]>;
+export type ValidationSchema = Record<
+  string,
+  ValidationRule | ValidationRule[]
+>;
 export type ValidationResult = {
   isValid: boolean;
   errors: Record<string, string>;
@@ -89,7 +128,13 @@ export type Reducer<T, A extends ReducerAction> = (state: T, action: A) => T;
 
 // Component utility types
 export type ComponentSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type ComponentVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+export type ComponentVariant =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'info';
 export type ComponentPosition = 'top' | 'right' | 'bottom' | 'left' | 'center';
 
 export type ComponentProps<T = any> = {
@@ -102,13 +147,47 @@ export type ComponentProps<T = any> = {
 
 // Layout utility types
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-export type Spacing = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16 | 20 | 24 | 32 | 40 | 48 | 56 | 64;
-export type Color = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'gray';
+export type Spacing =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 8
+  | 10
+  | 12
+  | 16
+  | 20
+  | 24
+  | 32
+  | 40
+  | 48
+  | 56
+  | 64;
+export type Color =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'info'
+  | 'gray';
 
 // Animation utility types
 export type AnimationDuration = 'fast' | 'normal' | 'slow';
-export type AnimationEasing = 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear';
-export type AnimationDirection = 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
+export type AnimationEasing =
+  | 'ease'
+  | 'ease-in'
+  | 'ease-out'
+  | 'ease-in-out'
+  | 'linear';
+export type AnimationDirection =
+  | 'normal'
+  | 'reverse'
+  | 'alternate'
+  | 'alternate-reverse';
 
 // Date and time utility types
 export type DateFormat = 'short' | 'medium' | 'long' | 'full';
@@ -116,7 +195,13 @@ export type TimeFormat = '12h' | '24h';
 export type Timezone = string;
 
 // File utility types
-export type FileType = 'image' | 'video' | 'audio' | 'document' | 'archive' | 'other';
+export type FileType =
+  | 'image'
+  | 'video'
+  | 'audio'
+  | 'document'
+  | 'archive'
+  | 'other';
 export type FileSize = number; // in bytes
 export type FileExtension = string; // without the dot
 
@@ -171,7 +256,11 @@ export type AnalyticsSessionId = string;
 export type CacheKey = string;
 export type CacheValue = any;
 export type CacheTTL = number; // in seconds
-export type CacheStrategy = 'memory' | 'localStorage' | 'sessionStorage' | 'indexedDB';
+export type CacheStrategy =
+  | 'memory'
+  | 'localStorage'
+  | 'sessionStorage'
+  | 'indexedDB';
 
 // Database utility types
 export type DatabaseId = string | number;
@@ -200,7 +289,11 @@ export type SearchResult<T> = {
 export type EventName = string;
 export type EventData = any;
 export type EventCallback = (data: EventData) => void;
-export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'error';
+export type ConnectionStatus =
+  | 'connecting'
+  | 'connected'
+  | 'disconnected'
+  | 'error';
 
 // WebSocket utility types
 export type WebSocketMessage = {
@@ -211,7 +304,13 @@ export type WebSocketMessage = {
 
 // Notification utility types
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
-export type NotificationPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top-center' | 'bottom-center';
+export type NotificationPosition =
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'top-center'
+  | 'bottom-center';
 
 export type Notification = {
   id: string;
@@ -232,7 +331,13 @@ export type ModalPosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
 
 // Toast utility types
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
-export type ToastPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top-center' | 'bottom-center';
+export type ToastPosition =
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'top-center'
+  | 'bottom-center';
 
 // Loading utility types
 export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
@@ -244,12 +349,15 @@ export type Priority = 'low' | 'medium' | 'high' | 'urgent';
 
 // Configuration utility types
 export type ConfigValue = string | number | boolean | object | null | undefined;
-export type ConfigSchema = Record<string, {
-  type: 'string' | 'number' | 'boolean' | 'object' | 'array';
-  required?: boolean;
-  default?: any;
-  validation?: ValidationRule;
-}>;
+export type ConfigSchema = Record<
+  string,
+  {
+    type: 'string' | 'number' | 'boolean' | 'object' | 'array';
+    required?: boolean;
+    default?: any;
+    validation?: ValidationRule;
+  }
+>;
 
 // Environment utility types
 export type Environment = 'development' | 'staging' | 'production' | 'test';
@@ -269,7 +377,12 @@ export type PerformanceMetric = {
 
 // Security utility types
 export type SecurityLevel = 'low' | 'medium' | 'high' | 'critical';
-export type SecurityThreat = 'xss' | 'csrf' | 'injection' | 'unauthorized' | 'data-leak';
+export type SecurityThreat =
+  | 'xss'
+  | 'csrf'
+  | 'injection'
+  | 'unauthorized'
+  | 'data-leak';
 
 // Accessibility utility types
 export type AriaRole = string;

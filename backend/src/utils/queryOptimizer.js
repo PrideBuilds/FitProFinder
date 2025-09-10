@@ -51,15 +51,11 @@ class QueryOptimizer {
 
     // Clone query for count
     const countQuery = baseQuery.clone();
-    
+
     // Execute count and data queries in parallel
     const [countResult, dataResult] = await Promise.all([
       countQuery.count('* as count').first(),
-      baseQuery
-        .clone()
-        .offset(offset)
-        .limit(safeLimit)
-        .orderBy('id', 'desc')
+      baseQuery.clone().offset(offset).limit(safeLimit).orderBy('id', 'desc'),
     ]);
 
     const totalCount = countResult.count;
@@ -92,8 +88,8 @@ class QueryOptimizer {
     }
 
     const searchPattern = `%${searchTerm}%`;
-    
-    return query.where(function() {
+
+    return query.where(function () {
       searchFields.forEach((field, index) => {
         if (index === 0) {
           this.where(field, 'like', searchPattern);
@@ -145,19 +141,13 @@ class QueryOptimizer {
    */
   createJoinQuery(query, joins = []) {
     joins.forEach(join => {
-      const {
-        table,
-        on,
-        type = 'inner',
-        select = [],
-        alias = null,
-      } = join;
+      const { table, on, type = 'inner', select = [], alias = null } = join;
 
       const joinMethod = type === 'left' ? 'leftJoin' : 'innerJoin';
       const tableName = alias ? `${table} as ${alias}` : table;
-      
+
       query[joinMethod](tableName, on);
-      
+
       if (select.length > 0) {
         query.select(select);
       }
@@ -174,7 +164,7 @@ class QueryOptimizer {
    */
   createAggregationQuery(query, aggregations = []) {
     const selectFields = [];
-    
+
     aggregations.forEach(agg => {
       const { field, function: func, alias } = agg;
       const selectField = `${func}(${field}) as ${alias || `${func}_${field}`}`;
@@ -195,7 +185,7 @@ class QueryOptimizer {
    * @returns {Object} Subquery builder
    */
   createSubquery(subqueryFn, alias) {
-    return function() {
+    return function () {
       this.select('*').from(subqueryFn().as(alias));
     };
   }
@@ -212,7 +202,7 @@ class QueryOptimizer {
     if (indexes.length > 0) {
       logger.debug('Recommended indexes for query:', indexes);
     }
-    
+
     return query;
   }
 
@@ -226,7 +216,7 @@ class QueryOptimizer {
    */
   async batchInsert(db, table, data, options = {}) {
     const { batchSize = 1000, chunkSize = 100 } = options;
-    
+
     if (data.length <= batchSize) {
       return db(table).insert(data);
     }
@@ -252,18 +242,23 @@ class QueryOptimizer {
    */
   async upsert(db, table, data, conflictColumns = ['id']) {
     const conflictClause = conflictColumns.join(', ');
-    
+
     // This is PostgreSQL specific - adjust for your database
-    return db.raw(`
+    return db.raw(
+      `
       INSERT INTO ${table} (${Object.keys(data).join(', ')})
-      VALUES (${Object.values(data).map(() => '?').join(', ')})
+      VALUES (${Object.values(data)
+        .map(() => '?')
+        .join(', ')})
       ON CONFLICT (${conflictClause})
       DO UPDATE SET
       ${Object.keys(data)
         .filter(key => !conflictColumns.includes(key))
         .map(key => `${key} = EXCLUDED.${key}`)
         .join(', ')}
-    `, Object.values(data));
+    `,
+      Object.values(data)
+    );
   }
 
   /**
@@ -275,16 +270,16 @@ class QueryOptimizer {
   async analyzeQuery(queryName, queryFn) {
     const startTime = process.hrtime.bigint();
     const startMemory = process.memoryUsage();
-    
+
     try {
       const result = await queryFn();
-      
+
       const endTime = process.hrtime.bigint();
       const endMemory = process.memoryUsage();
-      
+
       const executionTime = Number(endTime - startTime) / 1000000; // Convert to milliseconds
       const memoryDelta = endMemory.heapUsed - startMemory.heapUsed;
-      
+
       const metrics = {
         queryName,
         executionTime,
@@ -292,19 +287,18 @@ class QueryOptimizer {
         resultCount: Array.isArray(result) ? result.length : 1,
         timestamp: new Date().toISOString(),
       };
-      
+
       this.queryMetrics.set(queryName, metrics);
       logger.debug(`Query analysis for ${queryName}:`, metrics);
-      
+
       return {
         result,
         metrics,
       };
-      
     } catch (error) {
       const endTime = process.hrtime.bigint();
       const executionTime = Number(endTime - startTime) / 1000000;
-      
+
       logger.error(`Query failed: ${queryName} (${executionTime}ms)`, error);
       throw error;
     }
@@ -339,15 +333,18 @@ class QueryOptimizer {
     if (metrics.executionTime > 1000) {
       recommendations.push({
         type: 'performance',
-        message: 'Query execution time is high. Consider adding indexes or optimizing the query.',
+        message:
+          'Query execution time is high. Consider adding indexes or optimizing the query.',
         severity: 'high',
       });
     }
 
-    if (metrics.memoryDelta > 10 * 1024 * 1024) { // 10MB
+    if (metrics.memoryDelta > 10 * 1024 * 1024) {
+      // 10MB
       recommendations.push({
         type: 'memory',
-        message: 'Query uses significant memory. Consider limiting result set or using streaming.',
+        message:
+          'Query uses significant memory. Consider limiting result set or using streaming.',
         severity: 'medium',
       });
     }
@@ -406,21 +403,23 @@ class QueryOptimizer {
     ];
 
     const results = [];
-    
+
     for (const index of indexes) {
       try {
         const indexName = `${index.table}_${index.columns.join('_')}_idx`;
         const columns = index.columns.join(', ');
         const unique = index.unique ? 'UNIQUE' : '';
-        
-        await db.raw(`CREATE ${unique} INDEX IF NOT EXISTS ${indexName} ON ${index.table} (${columns})`);
-        
+
+        await db.raw(
+          `CREATE ${unique} INDEX IF NOT EXISTS ${indexName} ON ${index.table} (${columns})`
+        );
+
         results.push({
           table: index.table,
           columns: index.columns,
           status: 'created',
         });
-        
+
         logger.debug(`Created index: ${indexName}`);
       } catch (error) {
         results.push({
@@ -429,7 +428,7 @@ class QueryOptimizer {
           status: 'error',
           error: error.message,
         });
-        
+
         logger.error(`Failed to create index for ${index.table}:`, error);
       }
     }

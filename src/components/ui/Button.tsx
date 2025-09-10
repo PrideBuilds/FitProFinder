@@ -22,17 +22,19 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   // Base classes
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-  
+  const baseClasses =
+    'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+
   // Variant classes
   const variantClasses = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
     secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-    outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-blue-500',
+    outline:
+      'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-blue-500',
     ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
   };
-  
+
   // Size classes
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-sm',
@@ -40,7 +42,7 @@ const Button: React.FC<ButtonProps> = ({
     lg: 'px-6 py-3 text-base',
     xl: 'px-8 py-4 text-lg',
   };
-  
+
   // Loading spinner
   const LoadingSpinner = () => (
     <svg
@@ -64,14 +66,14 @@ const Button: React.FC<ButtonProps> = ({
       />
     </svg>
   );
-  
+
   // Icon component
   const Icon = () => {
     if (loading) return <LoadingSpinner />;
     if (icon) return <span className="flex-shrink-0">{icon}</span>;
     return null;
   };
-  
+
   // Content with icon positioning
   const content = (
     <>
@@ -80,24 +82,20 @@ const Button: React.FC<ButtonProps> = ({
       {iconPosition === 'right' && <Icon />}
     </>
   );
-  
+
   // Combine classes
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`.trim();
-  
+  const classes =
+    `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`.trim();
+
   // Render as link if href is provided
   if (href) {
     return (
-      <a
-        href={href}
-        target={target}
-        className={classes}
-        {...props}
-      >
+      <a href={href} target={target} className={classes} {...props}>
         {content}
       </a>
     );
   }
-  
+
   // Render as button
   return (
     <button

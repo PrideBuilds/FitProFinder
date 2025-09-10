@@ -32,7 +32,9 @@ export default function FeedbackFab() {
   const [isOpen, setIsOpen] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackData>(initialFeedback);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +68,10 @@ export default function FeedbackFab() {
     }
   };
 
-  const handleInputChange = (field: keyof FeedbackData, value: string | boolean) => {
+  const handleInputChange = (
+    field: keyof FeedbackData,
+    value: string | boolean
+  ) => {
     setFeedback(prev => ({ ...prev, [field]: value }));
   };
 
@@ -114,7 +119,9 @@ export default function FeedbackFab() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold text-gray-900">Feedback & Bug Report</h2>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Feedback & Bug Report
+          </h2>
           <button
             onClick={() => setIsOpen(false)}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -131,10 +138,22 @@ export default function FeedbackFab() {
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { value: 'bug', label: 'Bug Report', icon: <Bug className="w-4 h-4" /> },
-                { value: 'feature', label: 'Feature Request', icon: <MessageSquare className="w-4 h-4" /> },
-                { value: 'general', label: 'General Feedback', icon: <Info className="w-4 h-4" /> },
-              ].map((option) => (
+                {
+                  value: 'bug',
+                  label: 'Bug Report',
+                  icon: <Bug className="w-4 h-4" />,
+                },
+                {
+                  value: 'feature',
+                  label: 'Feature Request',
+                  icon: <MessageSquare className="w-4 h-4" />,
+                },
+                {
+                  value: 'general',
+                  label: 'General Feedback',
+                  icon: <Info className="w-4 h-4" />,
+                },
+              ].map(option => (
                 <button
                   key={option.value}
                   type="button"
@@ -160,7 +179,7 @@ export default function FeedbackFab() {
             <input
               type="text"
               value={feedback.subject}
-              onChange={(e) => handleInputChange('subject', e.target.value)}
+              onChange={e => handleInputChange('subject', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Brief description of the issue or suggestion"
               required
@@ -174,7 +193,7 @@ export default function FeedbackFab() {
             </label>
             <textarea
               value={feedback.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
+              onChange={e => handleInputChange('description', e.target.value)}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Detailed description of the issue or suggestion"
@@ -191,7 +210,7 @@ export default function FeedbackFab() {
                 </label>
                 <textarea
                   value={feedback.steps}
-                  onChange={(e) => handleInputChange('steps', e.target.value)}
+                  onChange={e => handleInputChange('steps', e.target.value)}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="1. Go to...&#10;2. Click on...&#10;3. See error..."
@@ -205,7 +224,9 @@ export default function FeedbackFab() {
                   </label>
                   <textarea
                     value={feedback.expected}
-                    onChange={(e) => handleInputChange('expected', e.target.value)}
+                    onChange={e =>
+                      handleInputChange('expected', e.target.value)
+                    }
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="What should have happened"
@@ -218,7 +239,7 @@ export default function FeedbackFab() {
                   </label>
                   <textarea
                     value={feedback.actual}
-                    onChange={(e) => handleInputChange('actual', e.target.value)}
+                    onChange={e => handleInputChange('actual', e.target.value)}
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="What actually happened"
@@ -237,18 +258,22 @@ export default function FeedbackFab() {
                     { value: 'medium', label: 'Medium' },
                     { value: 'high', label: 'High' },
                     { value: 'critical', label: 'Critical' },
-                  ].map((option) => (
+                  ].map(option => (
                     <button
                       key={option.value}
                       type="button"
-                      onClick={() => handleInputChange('severity', option.value)}
+                      onClick={() =>
+                        handleInputChange('severity', option.value)
+                      }
                       className={`p-2 rounded-lg border transition-colors ${
                         feedback.severity === option.value
                           ? `${getSeverityColor(option.value)} border-current`
                           : 'border-gray-300 hover:border-gray-400'
                       }`}
                     >
-                      <span className="text-sm font-medium">{option.label}</span>
+                      <span className="text-sm font-medium">
+                        {option.label}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -262,12 +287,13 @@ export default function FeedbackFab() {
               type="checkbox"
               id="consent"
               checked={feedback.consent}
-              onChange={(e) => handleInputChange('consent', e.target.checked)}
+              onChange={e => handleInputChange('consent', e.target.checked)}
               className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               required
             />
             <label htmlFor="consent" className="text-sm text-gray-700">
-              I consent to being contacted about this feedback if additional information is needed.
+              I consent to being contacted about this feedback if additional
+              information is needed.
             </label>
           </div>
 
@@ -275,14 +301,18 @@ export default function FeedbackFab() {
           {submitStatus === 'success' && (
             <div className="flex items-center gap-2 text-green-600 bg-green-50 p-3 rounded-lg">
               <AlertTriangle className="w-5 h-5" />
-              <span className="text-sm font-medium">Thank you! Your feedback has been submitted.</span>
+              <span className="text-sm font-medium">
+                Thank you! Your feedback has been submitted.
+              </span>
             </div>
           )}
 
           {submitStatus === 'error' && (
             <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-lg">
               <AlertTriangle className="w-5 h-5" />
-              <span className="text-sm font-medium">Failed to submit feedback. Please try again.</span>
+              <span className="text-sm font-medium">
+                Failed to submit feedback. Please try again.
+              </span>
             </div>
           )}
 

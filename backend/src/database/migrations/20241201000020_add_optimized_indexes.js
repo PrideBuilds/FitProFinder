@@ -5,7 +5,7 @@
 
 export async function up(knex) {
   // Users table indexes
-  await knex.schema.alterTable('users', (table) => {
+  await knex.schema.alterTable('users', table => {
     table.index('email', 'users_email_idx');
     table.index('role', 'users_role_idx');
     table.index('is_active', 'users_is_active_idx');
@@ -15,17 +15,20 @@ export async function up(knex) {
   });
 
   // Trainer profiles indexes
-  await knex.schema.alterTable('trainer_profiles', (table) => {
+  await knex.schema.alterTable('trainer_profiles', table => {
     table.index('is_accepting_clients', 'trainer_profiles_accepting_idx');
     table.index('is_featured', 'trainer_profiles_featured_idx');
     table.index('rating', 'trainer_profiles_rating_idx');
     table.index(['city', 'state'], 'trainer_profiles_location_idx');
     table.index('hourly_rate', 'trainer_profiles_rate_idx');
-    table.index(['rating', 'is_accepting_clients'], 'trainer_profiles_rating_accepting_idx');
+    table.index(
+      ['rating', 'is_accepting_clients'],
+      'trainer_profiles_rating_accepting_idx'
+    );
   });
 
   // Bookings indexes
-  await knex.schema.alterTable('bookings', (table) => {
+  await knex.schema.alterTable('bookings', table => {
     table.index('client_id', 'bookings_client_idx');
     table.index('trainer_id', 'bookings_trainer_idx');
     table.index('status', 'bookings_status_idx');
@@ -36,25 +39,34 @@ export async function up(knex) {
   });
 
   // Messages indexes
-  await knex.schema.alterTable('messages', (table) => {
+  await knex.schema.alterTable('messages', table => {
     table.index('conversation_id', 'messages_conversation_idx');
     table.index('sender_id', 'messages_sender_idx');
     table.index('created_at', 'messages_created_at_idx');
-    table.index(['conversation_id', 'created_at'], 'messages_conversation_date_idx');
+    table.index(
+      ['conversation_id', 'created_at'],
+      'messages_conversation_date_idx'
+    );
     table.index(['sender_id', 'created_at'], 'messages_sender_date_idx');
   });
 
   // Conversations indexes
-  await knex.schema.alterTable('conversations', (table) => {
+  await knex.schema.alterTable('conversations', table => {
     table.index('client_id', 'conversations_client_idx');
     table.index('trainer_id', 'conversations_trainer_idx');
     table.index('updated_at', 'conversations_updated_at_idx');
-    table.index(['client_id', 'updated_at'], 'conversations_client_updated_idx');
-    table.index(['trainer_id', 'updated_at'], 'conversations_trainer_updated_idx');
+    table.index(
+      ['client_id', 'updated_at'],
+      'conversations_client_updated_idx'
+    );
+    table.index(
+      ['trainer_id', 'updated_at'],
+      'conversations_trainer_updated_idx'
+    );
   });
 
   // Payments indexes
-  await knex.schema.alterTable('payments', (table) => {
+  await knex.schema.alterTable('payments', table => {
     table.index('user_id', 'payments_user_idx');
     table.index('booking_id', 'payments_booking_idx');
     table.index('status', 'payments_status_idx');
@@ -64,7 +76,7 @@ export async function up(knex) {
   });
 
   // Reviews indexes
-  await knex.schema.alterTable('reviews', (table) => {
+  await knex.schema.alterTable('reviews', table => {
     table.index('trainer_id', 'reviews_trainer_idx');
     table.index('client_id', 'reviews_client_idx');
     table.index('rating', 'reviews_rating_idx');
@@ -73,29 +85,38 @@ export async function up(knex) {
   });
 
   // Trainer specialties indexes
-  await knex.schema.alterTable('trainer_specialties', (table) => {
+  await knex.schema.alterTable('trainer_specialties', table => {
     table.index('trainer_id', 'trainer_specialties_trainer_idx');
     table.index('specialty_id', 'trainer_specialties_specialty_idx');
-    table.index(['trainer_id', 'specialty_id'], 'trainer_specialties_trainer_specialty_idx');
+    table.index(
+      ['trainer_id', 'specialty_id'],
+      'trainer_specialties_trainer_specialty_idx'
+    );
   });
 
   // Session types indexes
-  await knex.schema.alterTable('session_types', (table) => {
+  await knex.schema.alterTable('session_types', table => {
     table.index('trainer_id', 'session_types_trainer_idx');
     table.index('is_active', 'session_types_active_idx');
-    table.index(['trainer_id', 'is_active'], 'session_types_trainer_active_idx');
+    table.index(
+      ['trainer_id', 'is_active'],
+      'session_types_trainer_active_idx'
+    );
   });
 
   // Availability slots indexes
-  await knex.schema.alterTable('availability_slots', (table) => {
+  await knex.schema.alterTable('availability_slots', table => {
     table.index('trainer_id', 'availability_slots_trainer_idx');
     table.index('day_of_week', 'availability_slots_day_idx');
     table.index('is_available', 'availability_slots_available_idx');
-    table.index(['trainer_id', 'day_of_week'], 'availability_slots_trainer_day_idx');
+    table.index(
+      ['trainer_id', 'day_of_week'],
+      'availability_slots_trainer_day_idx'
+    );
   });
 
   // Notifications indexes
-  await knex.schema.alterTable('notifications', (table) => {
+  await knex.schema.alterTable('notifications', table => {
     table.index('user_id', 'notifications_user_idx');
     table.index('type', 'notifications_type_idx');
     table.index('is_read', 'notifications_read_idx');

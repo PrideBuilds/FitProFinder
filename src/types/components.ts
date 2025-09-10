@@ -251,11 +251,11 @@ export interface ChatHeaderProps extends BaseComponentProps {
 }
 
 // Import types from main types file
-import type { 
-  User, 
-  Trainer, 
-  Booking, 
-  Message, 
-  Conversation, 
-  SessionType 
+import type {
+  User,
+  Trainer,
+  Booking,
+  Message,
+  Conversation,
+  SessionType,
 } from './index';

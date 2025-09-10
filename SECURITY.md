@@ -85,4 +85,4 @@ For security-related questions or concerns, please contact us at security@fitpro
 
 ---
 
-*This security policy is effective as of the date of the last update and may be revised at any time.*
+_This security policy is effective as of the date of the last update and may be revised at any time._

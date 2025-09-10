@@ -42,10 +42,7 @@ const CSP_POLICY = {
     "'self'",
     "'unsafe-inline'", // Required for Tailwind
   ],
-  'frame-src': [
-    'https://js.stripe.com',
-    'https://hooks.stripe.com',
-  ],
+  'frame-src': ['https://js.stripe.com', 'https://hooks.stripe.com'],
   'object-src': ["'none'"],
   'base-uri': ["'self'"],
   'form-action': ["'self'"],
@@ -104,14 +101,16 @@ setInterval(cleanupRateLimit, 5 * 60 * 1000);
 
 export const securityMiddleware: MiddlewareHandler = async (context, next) => {
   const { request, url } = context;
-  const ip = request.headers.get('x-forwarded-for') || 
-             request.headers.get('x-real-ip') || 
-             'unknown';
+  const ip =
+    request.headers.get('x-forwarded-for') ||
+    request.headers.get('x-real-ip') ||
+    'unknown';
 
   // Skip rate limiting for static assets and API routes that don't need it
-  const skipRateLimit = url.pathname.startsWith('/_astro/') ||
-                       url.pathname.startsWith('/favicon') ||
-                       url.pathname.startsWith('/api/health');
+  const skipRateLimit =
+    url.pathname.startsWith('/_astro/') ||
+    url.pathname.startsWith('/favicon') ||
+    url.pathname.startsWith('/api/health');
 
   if (!skipRateLimit && !checkRateLimit(ip)) {
     return new Response('Rate limit exceeded', {
@@ -125,7 +124,7 @@ export const securityMiddleware: MiddlewareHandler = async (context, next) => {
 
   // Add security headers to all responses
   const response = await next();
-  
+
   // Add security headers
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);

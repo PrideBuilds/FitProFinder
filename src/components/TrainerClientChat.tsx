@@ -9,7 +9,6 @@ interface TrainerClientChatProps {
   avatar?: string;
 }
 
-
 const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
   appId,
   region,
@@ -39,7 +38,6 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
       setIsInitialized(true);
       setIsLoading(false);
       console.log('CometChat initialized successfully (simulated)');
-
     } catch (error) {
       console.error('CometChat initialization error:', error);
       setError(
@@ -51,14 +49,9 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
     }
   };
 
-
   if (isLoading) {
     return (
-      <Loading
-        size="lg"
-        text="Initializing CometChat..."
-        className="h-96"
-      />
+      <Loading size="lg" text="Initializing CometChat..." className="h-96" />
     );
   }
 
@@ -85,10 +78,7 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
             CometChat Initialization Failed
           </h3>
           <p className="text-gray-600 mb-4">{error}</p>
-          <Button
-            onClick={initializeCometChat}
-            variant="primary"
-          >
+          <Button onClick={initializeCometChat} variant="primary">
             Retry
           </Button>
         </div>
@@ -123,25 +113,51 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
         </div>
         <div className="flex items-center space-x-2">
           <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+              />
             </svg>
           </button>
           <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+              />
             </svg>
           </button>
         </div>
       </div>
 
       {/* Chat Messages Area */}
-      <div className="flex-1 p-4 space-y-4 overflow-y-auto" style={{ height: '400px' }}>
+      <div
+        className="flex-1 p-4 space-y-4 overflow-y-auto"
+        style={{ height: '400px' }}
+      >
         {/* Sample conversation */}
         <div className="flex justify-start">
           <div className="max-w-xs lg:max-w-md">
             <div className="bg-gray-100 rounded-lg px-4 py-2">
-              <p className="text-sm text-gray-800">Hi! I'm interested in personal training sessions. What packages do you offer?</p>
+              <p className="text-sm text-gray-800">
+                Hi! I'm interested in personal training sessions. What packages
+                do you offer?
+              </p>
             </div>
             <p className="text-xs text-gray-500 mt-1">2:30 PM</p>
           </div>
@@ -150,7 +166,11 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
         <div className="flex justify-end">
           <div className="max-w-xs lg:max-w-md">
             <div className="bg-blue-500 text-white rounded-lg px-4 py-2">
-              <p className="text-sm">Hello! I'd be happy to help you with personal training. I offer 1-on-1 sessions both in-person and online. What are your fitness goals?</p>
+              <p className="text-sm">
+                Hello! I'd be happy to help you with personal training. I offer
+                1-on-1 sessions both in-person and online. What are your fitness
+                goals?
+              </p>
             </div>
             <p className="text-xs text-gray-500 mt-1 text-right">2:32 PM</p>
           </div>
@@ -159,7 +179,10 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
         <div className="flex justify-start">
           <div className="max-w-xs lg:max-w-md">
             <div className="bg-gray-100 rounded-lg px-4 py-2">
-              <p className="text-sm text-gray-800">I want to lose weight and build strength. Do you have experience with weight loss programs?</p>
+              <p className="text-sm text-gray-800">
+                I want to lose weight and build strength. Do you have experience
+                with weight loss programs?
+              </p>
             </div>
             <p className="text-xs text-gray-500 mt-1">2:35 PM</p>
           </div>
@@ -168,7 +191,12 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
         <div className="flex justify-end">
           <div className="max-w-xs lg:max-w-md">
             <div className="bg-blue-500 text-white rounded-lg px-4 py-2">
-              <p className="text-sm">Absolutely! I'm certified in weight loss and strength training. I can create a personalized program that combines both cardio and resistance training. Would you like to schedule a consultation?</p>
+              <p className="text-sm">
+                Absolutely! I'm certified in weight loss and strength training.
+                I can create a personalized program that combines both cardio
+                and resistance training. Would you like to schedule a
+                consultation?
+              </p>
             </div>
             <p className="text-xs text-gray-500 mt-1 text-right">2:37 PM</p>
           </div>
@@ -181,8 +209,14 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
               <div className="flex items-center space-x-1">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.1s' }}
+                  ></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.2s' }}
+                  ></div>
                 </div>
                 <span className="text-xs text-gray-500 ml-2">typing...</span>
               </div>
@@ -195,8 +229,18 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
       <div className="border-t p-4">
         <div className="flex items-center space-x-2">
           <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+              />
             </svg>
           </button>
           <div className="flex-1 relative">
@@ -207,8 +251,18 @@ const TrainerClientChat: React.FC<TrainerClientChatProps> = ({
             />
           </div>
           <button className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
             </svg>
           </button>
         </div>

@@ -128,7 +128,11 @@ export const FILE_UPLOAD = {
   MAX_SIZE_MB: 10,
   MAX_SIZE_BYTES: 10 * 1024 * 1024,
   ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  ALLOWED_DOCUMENT_TYPES: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  ALLOWED_DOCUMENT_TYPES: [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ],
   ALLOWED_VIDEO_TYPES: ['video/mp4', 'video/quicktime', 'video/x-msvideo'],
   UPLOAD_DIR: 'uploads',
 };
@@ -230,9 +234,10 @@ export const API_VERSION = 'v1';
 
 // CORS
 export const CORS_OPTIONS = {
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://fitprofinder.com', 'https://www.fitprofinder.com']
-    : ['http://localhost:4321', 'http://localhost:3000'],
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? ['https://fitprofinder.com', 'https://www.fitprofinder.com']
+      : ['http://localhost:4321', 'http://localhost:3000'],
   credentials: true,
   optionsSuccessStatus: 200,
 };

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial project setup with Astro + TypeScript
 - Trainer search and profile functionality
 - CometChat integration for messaging
@@ -27,18 +28,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SEO optimization
 
 ### Changed
+
 - Migrated from Socket.IO to CometChat for messaging
 - Updated API endpoints for better data structure
 - Improved error handling and user feedback
 - Enhanced security measures
 
 ### Fixed
+
 - Search page data loading issues
 - Trainer profile display problems
 - API response structure mismatches
 - Console errors and JavaScript issues
 
 ### Security
+
 - Added Content Security Policy (CSP) headers
 - Implemented rate limiting on API endpoints
 - Added input validation with Zod
@@ -48,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0-beta] - 2024-12-01
 
 ### Added
+
 - Initial beta release
 - Core trainer discovery functionality
 - User registration and authentication
@@ -66,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deployment guides
 
 ### Technical Details
+
 - Built with Astro 5.8.0
 - TypeScript for type safety
 - Tailwind CSS for styling
@@ -79,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions for CI/CD
 
 ### Known Issues
+
 - Some edge cases in booking validation
 - Mobile app not yet available
 - Limited payment methods (credit cards only)
@@ -86,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some accessibility improvements needed
 
 ### Migration Notes
+
 - This is the first beta release
 - No previous versions to migrate from
 - All data will be preserved during updates
@@ -96,21 +104,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Release Notes Format
 
 ### Added
+
 - New features and functionality
 
 ### Changed
+
 - Changes to existing functionality
 
 ### Deprecated
+
 - Features that will be removed in future versions
 
 ### Removed
+
 - Features that have been removed
 
 ### Fixed
+
 - Bug fixes
 
 ### Security
+
 - Security improvements and fixes
 
 ## Version Numbering
@@ -131,6 +145,7 @@ We use [Semantic Versioning](https://semver.org/) for version numbers:
 ## Support
 
 For questions about releases or migration help:
+
 - Email: support@fitprofinder.com
 - Discord: [Join our community](https://discord.gg/fitprofinder)
 - GitHub Issues: [Report bugs or request features](https://github.com/fitprofinder/fitprofinder/issues)

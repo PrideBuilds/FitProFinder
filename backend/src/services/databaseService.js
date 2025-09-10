@@ -22,7 +22,11 @@ class DatabaseService {
    */
   async executeQuery(queryName, queryFn, options = {}) {
     const startTime = Date.now();
-    const { useCache = true, ttl = CACHE.TTL.MEDIUM, cacheKey = null } = options;
+    const {
+      useCache = true,
+      ttl = CACHE.TTL.MEDIUM,
+      cacheKey = null,
+    } = options;
 
     try {
       // Check cache first
@@ -50,7 +54,6 @@ class DatabaseService {
 
       logger.debug(`Query executed: ${queryName} (${executionTime}ms)`);
       return result;
-
     } catch (error) {
       const executionTime = Date.now() - startTime;
       logger.error(`Query failed: ${queryName} (${executionTime}ms)`, error);
@@ -164,17 +167,22 @@ class DatabaseService {
         let query = db('users').where({ is_active: true });
 
         if (role) query = query.where({ role });
-        if (isVerified !== undefined) query = query.where({ is_verified: isVerified });
+        if (isVerified !== undefined)
+          query = query.where({ is_verified: isVerified });
         if (search) {
-          query = query.where(function() {
+          query = query.where(function () {
             this.where('first_name', 'like', `%${search}%`)
-                .orWhere('last_name', 'like', `%${search}%`)
-                .orWhere('email', 'like', `%${search}%`);
+              .orWhere('last_name', 'like', `%${search}%`)
+              .orWhere('email', 'like', `%${search}%`);
           });
         }
 
         const [users, totalCount] = await Promise.all([
-          query.clone().offset(offset).limit(limit).orderBy('created_at', 'desc'),
+          query
+            .clone()
+            .offset(offset)
+            .limit(limit)
+            .orderBy('created_at', 'desc'),
           query.clone().count('* as count').first(),
         ]);
 
@@ -206,7 +214,7 @@ class DatabaseService {
       .where({ id })
       .update({ ...userData, updated_at: new Date() })
       .returning('*');
-    
+
     this.clearCache(`user_${id}`);
     this.clearCache('user_email_');
     this.clearCache('users_');
@@ -238,7 +246,11 @@ class DatabaseService {
 
         // Get specialties
         const specialties = await db('trainer_specialties')
-          .join('specialties', 'trainer_specialties.specialty_id', 'specialties.id')
+          .join(
+            'specialties',
+            'trainer_specialties.specialty_id',
+            'specialties.id'
+          )
           .where('trainer_specialties.trainer_id', id)
           .select('specialties.name');
 
@@ -251,7 +263,14 @@ class DatabaseService {
   }
 
   async getTrainers(filters = {}, pagination = {}) {
-    const { page = 1, limit = 10, specialties, location, priceRange, rating } = filters;
+    const {
+      page = 1,
+      limit = 10,
+      specialties,
+      location,
+      priceRange,
+      rating,
+    } = filters;
     const offset = (page - 1) * limit;
 
     return this.executeQuery(
@@ -263,25 +282,32 @@ class DatabaseService {
           .where('trainer_profiles.is_accepting_clients', true);
 
         if (specialties && specialties.length > 0) {
-          query = query.whereIn('trainer_profiles.id', function() {
+          query = query.whereIn('trainer_profiles.id', function () {
             this.select('trainer_id')
               .from('trainer_specialties')
-              .join('specialties', 'trainer_specialties.specialty_id', 'specialties.id')
+              .join(
+                'specialties',
+                'trainer_specialties.specialty_id',
+                'specialties.id'
+              )
               .whereIn('specialties.name', specialties);
           });
         }
 
         if (location) {
-          query = query.where(function() {
-            this.where('trainer_profiles.city', 'like', `%${location}%`)
-                .orWhere('trainer_profiles.state', 'like', `%${location}%`);
+          query = query.where(function () {
+            this.where(
+              'trainer_profiles.city',
+              'like',
+              `%${location}%`
+            ).orWhere('trainer_profiles.state', 'like', `%${location}%`);
           });
         }
 
         if (priceRange) {
           query = query.whereBetween('trainer_profiles.hourly_rate', [
             priceRange.min || 0,
-            priceRange.max || 1000
+            priceRange.max || 1000,
           ]);
         }
 
@@ -290,7 +316,8 @@ class DatabaseService {
         }
 
         const [trainers, totalCount] = await Promise.all([
-          query.clone()
+          query
+            .clone()
             .select(
               'trainer_profiles.*',
               'users.email',
@@ -308,10 +335,14 @@ class DatabaseService {
         // Get specialties for each trainer
         for (const trainer of trainers) {
           const trainerSpecialties = await db('trainer_specialties')
-            .join('specialties', 'trainer_specialties.specialty_id', 'specialties.id')
+            .join(
+              'specialties',
+              'trainer_specialties.specialty_id',
+              'specialties.id'
+            )
             .where('trainer_specialties.trainer_id', trainer.id)
             .select('specialties.name');
-          
+
           trainer.specialties = trainerSpecialties.map(s => s.name);
         }
 
@@ -355,10 +386,14 @@ class DatabaseService {
         // Get specialties for each trainer
         for (const trainer of trainers) {
           const specialties = await db('trainer_specialties')
-            .join('specialties', 'trainer_specialties.specialty_id', 'specialties.id')
+            .join(
+              'specialties',
+              'trainer_specialties.specialty_id',
+              'specialties.id'
+            )
             .where('trainer_specialties.trainer_id', trainer.id)
             .select('specialties.name');
-          
+
           trainer.specialties = specialties.map(s => s.name);
         }
 
@@ -377,16 +412,27 @@ class DatabaseService {
       `bookings_user_${userId}_${JSON.stringify(filters)}`,
       async () => {
         let query = db('bookings')
-          .join('trainer_profiles', 'bookings.trainer_id', 'trainer_profiles.id')
-          .join('users as trainer_users', 'trainer_profiles.user_id', 'trainer_users.id')
+          .join(
+            'trainer_profiles',
+            'bookings.trainer_id',
+            'trainer_profiles.id'
+          )
+          .join(
+            'users as trainer_users',
+            'trainer_profiles.user_id',
+            'trainer_users.id'
+          )
           .where('bookings.client_id', userId);
 
         if (status) query = query.where('bookings.status', status);
-        if (dateFrom) query = query.where('bookings.scheduled_date', '>=', dateFrom);
-        if (dateTo) query = query.where('bookings.scheduled_date', '<=', dateTo);
+        if (dateFrom)
+          query = query.where('bookings.scheduled_date', '>=', dateFrom);
+        if (dateTo)
+          query = query.where('bookings.scheduled_date', '<=', dateTo);
 
         const [bookings, totalCount] = await Promise.all([
-          query.clone()
+          query
+            .clone()
             .select(
               'bookings.*',
               'trainer_profiles.business_name',
@@ -427,7 +473,7 @@ class DatabaseService {
       .where({ id })
       .update({ ...bookingData, updated_at: new Date() })
       .returning('*');
-    
+
     this.clearCache('bookings_');
     return result[0];
   }
@@ -441,7 +487,7 @@ class DatabaseService {
       `conversations_user_${userId}_${page}_${limit}`,
       async () => {
         const conversations = await db('conversations')
-          .where(function() {
+          .where(function () {
             this.where('client_id', userId).orWhere('trainer_id', userId);
           })
           .orderBy('updated_at', 'desc')
@@ -450,10 +496,11 @@ class DatabaseService {
 
         // Get participant info for each conversation
         for (const conversation of conversations) {
-          const participantId = conversation.client_id === userId 
-            ? conversation.trainer_id 
-            : conversation.client_id;
-          
+          const participantId =
+            conversation.client_id === userId
+              ? conversation.trainer_id
+              : conversation.client_id;
+
           const participant = await db('users')
             .join('trainer_profiles', 'users.id', 'trainer_profiles.user_id')
             .where('users.id', participantId)
@@ -481,11 +528,12 @@ class DatabaseService {
 
     return this.executeQuery(
       `messages_conversation_${conversationId}_${page}_${limit}`,
-      () => db('messages')
-        .where('conversation_id', conversationId)
-        .orderBy('created_at', 'desc')
-        .offset(offset)
-        .limit(limit),
+      () =>
+        db('messages')
+          .where('conversation_id', conversationId)
+          .orderBy('created_at', 'desc')
+          .offset(offset)
+          .limit(limit),
       { useCache: true, ttl: CACHE.TTL.SHORT }
     );
   }
@@ -502,39 +550,60 @@ class DatabaseService {
     return this.executeQuery(
       'dashboard_stats',
       async () => {
-        const [
-          userStats,
-          trainerStats,
-          bookingStats,
-          revenueStats
-        ] = await Promise.all([
-          db('users').count('* as total').first(),
-          db('trainer_profiles').count('* as total').first(),
-          db('bookings').count('* as total').first(),
-          db('payments').sum('amount as total').first(),
-        ]);
+        const [userStats, trainerStats, bookingStats, revenueStats] =
+          await Promise.all([
+            db('users').count('* as total').first(),
+            db('trainer_profiles').count('* as total').first(),
+            db('bookings').count('* as total').first(),
+            db('payments').sum('amount as total').first(),
+          ]);
 
         return {
           users: {
             total: userStats.total,
-            active: await db('users').where('is_active', true).count('* as count').first(),
-            verified: await db('users').where('is_verified', true).count('* as count').first(),
+            active: await db('users')
+              .where('is_active', true)
+              .count('* as count')
+              .first(),
+            verified: await db('users')
+              .where('is_verified', true)
+              .count('* as count')
+              .first(),
           },
           trainers: {
             total: trainerStats.total,
-            active: await db('trainer_profiles').where('is_accepting_clients', true).count('* as count').first(),
-            featured: await db('trainer_profiles').where('is_featured', true).count('* as count').first(),
+            active: await db('trainer_profiles')
+              .where('is_accepting_clients', true)
+              .count('* as count')
+              .first(),
+            featured: await db('trainer_profiles')
+              .where('is_featured', true)
+              .count('* as count')
+              .first(),
           },
           bookings: {
             total: bookingStats.total,
-            pending: await db('bookings').where('status', 'pending').count('* as count').first(),
-            confirmed: await db('bookings').where('status', 'confirmed').count('* as count').first(),
-            completed: await db('bookings').where('status', 'completed').count('* as count').first(),
+            pending: await db('bookings')
+              .where('status', 'pending')
+              .count('* as count')
+              .first(),
+            confirmed: await db('bookings')
+              .where('status', 'confirmed')
+              .count('* as count')
+              .first(),
+            completed: await db('bookings')
+              .where('status', 'completed')
+              .count('* as count')
+              .first(),
           },
           revenue: {
             total: revenueStats.total || 0,
             thisMonth: await db('payments')
-              .where('created_at', '>=', new Date(new Date().getFullYear(), new Date().getMonth(), 1))
+              .where(
+                'created_at',
+                '>=',
+                new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+              )
               .sum('amount as total')
               .first(),
           },
@@ -550,7 +619,11 @@ class DatabaseService {
       await db.raw('SELECT 1');
       return { status: 'healthy', timestamp: new Date().toISOString() };
     } catch (error) {
-      return { status: 'unhealthy', error: error.message, timestamp: new Date().toISOString() };
+      return {
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
     }
   }
 }

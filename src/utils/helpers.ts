@@ -9,12 +9,17 @@ export const capitalize = (str: string): string => {
 };
 
 export const capitalizeWords = (str: string): string => {
-  return str.replace(/\w\S*/g, (txt) => 
-    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  return str.replace(
+    /\w\S*/g,
+    txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   );
 };
 
-export const truncate = (str: string, length: number, suffix = '...'): string => {
+export const truncate = (
+  str: string,
+  length: number,
+  suffix = '...'
+): string => {
   if (str.length <= length) return str;
   return str.substring(0, length).trim() + suffix;
 };
@@ -64,27 +69,33 @@ export const randomBetween = (min: number, max: number): number => {
 };
 
 // Date utilities
-export const formatDate = (date: Date | string, format: 'short' | 'medium' | 'long' = 'medium'): string => {
+export const formatDate = (
+  date: Date | string,
+  format: 'short' | 'medium' | 'long' = 'medium'
+): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
+
   const options: Intl.DateTimeFormatOptions = {
     short: { month: 'short', day: 'numeric', year: 'numeric' },
     medium: { month: 'long', day: 'numeric', year: 'numeric' },
     long: { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' },
   }[format];
-  
+
   return new Intl.DateTimeFormat('en-US', options).format(dateObj);
 };
 
-export const formatTime = (date: Date | string, format: '12h' | '24h' = '12h'): string => {
+export const formatTime = (
+  date: Date | string,
+  format: '12h' | '24h' = '12h'
+): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
+
   const options: Intl.DateTimeFormatOptions = {
     hour: 'numeric',
     minute: '2-digit',
     hour12: format === '12h',
   };
-  
+
   return new Intl.DateTimeFormat('en-US', options).format(dateObj);
 };
 
@@ -109,12 +120,14 @@ export const getRelativeTime = (date: Date | string): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
-  
+
   if (diffInSeconds < 60) return 'just now';
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-  if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
+  if (diffInSeconds < 2592000)
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  if (diffInSeconds < 31536000)
+    return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
   return `${Math.floor(diffInSeconds / 31536000)}y ago`;
 };
 
@@ -127,21 +140,28 @@ export const groupBy = <T, K extends string | number>(
   array: T[],
   key: (item: T) => K
 ): Record<K, T[]> => {
-  return array.reduce((groups, item) => {
-    const groupKey = key(item);
-    if (!groups[groupKey]) {
-      groups[groupKey] = [];
-    }
-    groups[groupKey].push(item);
-    return groups;
-  }, {} as Record<K, T[]>);
+  return array.reduce(
+    (groups, item) => {
+      const groupKey = key(item);
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      groups[groupKey].push(item);
+      return groups;
+    },
+    {} as Record<K, T[]>
+  );
 };
 
-export const sortBy = <T>(array: T[], key: keyof T, direction: 'asc' | 'desc' = 'asc'): T[] => {
+export const sortBy = <T>(
+  array: T[],
+  key: keyof T,
+  direction: 'asc' | 'desc' = 'asc'
+): T[] => {
   return [...array].sort((a, b) => {
     const aVal = a[key];
     const bVal = b[key];
-    
+
     if (aVal < bVal) return direction === 'asc' ? -1 : 1;
     if (aVal > bVal) return direction === 'asc' ? 1 : -1;
     return 0;
@@ -242,7 +262,9 @@ export const buildQueryString = (params: Record<string, any>): string => {
   return searchParams.toString();
 };
 
-export const parseQueryString = (queryString: string): Record<string, string> => {
+export const parseQueryString = (
+  queryString: string
+): Record<string, string> => {
   const params: Record<string, string> = {};
   const searchParams = new URLSearchParams(queryString);
   searchParams.forEach((value, key) => {
@@ -311,10 +333,11 @@ export const getErrorMessage = (error: unknown): string => {
 };
 
 export const isNetworkError = (error: unknown): boolean => {
-  return error instanceof Error && (
-    error.message.includes('Network Error') ||
-    error.message.includes('fetch') ||
-    error.message.includes('Failed to fetch')
+  return (
+    error instanceof Error &&
+    (error.message.includes('Network Error') ||
+      error.message.includes('fetch') ||
+      error.message.includes('Failed to fetch'))
   );
 };
 
@@ -328,7 +351,7 @@ export const formatFileSize = (bytes: number): string => {
 };
 
 export const getFileExtension = (filename: string): string => {
-  return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
+  return filename.slice(((filename.lastIndexOf('.') - 1) >>> 0) + 2);
 };
 
 export const isImageFile = (filename: string): boolean => {
@@ -338,17 +361,21 @@ export const isImageFile = (filename: string): boolean => {
 };
 
 // Color utilities
-export const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
+export const hexToRgb = (
+  hex: string
+): { r: number; g: number; b: number } | null => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
 };
 
 export const rgbToHex = (r: number, g: number, b: number): string => {
-  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
 // Distance utilities
@@ -359,18 +386,22 @@ export const calculateDistance = (
   lon2: number
 ): number => {
   const R = 3959; // Earth's radius in miles
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 };
 
 // Random utilities
 export const generateId = (length = 8): string => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -379,9 +410,9 @@ export const generateId = (length = 8): string => {
 };
 
 export const generateUUID = (): string => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 };

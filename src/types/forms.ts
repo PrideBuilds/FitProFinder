@@ -77,31 +77,31 @@ export interface TrainerProfileFormData extends BaseFormData {
   phoneNumber: string;
   businessName: string;
   bio: string;
-  
+
   // Location
   location: LocationFormData;
-  
+
   // Professional Info
   specialties: string[];
   experienceYears: number;
   certifications: CertificationFormData[];
-  
+
   // Pricing
   hourlyRate: number;
   sessionTypes: SessionTypeFormData[];
-  
+
   // Availability
   availability: AvailabilityFormData[];
-  
+
   // Social Links
   socialLinks: SocialLinksFormData;
-  
+
   // Preferences
   offersOnline: boolean;
   offersInPerson: boolean;
   maxTravelDistance: number;
   timezone: string;
-  
+
   // Images
   profileImage?: File;
   galleryImages?: File[];

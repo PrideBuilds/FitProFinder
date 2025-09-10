@@ -8,7 +8,9 @@ import { z } from 'zod';
 // Environment validation
 const envSchema = z.object({
   DATABASE_URL: z.string().url().optional(),
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  NODE_ENV: z
+    .enum(['development', 'production', 'test'])
+    .default('development'),
 });
 
 const env = envSchema.parse(process.env);
@@ -39,7 +41,11 @@ const sampleTrainers = [
     name: 'Mike Rodriguez',
     email: 'mike@fitpro.com',
     bio: 'Former professional athlete turned trainer, specializing in sports performance and injury prevention. Helping athletes and fitness enthusiasts reach their peak potential.',
-    specialties: ['Sports Performance', 'Injury Prevention', 'Functional Training'],
+    specialties: [
+      'Sports Performance',
+      'Injury Prevention',
+      'Functional Training',
+    ],
     rating: 4.8,
     reviewCount: 89,
     location: {
@@ -77,7 +83,12 @@ const sampleTrainers = [
     name: 'David Thompson',
     email: 'david@fitpro.com',
     bio: 'Strength and conditioning specialist with expertise in powerlifting and bodybuilding. Helping clients build serious strength and muscle mass.',
-    specialties: ['Powerlifting', 'Bodybuilding', 'Strength Training', 'Muscle Building'],
+    specialties: [
+      'Powerlifting',
+      'Bodybuilding',
+      'Strength Training',
+      'Muscle Building',
+    ],
     rating: 4.6,
     reviewCount: 98,
     location: {
@@ -173,7 +184,7 @@ const sampleBookings = [
     duration: 90,
     type: 'in-person',
     status: 'confirmed',
-    price: 142.50,
+    price: 142.5,
   },
 ];
 
@@ -216,7 +227,6 @@ async function seedDatabase() {
     console.log(`- ${sampleInviteCodes.length} invite codes`);
     console.log('');
     console.log('You can now start the application and test with this data.');
-
   } catch (error) {
     console.error('❌ Error seeding database:', error);
     process.exit(1);
@@ -228,4 +238,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   seedDatabase();
 }
 
-export { seedDatabase, sampleTrainers, sampleSpecialties, sampleClients, sampleBookings, sampleInviteCodes };
+export {
+  seedDatabase,
+  sampleTrainers,
+  sampleSpecialties,
+  sampleClients,
+  sampleBookings,
+  sampleInviteCodes,
+};

@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({
   ...props
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  
+
   // Size classes
   const sizeClasses = {
     sm: 'max-w-md',
@@ -28,14 +28,14 @@ const Modal: React.FC<ModalProps> = ({
     xl: 'max-w-4xl',
     full: 'max-w-full mx-4',
   };
-  
+
   // Animation classes
   const animationClasses = {
     fade: 'animate-fade-in',
     slide: 'animate-slide-in',
     zoom: 'animate-zoom-in',
   };
-  
+
   // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -43,29 +43,29 @@ const Modal: React.FC<ModalProps> = ({
         onClose();
       }
     };
-    
+
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
     }
-    
+
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
   }, [isOpen, closable, onClose]);
-  
+
   // Handle click outside
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget && closable) {
       onClose();
     }
   };
-  
+
   // Close button
   const CloseButton = () => {
     if (!closable) return null;
-    
+
     return (
       <button
         onClick={onClose}
@@ -88,29 +88,23 @@ const Modal: React.FC<ModalProps> = ({
       </button>
     );
   };
-  
+
   // Modal header
   const ModalHeader = () => {
     if (!title) return null;
-    
+
     return (
       <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-medium text-gray-900">
-          {title}
-        </h3>
+        <h3 className="text-lg font-medium text-gray-900">{title}</h3>
       </div>
     );
   };
-  
+
   // Modal content
-  const ModalContent = () => (
-    <div className="px-6 py-4">
-      {children}
-    </div>
-  );
-  
+  const ModalContent = () => <div className="px-6 py-4">{children}</div>;
+
   if (!isOpen) return null;
-  
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Overlay */}
@@ -120,7 +114,7 @@ const Modal: React.FC<ModalProps> = ({
           onClick={handleOverlayClick}
         />
       )}
-      
+
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
         <div

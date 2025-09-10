@@ -26,7 +26,8 @@ export const SUPABASE_CONFIG = {
 
 // Stripe Configuration
 export const STRIPE_CONFIG = {
-  PUBLISHABLE_KEY: import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY || 'YOUR_STRIPE_KEY',
+  PUBLISHABLE_KEY:
+    import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY || 'YOUR_STRIPE_KEY',
   CURRENCY: 'usd',
   COUNTRY: 'US',
 } as const;
@@ -193,7 +194,11 @@ export const FILE_UPLOAD = {
   MAX_SIZE_MB: 10,
   MAX_SIZE_BYTES: 10 * 1024 * 1024,
   ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  ALLOWED_DOCUMENT_TYPES: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  ALLOWED_DOCUMENT_TYPES: [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ],
   ALLOWED_VIDEO_TYPES: ['video/mp4', 'video/quicktime', 'video/x-msvideo'],
 } as const;
 

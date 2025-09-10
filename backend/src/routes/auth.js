@@ -9,7 +9,14 @@ import {
 } from '../utils/auth.js';
 import { ApiError, asyncHandler } from '../middleware/errorHandler.js';
 import { authenticate } from '../middleware/auth.js';
-import { success, error, validationError, created, unauthorized, conflict } from '../utils/response.js';
+import {
+  success,
+  error,
+  validationError,
+  created,
+  unauthorized,
+  conflict,
+} from '../utils/response.js';
 import { HTTP_STATUS, ERROR_CODES } from '../constants.js';
 import db from '../database/connection.js';
 
@@ -47,9 +54,9 @@ router.post(
     // Check validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json(
-        validationError(errors.array(), 'Validation failed')
-      );
+      return res
+        .status(HTTP_STATUS.UNPROCESSABLE_ENTITY)
+        .json(validationError(errors.array(), 'Validation failed'));
     }
 
     const {
@@ -64,9 +71,9 @@ router.post(
     // Check if user already exists
     const existingUser = await db('users').where({ email }).first();
     if (existingUser) {
-      return res.status(HTTP_STATUS.CONFLICT).json(
-        conflict('User already exists with this email')
-      );
+      return res
+        .status(HTTP_STATUS.CONFLICT)
+        .json(conflict('User already exists with this email'));
     }
 
     // Hash password
@@ -100,9 +107,11 @@ router.post(
       phoneNumber: user.phone_number,
     };
 
-    res.status(HTTP_STATUS.CREATED).json(
-      created({ user: userData, tokens }, 'User registered successfully')
-    );
+    res
+      .status(HTTP_STATUS.CREATED)
+      .json(
+        created({ user: userData, tokens }, 'User registered successfully')
+      );
   })
 );
 
@@ -124,9 +133,9 @@ router.post(
     // Check validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json(
-        validationError(errors.array(), 'Validation failed')
-      );
+      return res
+        .status(HTTP_STATUS.UNPROCESSABLE_ENTITY)
+        .json(validationError(errors.array(), 'Validation failed'));
     }
 
     const { email, password } = req.body;
@@ -134,17 +143,17 @@ router.post(
     // Find user
     const user = await db('users').where({ email, is_active: true }).first();
     if (!user) {
-      return res.status(HTTP_STATUS.UNAUTHORIZED).json(
-        unauthorized('Invalid credentials')
-      );
+      return res
+        .status(HTTP_STATUS.UNAUTHORIZED)
+        .json(unauthorized('Invalid credentials'));
     }
 
     // Check password
     const isPasswordValid = await comparePassword(password, user.password_hash);
     if (!isPasswordValid) {
-      return res.status(HTTP_STATUS.UNAUTHORIZED).json(
-        unauthorized('Invalid credentials')
-      );
+      return res
+        .status(HTTP_STATUS.UNAUTHORIZED)
+        .json(unauthorized('Invalid credentials'));
     }
 
     // Update last login
@@ -166,9 +175,7 @@ router.post(
       phoneNumber: user.phone_number,
     };
 
-    res.json(
-      success({ user: userData, tokens }, 'Login successful')
-    );
+    res.json(success({ user: userData, tokens }, 'Login successful'));
   })
 );
 

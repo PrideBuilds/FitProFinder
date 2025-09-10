@@ -23,7 +23,7 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    
+
     // Validate the request body
     const validationResult = feedbackSchema.safeParse(body);
     if (!validationResult.success) {
@@ -88,7 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
   } catch (error) {
     console.error('Error processing feedback:', error);
-    
+
     return new Response(
       JSON.stringify({
         success: false,

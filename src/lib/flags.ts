@@ -36,7 +36,7 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
  */
 export async function getFeatureFlags(): Promise<FeatureFlags> {
   const now = Date.now();
-  
+
   // Return cached flags if still valid
   if (flagsCache && now < cacheExpiry) {
     return flagsCache;
@@ -46,11 +46,11 @@ export async function getFeatureFlags(): Promise<FeatureFlags> {
     // TODO: Replace with actual database query
     // const flags = await db.select().from(featureFlagsTable);
     // flagsCache = mergeFlags(DEFAULT_FLAGS, flags);
-    
+
     // For now, return default flags
     flagsCache = { ...DEFAULT_FLAGS };
     cacheExpiry = now + CACHE_DURATION;
-    
+
     return flagsCache;
   } catch (error) {
     console.error('Failed to fetch feature flags:', error);
@@ -62,7 +62,9 @@ export async function getFeatureFlags(): Promise<FeatureFlags> {
 /**
  * Get a specific feature flag
  */
-export async function getFeatureFlag(flag: keyof FeatureFlags): Promise<boolean> {
+export async function getFeatureFlag(
+  flag: keyof FeatureFlags
+): Promise<boolean> {
   const flags = await getFeatureFlags();
   return flags[flag];
 }
@@ -124,12 +126,12 @@ export function clearFlagsCache(): void {
  */
 function mergeFlags(defaultFlags: FeatureFlags, dbFlags: any[]): FeatureFlags {
   const merged = { ...defaultFlags };
-  
+
   dbFlags.forEach(flag => {
     if (flag.key in merged) {
       merged[flag.key as keyof FeatureFlags] = flag.value;
     }
   });
-  
+
   return merged;
 }

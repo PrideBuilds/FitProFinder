@@ -11,7 +11,7 @@ const description = "View detailed trainer profile and book sessions.";
 export async function getStaticPaths() {
   // Generate static paths for mock trainers
   const mockTrainerIds = [1, 2, 3, 4, 5, 6];
-  
+
   return mockTrainerIds.map((id) => ({
     params: { id: id.toString() },
     props: { trainerId: id }
@@ -596,7 +596,7 @@ export async function getStaticPaths() {
 
     async loadTrainer() {
       // Check if we're in production (no localhost backend)
-      const isProduction = window.location.hostname !== 'localhost' && 
+      const isProduction = window.location.hostname !== 'localhost' &&
                           window.location.hostname !== '127.0.0.1' &&
                           !window.location.hostname.includes('localhost');
       const isNetlify = window.location.hostname.includes('netlify.app');

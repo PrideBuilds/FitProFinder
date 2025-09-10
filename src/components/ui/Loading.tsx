@@ -22,7 +22,7 @@ const Loading: React.FC<LoadingProps> = ({
     lg: 'h-12 w-12',
     xl: 'h-16 w-16',
   };
-  
+
   // Spinner component
   const Spinner = () => (
     <svg
@@ -46,7 +46,7 @@ const Loading: React.FC<LoadingProps> = ({
       />
     </svg>
   );
-  
+
   // Skeleton component
   const Skeleton = () => (
     <div className="animate-pulse">
@@ -55,56 +55,54 @@ const Loading: React.FC<LoadingProps> = ({
       <div className="bg-gray-200 rounded h-4 w-1/2"></div>
     </div>
   );
-  
+
   // Dots component
   const Dots = () => (
     <div className="flex space-x-1">
       <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
-      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+      <div
+        className="w-2 h-2 bg-current rounded-full animate-bounce"
+        style={{ animationDelay: '0.1s' }}
+      ></div>
+      <div
+        className="w-2 h-2 bg-current rounded-full animate-bounce"
+        style={{ animationDelay: '0.2s' }}
+      ></div>
     </div>
   );
-  
+
   // Pulse component
   const Pulse = () => (
     <div className="animate-pulse">
       <div className="bg-current rounded-full h-full w-full"></div>
     </div>
   );
-  
+
   // Loading content
   const LoadingContent = () => {
     if (skeleton) return <Skeleton />;
     if (spinner) return <Spinner />;
     return <Dots />;
   };
-  
+
   // Overlay wrapper
   if (overlay) {
     return (
       <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
         <div className="text-center">
           <LoadingContent />
-          {text && (
-            <p className="mt-2 text-sm text-gray-600">
-              {text}
-            </p>
-          )}
+          {text && <p className="mt-2 text-sm text-gray-600">{text}</p>}
         </div>
       </div>
     );
   }
-  
+
   // Regular loading
   return (
     <div className={`flex items-center justify-center ${className}`} {...props}>
       <div className="text-center">
         <LoadingContent />
-        {text && (
-          <p className="mt-2 text-sm text-gray-600">
-            {text}
-          </p>
-        )}
+        {text && <p className="mt-2 text-sm text-gray-600">{text}</p>}
       </div>
     </div>
   );

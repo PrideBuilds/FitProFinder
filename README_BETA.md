@@ -13,17 +13,20 @@ A modern platform connecting fitness trainers with clients, built with Astro, Ty
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/your-username/fitprofinder.git
    cd fitprofinder
    ```
 
 2. **Install dependencies:**
+
    ```bash
    pnpm install
    ```
 
 3. **Set up environment variables:**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local with your configuration
@@ -104,11 +107,13 @@ pnpm start:docker     # Start with Docker Compose
 ### Testing
 
 #### Unit Tests
+
 ```bash
 pnpm test
 ```
 
 #### E2E Tests
+
 ```bash
 # Run headless
 pnpm test:e2e
@@ -141,6 +146,7 @@ const isMessagingEnabled = await getFeatureFlag('messaging_enabled');
 ```
 
 Available flags:
+
 - `beta_gate`: Enable/disable beta access control
 - `messaging_enabled`: Enable/disable messaging features
 - `payments_enabled`: Enable/disable payment processing
@@ -153,9 +159,10 @@ Available flags:
 ### Invite Code System
 
 1. **Generate invite codes:**
+
    ```typescript
    import { createBetaInvite } from './src/lib/beta';
-   
+
    const invite = await createBetaInvite(
      'user@example.com',
      'admin',
@@ -164,9 +171,10 @@ Available flags:
    ```
 
 2. **Validate invite codes:**
+
    ```typescript
    import { validateInviteCode } from './src/lib/beta';
-   
+
    const validation = await validateInviteCode('BETA2024');
    if (validation.valid) {
      // Allow access
@@ -208,6 +216,7 @@ trackEvent('booking_confirmed', {
 ### Error Tracking
 
 Automatic error tracking is enabled by default. Errors are logged to:
+
 - Browser console (development)
 - PostHog (production)
 - Server logs (all environments)
@@ -241,6 +250,7 @@ docker run -p 3000:3000 --env-file .env.local fitprofinder
 Set the following environment variables in your deployment platform:
 
 **Required:**
+
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
@@ -248,6 +258,7 @@ Set the following environment variables in your deployment platform:
 - `JWT_SECRET`
 
 **Optional:**
+
 - `NEXT_PUBLIC_POSTHOG_KEY`
 - `RESEND_API_KEY`
 - `ENABLE_BETA_GATE`
@@ -256,6 +267,7 @@ Set the following environment variables in your deployment platform:
 ### Deployment Platforms
 
 #### Vercel
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -265,6 +277,7 @@ vercel --prod
 ```
 
 #### Netlify
+
 ```bash
 # Install Netlify CLI
 npm i -g netlify-cli
@@ -274,6 +287,7 @@ netlify deploy --prod --dir=dist
 ```
 
 #### Railway
+
 ```bash
 # Install Railway CLI
 npm i -g @railway/cli
@@ -287,6 +301,7 @@ railway deploy
 ### Test Data
 
 The seed script creates:
+
 - 5 sample trainers with profiles
 - 16 specialties
 - 3 sample clients
@@ -296,6 +311,7 @@ The seed script creates:
 ### Test Cards (Stripe)
 
 Use these test card numbers:
+
 - **Success:** `4242 4242 4242 4242`
 - **Decline:** `4000 0000 0000 0002`
 - **Requires authentication:** `4000 0025 0000 3155`

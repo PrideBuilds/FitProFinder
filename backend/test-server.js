@@ -39,33 +39,39 @@ const mockTrainers = [
     location: {
       city: 'San Francisco',
       state: 'CA',
-      zipCode: '94102'
+      zipCode: '94102',
     },
     hourlyRate: 85,
-    profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
+    profileImage:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
     isAvailable: true,
     experience: '5+ years',
-    certifications: ['NASM-CPT', 'Precision Nutrition Level 1']
+    certifications: ['NASM-CPT', 'Precision Nutrition Level 1'],
   },
   {
     id: 2,
     name: 'Mike Rodriguez',
     email: 'mike@fitpro.com',
     bio: 'Former professional athlete turned trainer, specializing in sports performance and injury prevention.',
-    specialties: ['Sports Performance', 'Injury Prevention', 'Functional Training'],
+    specialties: [
+      'Sports Performance',
+      'Injury Prevention',
+      'Functional Training',
+    ],
     rating: 4.8,
     reviewCount: 89,
     location: {
       city: 'Los Angeles',
       state: 'CA',
-      zipCode: '90210'
+      zipCode: '90210',
     },
     hourlyRate: 95,
-    profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
+    profileImage:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
     isAvailable: true,
     experience: '8+ years',
-    certifications: ['ACSM-CPT', 'FMS Level 2']
-  }
+    certifications: ['ACSM-CPT', 'FMS Level 2'],
+  },
 ];
 
 // Mock specialties data
@@ -77,22 +83,31 @@ const mockSpecialties = [
   { id: 5, name: 'Pilates' },
   { id: 6, name: 'Nutrition' },
   { id: 7, name: 'Sports Performance' },
-  { id: 8, name: 'Injury Prevention' }
+  { id: 8, name: 'Injury Prevention' },
 ];
 
 // Trainers endpoint
 app.get('/api/trainers', (req, res) => {
-  const { search, specialty, city, state, minRating, page = 1, limit = 20 } = req.query;
+  const {
+    search,
+    specialty,
+    city,
+    state,
+    minRating,
+    page = 1,
+    limit = 20,
+  } = req.query;
 
   let filteredTrainers = [...mockTrainers];
 
   // Apply filters
   if (search) {
     const searchLower = search.toLowerCase();
-    filteredTrainers = filteredTrainers.filter(trainer =>
-      trainer.name.toLowerCase().includes(searchLower) ||
-      trainer.bio.toLowerCase().includes(searchLower) ||
-      trainer.specialties.some(s => s.toLowerCase().includes(searchLower))
+    filteredTrainers = filteredTrainers.filter(
+      trainer =>
+        trainer.name.toLowerCase().includes(searchLower) ||
+        trainer.bio.toLowerCase().includes(searchLower) ||
+        trainer.specialties.some(s => s.toLowerCase().includes(searchLower))
     );
   }
 
@@ -109,15 +124,15 @@ app.get('/api/trainers', (req, res) => {
   }
 
   if (state && state !== 'All States') {
-    filteredTrainers = filteredTrainers.filter(trainer =>
-      trainer.location.state === state
+    filteredTrainers = filteredTrainers.filter(
+      trainer => trainer.location.state === state
     );
   }
 
   if (minRating) {
     const rating = parseFloat(minRating);
-    filteredTrainers = filteredTrainers.filter(trainer =>
-      trainer.rating >= rating
+    filteredTrainers = filteredTrainers.filter(
+      trainer => trainer.rating >= rating
     );
   }
 
@@ -135,8 +150,8 @@ app.get('/api/trainers', (req, res) => {
       totalCount: filteredTrainers.length,
       hasNextPage: endIndex < filteredTrainers.length,
       hasPrevPage: startIndex > 0,
-      limit: parseInt(limit)
-    }
+      limit: parseInt(limit),
+    },
   });
 });
 
@@ -144,7 +159,7 @@ app.get('/api/trainers', (req, res) => {
 app.get('/api/specialties', (req, res) => {
   res.json({
     success: true,
-    data: mockSpecialties
+    data: mockSpecialties,
   });
 });
 
@@ -156,13 +171,13 @@ app.get('/api/trainers/:id', (req, res) => {
   if (!trainer) {
     return res.status(404).json({
       success: false,
-      message: 'Trainer not found'
+      message: 'Trainer not found',
     });
   }
 
   res.json({
     success: true,
-    data: trainer
+    data: trainer,
   });
 });
 

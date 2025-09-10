@@ -7,7 +7,11 @@ import { z } from 'zod';
 
 // Invite code validation schema
 export const inviteCodeSchema = z.object({
-  code: z.string().min(6).max(20).regex(/^[A-Z0-9]+$/),
+  code: z
+    .string()
+    .min(6)
+    .max(20)
+    .regex(/^[A-Z0-9]+$/),
   email: z.string().email(),
 });
 
@@ -169,7 +173,9 @@ export async function createBetaInvite(
 }> {
   try {
     const code = generateInviteCode();
-    const expiresAt = new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000);
+    const expiresAt = new Date(
+      Date.now() + expiresInDays * 24 * 60 * 60 * 1000
+    );
 
     // TODO: Insert into database
     // const invite = await db.insert(betaInvitesTable).values({

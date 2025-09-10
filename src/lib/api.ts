@@ -4,7 +4,13 @@
  */
 
 import { API_CONFIG } from '../utils/constants';
-import type { ApiResponse, LoginRequest, LoginResponse, TrainerSearchRequest, TrainerSearchResponse } from '../types';
+import type {
+  ApiResponse,
+  LoginRequest,
+  LoginResponse,
+  TrainerSearchRequest,
+  TrainerSearchResponse,
+} from '../types';
 
 /**
  * API Client class for making HTTP requests
@@ -59,7 +65,10 @@ class ApiClient {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error?.message || `HTTP ${response.status}: ${response.statusText}`);
+        throw new Error(
+          data.error?.message ||
+            `HTTP ${response.status}: ${response.statusText}`
+        );
       }
 
       return data;
@@ -75,7 +84,10 @@ class ApiClient {
    * @param params - Query parameters
    * @returns Promise with response data
    */
-  async get<T>(endpoint: string, params?: Record<string, any>): Promise<ApiResponse<T>> {
+  async get<T>(
+    endpoint: string,
+    params?: Record<string, any>
+  ): Promise<ApiResponse<T>> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -196,7 +208,9 @@ export const trainersApi = {
    * @param filters - Search filters
    * @returns Promise with search results
    */
-  search: (filters: TrainerSearchRequest): Promise<ApiResponse<TrainerSearchResponse>> => {
+  search: (
+    filters: TrainerSearchRequest
+  ): Promise<ApiResponse<TrainerSearchResponse>> => {
     return apiClient.get('/trainers/search', filters);
   },
 
@@ -284,8 +298,14 @@ export const messagesApi = {
    * @param pagination - Pagination options
    * @returns Promise with messages list
    */
-  getMessages: (conversationId: string, pagination?: any): Promise<ApiResponse<any>> => {
-    return apiClient.get(`/messages/conversations/${conversationId}/messages`, pagination);
+  getMessages: (
+    conversationId: string,
+    pagination?: any
+  ): Promise<ApiResponse<any>> => {
+    return apiClient.get(
+      `/messages/conversations/${conversationId}/messages`,
+      pagination
+    );
   },
 
   /**
@@ -303,8 +323,14 @@ export const messagesApi = {
    * @param messageIds - Array of message IDs
    * @returns Promise with read status
    */
-  markAsRead: (conversationId: string, messageIds?: string[]): Promise<ApiResponse<any>> => {
-    return apiClient.post('/messages/mark-read', { conversationId, messageIds });
+  markAsRead: (
+    conversationId: string,
+    messageIds?: string[]
+  ): Promise<ApiResponse<any>> => {
+    return apiClient.post('/messages/mark-read', {
+      conversationId,
+      messageIds,
+    });
   },
 };
 
@@ -331,4 +357,11 @@ export const paymentsApi = {
 
 // Export default API client and all API modules
 export default apiClient;
-export { apiClient, authApi, trainersApi, bookingsApi, messagesApi, paymentsApi };
+export {
+  apiClient,
+  authApi,
+  trainersApi,
+  bookingsApi,
+  messagesApi,
+  paymentsApi,
+};

@@ -10,4 +10,10 @@ export { default as Loading } from './Loading';
 export { default as Modal } from './Modal';
 
 // Re-export types
-export type { ButtonProps, InputProps, CardProps, LoadingProps, ModalProps } from '../../types/components';
+export type {
+  ButtonProps,
+  InputProps,
+  CardProps,
+  LoadingProps,
+  ModalProps,
+} from '../../types/components';

@@ -37,17 +37,20 @@ This project adheres to a code of conduct. By participating, you are expected to
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/your-username/fitprofinder.git
    cd fitprofinder
    ```
 
 2. Install dependencies:
+
    ```bash
    pnpm install
    ```
 
 3. Set up environment variables:
+
    ```bash
    cp env/.env.example .env.local
    # Edit .env.local with your configuration
@@ -62,6 +65,7 @@ This project adheres to a code of conduct. By participating, you are expected to
 
 1. Set up Supabase (or use local development database)
 2. Run migrations:
+
    ```bash
    pnpm db:migrate
    ```
@@ -76,6 +80,7 @@ This project adheres to a code of conduct. By participating, you are expected to
 ### Branch Naming
 
 Use descriptive branch names:
+
 - `feature/user-authentication`
 - `bugfix/payment-processing`
 - `docs/api-documentation`
@@ -151,6 +156,7 @@ type(scope): description
 ```
 
 Types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -160,6 +166,7 @@ Types:
 - `chore`: Maintenance tasks
 
 Examples:
+
 ```
 feat(auth): add OAuth login support
 fix(payments): resolve Stripe webhook validation
@@ -179,20 +186,24 @@ docs(api): update authentication endpoints
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Unit tests pass
 - [ ] E2E tests pass
 - [ ] Manual testing completed
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -239,6 +250,7 @@ Brief description of changes
 ## Recognition
 
 Contributors will be recognized in:
+
 - CONTRIBUTORS.md file
 - Release notes
 - Project documentation

@@ -15,7 +15,9 @@ export const createValidationRule = (
 });
 
 // Required field validation
-export const required = (message = 'This field is required'): ValidationRule => ({
+export const required = (
+  message = 'This field is required'
+): ValidationRule => ({
   required: true,
   message,
 });
@@ -38,13 +40,17 @@ export const pattern = (regex: RegExp, message: string): ValidationRule => ({
 });
 
 // Email validation
-export const email = (message = 'Please enter a valid email address'): ValidationRule => ({
+export const email = (
+  message = 'Please enter a valid email address'
+): ValidationRule => ({
   pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   message,
 });
 
 // Phone validation
-export const phone = (message = 'Please enter a valid phone number'): ValidationRule => ({
+export const phone = (
+  message = 'Please enter a valid phone number'
+): ValidationRule => ({
   pattern: /^[\+]?[1-9][\d]{0,15}$/,
   message,
 });
@@ -56,7 +62,9 @@ export const url = (message = 'Please enter a valid URL'): ValidationRule => ({
 });
 
 // Password validation
-export const password = (message = 'Password must be at least 8 characters with uppercase, lowercase, and number'): ValidationRule => ({
+export const password = (
+  message = 'Password must be at least 8 characters with uppercase, lowercase, and number'
+): ValidationRule => ({
   pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/,
   message,
 });
@@ -73,7 +81,10 @@ export const max = (max: number, message?: string): ValidationRule => ({
 });
 
 // Custom validation
-export const custom = (validator: (value: any) => string | null, message?: string): ValidationRule => ({
+export const custom = (
+  validator: (value: any) => string | null,
+  message?: string
+): ValidationRule => ({
   custom: validator,
   message,
 });
@@ -84,61 +95,88 @@ export const validateField = (
   rules: ValidationRule | ValidationRule[]
 ): FieldValidationResult => {
   const ruleArray = Array.isArray(rules) ? rules : [rules];
-  
+
   for (const rule of ruleArray) {
     // Required validation
-    if (rule.required && (value === null || value === undefined || value === '')) {
+    if (
+      rule.required &&
+      (value === null || value === undefined || value === '')
+    ) {
       return {
         isValid: false,
         error: rule.message || 'This field is required',
       };
     }
-    
+
     // Skip other validations if value is empty and not required
-    if (!rule.required && (value === null || value === undefined || value === '')) {
+    if (
+      !rule.required &&
+      (value === null || value === undefined || value === '')
+    ) {
       continue;
     }
-    
+
     // Min length validation
-    if (rule.minLength && typeof value === 'string' && value.length < rule.minLength) {
+    if (
+      rule.minLength &&
+      typeof value === 'string' &&
+      value.length < rule.minLength
+    ) {
       return {
         isValid: false,
         error: rule.message || `Must be at least ${rule.minLength} characters`,
       };
     }
-    
+
     // Max length validation
-    if (rule.maxLength && typeof value === 'string' && value.length > rule.maxLength) {
+    if (
+      rule.maxLength &&
+      typeof value === 'string' &&
+      value.length > rule.maxLength
+    ) {
       return {
         isValid: false,
-        error: rule.message || `Must be no more than ${rule.maxLength} characters`,
+        error:
+          rule.message || `Must be no more than ${rule.maxLength} characters`,
       };
     }
-    
+
     // Min value validation
-    if (rule.min !== undefined && typeof value === 'number' && value < rule.min) {
+    if (
+      rule.min !== undefined &&
+      typeof value === 'number' &&
+      value < rule.min
+    ) {
       return {
         isValid: false,
         error: rule.message || `Must be at least ${rule.min}`,
       };
     }
-    
+
     // Max value validation
-    if (rule.max !== undefined && typeof value === 'number' && value > rule.max) {
+    if (
+      rule.max !== undefined &&
+      typeof value === 'number' &&
+      value > rule.max
+    ) {
       return {
         isValid: false,
         error: rule.message || `Must be no more than ${rule.max}`,
       };
     }
-    
+
     // Pattern validation
-    if (rule.pattern && typeof value === 'string' && !rule.pattern.test(value)) {
+    if (
+      rule.pattern &&
+      typeof value === 'string' &&
+      !rule.pattern.test(value)
+    ) {
       return {
         isValid: false,
         error: rule.message || 'Invalid format',
       };
     }
-    
+
     // Custom validation
     if (rule.custom) {
       const customError = rule.custom(value);
@@ -150,7 +188,7 @@ export const validateField = (
       }
     }
   }
-  
+
   return { isValid: true };
 };
 
@@ -160,17 +198,17 @@ export const validateForm = (
 ): ValidationResult => {
   const errors: Record<string, string> = {};
   let isValid = true;
-  
+
   Object.entries(schema).forEach(([field, rules]) => {
     const value = data[field];
     const result = validateField(value, rules);
-    
+
     if (!result.isValid) {
       errors[field] = result.error || 'Invalid value';
       isValid = false;
     }
   });
-  
+
   return { isValid, errors };
 };
 
@@ -179,43 +217,46 @@ export const commonSchemas = {
   email: {
     email: [required(), email()],
   },
-  
+
   password: {
     password: [required(), password()],
   },
-  
+
   phone: {
     phone: [required(), phone()],
   },
-  
+
   name: {
     firstName: [required(), minLength(2), maxLength(50)],
     lastName: [required(), minLength(2), maxLength(50)],
   },
-  
+
   address: {
     address: [required(), minLength(5), maxLength(100)],
     city: [required(), minLength(2), maxLength(50)],
     state: [required(), minLength(2), maxLength(50)],
-    zipCode: [required(), pattern(/^\d{5}(-\d{4})?$/, 'Please enter a valid ZIP code')],
+    zipCode: [
+      required(),
+      pattern(/^\d{5}(-\d{4})?$/, 'Please enter a valid ZIP code'),
+    ],
   },
-  
+
   url: {
     url: [required(), url()],
   },
-  
+
   rating: {
     rating: [required(), min(1), max(5)],
   },
-  
+
   price: {
     price: [required(), min(0)],
   },
-  
+
   date: {
     date: [required()],
   },
-  
+
   time: {
     time: [required()],
   },
@@ -227,7 +268,7 @@ export const formSchemas = {
     email: commonSchemas.email.email,
     password: [required()],
   },
-  
+
   register: {
     email: commonSchemas.email.email,
     password: commonSchemas.password.password,
@@ -236,7 +277,7 @@ export const formSchemas = {
     lastName: commonSchemas.name.lastName,
     termsAccepted: [required()],
   },
-  
+
   trainerProfile: {
     firstName: commonSchemas.name.firstName,
     lastName: commonSchemas.name.lastName,
@@ -248,7 +289,7 @@ export const formSchemas = {
     hourlyRate: [required(), min(0)],
     ...commonSchemas.address,
   },
-  
+
   booking: {
     trainerId: [required()],
     sessionTypeId: [required()],
@@ -256,12 +297,12 @@ export const formSchemas = {
     scheduledTime: [required()],
     notes: [maxLength(500)],
   },
-  
+
   review: {
     rating: commonSchemas.rating.rating,
     comment: [required(), minLength(10), maxLength(1000)],
   },
-  
+
   message: {
     content: [required(), minLength(1), maxLength(2000)],
   },
@@ -295,7 +336,9 @@ export const validateUniqueEmail = async (email: string): Promise<boolean> => {
   }
 };
 
-export const validateUniqueUsername = async (username: string): Promise<boolean> => {
+export const validateUniqueUsername = async (
+  username: string
+): Promise<boolean> => {
   try {
     // This would typically make an API call to check if username exists
     // For now, return true (username is unique)
@@ -311,7 +354,10 @@ export const validateFileSize = (file: File, maxSizeMB: number): boolean => {
   return file.size <= maxSizeBytes;
 };
 
-export const validateFileType = (file: File, allowedTypes: string[]): boolean => {
+export const validateFileType = (
+  file: File,
+  allowedTypes: string[]
+): boolean => {
   return allowedTypes.includes(file.type);
 };
 
@@ -342,12 +388,15 @@ export const validateTime = (time: string): boolean => {
   return timeRegex.test(time);
 };
 
-export const validateTimeRange = (startTime: string, endTime: string): boolean => {
+export const validateTimeRange = (
+  startTime: string,
+  endTime: string
+): boolean => {
   if (!validateTime(startTime) || !validateTime(endTime)) return false;
-  
+
   const start = new Date(`2000-01-01T${startTime}`);
   const end = new Date(`2000-01-01T${endTime}`);
-  
+
   return start < end;
 };
 

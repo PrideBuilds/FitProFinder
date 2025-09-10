@@ -10,7 +10,7 @@ const POSTHOG_KEY = env.NEXT_PUBLIC_POSTHOG_KEY;
 const POSTHOG_HOST = env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com';
 
 // Event types
-export type AnalyticsEvent = 
+export type AnalyticsEvent =
   | 'signup_completed'
   | 'profile_completed'
   | 'search_executed'
@@ -42,13 +42,13 @@ class Analytics {
     try {
       // Dynamically import PostHog
       const { default: posthog } = await import('posthog-js');
-      
+
       posthog.init(POSTHOG_KEY, {
         api_host: POSTHOG_HOST,
         person_profiles: 'identified_only',
         capture_pageview: false, // We'll handle this manually
         capture_pageleave: true,
-        loaded: (posthog) => {
+        loaded: posthog => {
           this.posthog = posthog;
           this.initialized = true;
           console.log('Analytics initialized');
@@ -70,7 +70,8 @@ class Analytics {
         ...properties,
         timestamp: new Date().toISOString(),
         url: typeof window !== 'undefined' ? window.location.href : undefined,
-        user_agent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+        user_agent:
+          typeof window !== 'undefined' ? navigator.userAgent : undefined,
       });
     } catch (error) {
       console.error('Failed to track event:', event, error);
@@ -123,7 +124,10 @@ if (typeof window !== 'undefined') {
 }
 
 // Helper functions for common events
-export const trackEvent = (event: AnalyticsEvent, properties?: EventProperties) => {
+export const trackEvent = (
+  event: AnalyticsEvent,
+  properties?: EventProperties
+) => {
   analytics.track(event, properties);
 };
 
@@ -148,7 +152,7 @@ export const setupErrorTracking = () => {
   if (typeof window === 'undefined') return;
 
   // Global error handler
-  window.addEventListener('error', (event) => {
+  window.addEventListener('error', event => {
     trackError(event.error, {
       error_type: 'javascript_error',
       filename: event.filename,
@@ -158,7 +162,7 @@ export const setupErrorTracking = () => {
   });
 
   // Unhandled promise rejection handler
-  window.addEventListener('unhandledrejection', (event) => {
+  window.addEventListener('unhandledrejection', event => {
     trackError(new Error(event.reason), {
       error_type: 'unhandled_promise_rejection',
     });
