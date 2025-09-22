@@ -112,7 +112,7 @@
 
 - **Live Site**: https://playful-kataifi-dcf006.netlify.app/
 - **GitHub Repo**: https://github.com/PrideBuilds/FitProFinder
-- **Demo Login**: 
+- **Demo Login**:
   - Admin: admin@fitprofinder.com / admin123
   - Trainer: trainer@fitprofinder.com / trainer123
   - Client: client@fitprofinder.com / client123

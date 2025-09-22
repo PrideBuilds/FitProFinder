@@ -122,7 +122,6 @@ export async function apiRequest<T>(
 
     return data.data as T;
   } catch (error) {
-    console.error(`API request failed for ${endpoint}:`, error);
     throw error;
   }
 }
@@ -356,6 +355,45 @@ export const trainersApi = {
       body: JSON.stringify(profileData),
     });
   },
+
+  /**
+   * Get featured trainers
+   * @param limit - Number of trainers to return (default: 6)
+   * @returns Promise resolving to featured trainers data
+   */
+  getFeatured: async (limit: number = 6): Promise<{
+    success: boolean;
+    data?: {
+      trainers: Trainer[];
+      hasMore: boolean;
+    };
+    error?: {
+      message: string;
+    };
+  }> => {
+    const queryParams = new URLSearchParams({
+      featured: 'true',
+      limit: limit.toString(),
+    });
+
+    try {
+      const trainers = await apiRequest<Trainer[]>(`/trainers?${queryParams}`);
+      return {
+        success: true,
+        data: {
+          trainers,
+          hasMore: trainers.length === limit, // Assume there might be more if we got exactly the limit
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: {
+          message: error instanceof Error ? error.message : 'Failed to fetch featured trainers',
+        },
+      };
+    }
+  },
 };
 
 /**
@@ -555,7 +593,7 @@ export const messagingApi = {
     }
 
     // Send text message
-    const { attachments, ...messageData } = data;
+    const { attachments: _, ...messageData } = data;
     return await apiRequest<{ message: Message }>(
       `/messages/conversations/${conversationId}/messages`,
       {
@@ -583,7 +621,7 @@ export const messagingApi = {
 
     // Add files
     if (data.attachments) {
-      data.attachments.forEach((file, index) => {
+      data.attachments.forEach((file) => {
         formData.append('files', file);
       });
     }

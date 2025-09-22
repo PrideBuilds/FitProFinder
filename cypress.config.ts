@@ -23,7 +23,7 @@ export default defineConfig({
   },
   component: {
     devServer: {
-      framework: 'astro',
+      framework: 'react',
       bundler: 'vite',
     },
   },

@@ -39,7 +39,7 @@ export interface BetaUser {
 /**
  * Validate invite code format
  */
-export function validateInviteCode(code: string): boolean {
+export function validateInviteCodeFormat(code: string): boolean {
   return /^[A-Z0-9]{6,20}$/.test(code);
 }
 

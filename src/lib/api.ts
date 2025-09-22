@@ -355,13 +355,6 @@ export const paymentsApi = {
   },
 };
 
-// Export default API client and all API modules
+// Export default API client
 export default apiClient;
-export {
-  apiClient,
-  authApi,
-  trainersApi,
-  bookingsApi,
-  messagesApi,
-  paymentsApi,
-};
+export { apiClient };

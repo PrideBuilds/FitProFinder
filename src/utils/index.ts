@@ -15,4 +15,3 @@ export * from './constants';
 // Re-export existing utilities
 export * from './api';
 export * from './adminAPI';
-export * from './socket';

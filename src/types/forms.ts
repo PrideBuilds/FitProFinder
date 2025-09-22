@@ -17,6 +17,8 @@ export interface BaseFormData {
 // Validation Rules
 export interface ValidationRule {
   required?: boolean;
+  min?: number;
+  max?: number;
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;

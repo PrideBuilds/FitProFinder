@@ -232,7 +232,7 @@ export const isValidEmail = (email: string): boolean => {
 };
 
 export const isValidPhone = (phone: string): boolean => {
-  const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+  const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
   return phoneRegex.test(phone.replace(/\D/g, ''));
 };
 
@@ -286,16 +286,16 @@ export const getFromStorage = <T>(key: string, defaultValue: T): T => {
 export const setToStorage = <T>(key: string, value: T): void => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error('Error saving to localStorage:', error);
+  } catch {
+    // Silently fail localStorage operations
   }
 };
 
 export const removeFromStorage = (key: string): void => {
   try {
     localStorage.removeItem(key);
-  } catch (error) {
-    console.error('Error removing from localStorage:', error);
+  } catch {
+    // Silently fail localStorage operations
   }
 };
 

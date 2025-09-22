@@ -446,6 +446,9 @@ const description =
     async searchTrainers() {
       this.showLoading();
 
+      // Force demo mode for testing (when backend is not available)
+      const FORCE_DEMO_MODE = true; // Set to false when backend is working
+
       // More robust production detection
       const isProduction = window.location.hostname !== 'localhost' &&
                           window.location.hostname !== '127.0.0.1' &&
@@ -464,8 +467,8 @@ const description =
         userAgent: navigator.userAgent
       });
 
-      if (isProduction || isNetlify) {
-        console.log("Production/Netlify environment detected, using mock data");
+      if (isProduction || isNetlify || FORCE_DEMO_MODE) {
+        console.log("Demo mode active - using mock data", { isProduction, isNetlify, FORCE_DEMO_MODE });
         const mockData = this.getMockTrainersData();
         console.log("Mock data structure:", mockData);
         console.log("Mock trainers count:", mockData.data?.trainers?.length);
@@ -734,8 +737,8 @@ const description =
 
     displayResults(data) {
       console.log("displayResults called with data:", data);
-      const trainers = data.data || [];
-      const pagination = data.pagination || {};
+      const trainers = data.data?.trainers || [];
+      const pagination = data.data?.pagination || {};
       console.log("trainers:", trainers, "pagination:", pagination);
 
       const loadingState = document.getElementById("loadingState");

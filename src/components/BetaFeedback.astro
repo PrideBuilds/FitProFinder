@@ -166,7 +166,7 @@
     // Handle form submission
     feedbackForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      
+
       const formData = new FormData(feedbackForm);
       const feedbackData = {
         name: formData.get('name') || 'Anonymous',
@@ -192,7 +192,7 @@
           // Show success message
           successMessage.classList.remove('hidden');
           feedbackForm.classList.add('hidden');
-          
+
           // Auto-close after 3 seconds
           setTimeout(() => {
             closeFeedbackModal();

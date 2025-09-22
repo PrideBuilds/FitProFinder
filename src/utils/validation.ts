@@ -3,7 +3,8 @@
  * Form validation and data validation utilities
  */
 
-import type { ValidationRule, ValidationResult } from '../types/forms';
+import type { ValidationRule } from '../types/forms';
+import type { ValidationResult } from '../types/utils';
 
 // Validation rule creators
 export const createValidationRule = (
@@ -51,7 +52,7 @@ export const email = (
 export const phone = (
   message = 'Please enter a valid phone number'
 ): ValidationRule => ({
-  pattern: /^[\+]?[1-9][\d]{0,15}$/,
+  pattern: /^[+]?[1-9][\d]{0,15}$/,
   message,
 });
 
@@ -326,7 +327,7 @@ export const validateUrl = (url: string): boolean => {
 };
 
 // Async validation helpers
-export const validateUniqueEmail = async (email: string): Promise<boolean> => {
+export const validateUniqueEmail = async (_email: string): Promise<boolean> => {
   try {
     // This would typically make an API call to check if email exists
     // For now, return true (email is unique)
@@ -337,7 +338,7 @@ export const validateUniqueEmail = async (email: string): Promise<boolean> => {
 };
 
 export const validateUniqueUsername = async (
-  username: string
+  _username: string
 ): Promise<boolean> => {
   try {
     // This would typically make an API call to check if username exists

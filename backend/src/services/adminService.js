@@ -1,7 +1,7 @@
 import db from '../database/connection.js';
 import { ApiError } from '../middleware/errorHandler.js';
 import { logger } from '../utils/logger.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import {
   logAdminActivity,
   DEFAULT_PERMISSIONS,

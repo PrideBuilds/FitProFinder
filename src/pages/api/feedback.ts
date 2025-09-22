@@ -5,9 +5,10 @@
 
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
+import { sendBetaFeedbackEmail } from '../../utils/email.js';
 
-// Feedback submission schema
-const feedbackSchema = z.object({
+// Detailed feedback submission schema (for bug reports, etc.)
+const detailedFeedbackSchema = z.object({
   category: z.enum(['bug', 'feature', 'general']),
   subject: z.string().min(1).max(200),
   description: z.string().min(1).max(2000),
@@ -18,29 +19,53 @@ const feedbackSchema = z.object({
   consent: z.boolean(),
 });
 
+// Beta feedback submission schema (from BetaFeedback component)
+const betaFeedbackSchema = z.object({
+  name: z.string().optional(),
+  email: z.string().email().optional().or(z.literal('')),
+  type: z.enum(['bug', 'feature', 'improvement', 'general']),
+  message: z.string().min(1).max(2000),
+  timestamp: z.string().optional(),
+  url: z.string().optional(),
+  userAgent: z.string().optional(),
+});
+
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
 
-    // Validate the request body
-    const validationResult = feedbackSchema.safeParse(body);
-    if (!validationResult.success) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Invalid feedback data',
-          details: validationResult.error.errors,
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
+    // Try to validate as beta feedback first, then as detailed feedback
+    let feedback: any;
+    let feedbackType: 'beta' | 'detailed';
 
-    const feedback = validationResult.data;
+    const betaValidation = betaFeedbackSchema.safeParse(body);
+    if (betaValidation.success) {
+      feedback = betaValidation.data;
+      feedbackType = 'beta';
+    } else {
+      const detailedValidation = detailedFeedbackSchema.safeParse(body);
+      if (detailedValidation.success) {
+        feedback = detailedValidation.data;
+        feedbackType = 'detailed';
+      } else {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: 'Invalid feedback data',
+            details: {
+              betaErrors: betaValidation.error.errors,
+              detailedErrors: detailedValidation.error.errors,
+            },
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    }
 
     // TODO: Store feedback in database
     // const feedbackRecord = await db.insert(bugReportsTable).values({
@@ -67,13 +92,38 @@ export const POST: APIRoute = async ({ request }) => {
     //   await sendFeedbackConfirmation(user.email, feedbackRecord.id);
     // }
 
-    // Log the feedback for now
-    console.log('Feedback received:', {
-      category: feedback.category,
-      subject: feedback.subject,
-      severity: feedback.severity,
-      timestamp: new Date().toISOString(),
-    });
+    // Log the feedback (customize based on feedback type)
+    if (feedbackType === 'beta') {
+      console.log('BETA Feedback received:', {
+        type: feedback.type,
+        name: feedback.name || 'Anonymous',
+        email: feedback.email || 'Not provided',
+        message: feedback.message,
+        url: feedback.url,
+        timestamp: feedback.timestamp || new Date().toISOString(),
+      });
+
+      // Send email notification to PrideBuilds@gmail.com
+      try {
+        const emailSent = await sendBetaFeedbackEmail(feedback);
+        if (emailSent) {
+          console.log('✅ Beta feedback email sent successfully to PrideBuilds@gmail.com');
+        } else {
+          console.log('⚠️ Failed to send beta feedback email, but feedback was logged');
+        }
+      } catch (error) {
+        console.error('❌ Error sending beta feedback email:', error);
+        // Continue processing even if email fails
+      }
+
+    } else {
+      console.log('Detailed feedback received:', {
+        category: feedback.category,
+        subject: feedback.subject,
+        severity: feedback.severity,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     return new Response(
       JSON.stringify({

@@ -3,11 +3,9 @@
  * PostHog integration for tracking user events and errors
  */
 
-import { env } from './env';
-
 // PostHog configuration
-const POSTHOG_KEY = env.NEXT_PUBLIC_POSTHOG_KEY;
-const POSTHOG_HOST = env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com';
+const POSTHOG_KEY = import.meta.env.PUBLIC_POSTHOG_KEY || import.meta.env.NEXT_PUBLIC_POSTHOG_KEY;
+const POSTHOG_HOST = import.meta.env.PUBLIC_POSTHOG_HOST || import.meta.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com';
 
 // Event types
 export type AnalyticsEvent =
@@ -41,15 +39,20 @@ class Analytics {
 
     try {
       // Dynamically import PostHog
-      const { default: posthog } = await import('posthog-js');
+      const posthogModule = await import('posthog-js').catch(() => null);
+      if (!posthogModule) {
+        console.warn('PostHog package not found, analytics disabled');
+        return;
+      }
 
+      const posthog = posthogModule.default;
       posthog.init(POSTHOG_KEY, {
         api_host: POSTHOG_HOST,
         person_profiles: 'identified_only',
         capture_pageview: false, // We'll handle this manually
         capture_pageleave: true,
-        loaded: posthog => {
-          this.posthog = posthog;
+        loaded: (posthogInstance: any) => {
+          this.posthog = posthogInstance;
           this.initialized = true;
           console.log('Analytics initialized');
         },
